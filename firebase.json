@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "kotlin-webpack/wasmJs/productionExecutable",
+    "public": "composeApp/build/kotlin-webpack/wasmJs/productionExecutable",
     "ignore": [
       "firebase.json",
       "**/.*",

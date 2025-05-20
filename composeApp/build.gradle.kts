@@ -1,5 +1,3 @@
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
@@ -13,7 +11,6 @@ plugins {
 
 kotlin {
     androidTarget {
-        @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_11)
         }
@@ -101,14 +98,4 @@ android {
 
 dependencies {
     debugImplementation(compose.uiTooling)
-}
-
-tasks.register<Copy>("copyWasmResources") {
-    from("composeApp/build/processedResources/wasmJs/main")
-    into("composeApp/build/kotlin-webpack/wasmJs/productionExecutable")
-    include("index.html", "styles.css")
-}
-
-tasks.named("wasmJsBrowserProductionWebpack") {
-    finalizedBy("copyWasmResources")
 }
