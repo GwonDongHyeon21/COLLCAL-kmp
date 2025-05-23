@@ -99,3 +99,14 @@ android {
 dependencies {
     debugImplementation(compose.uiTooling)
 }
+
+tasks.register<Copy>("copyWebResources") {
+    from("$buildDir/processedResources/wasmJs/main") {
+        include("index.html", "styles.css")
+    }
+    into("$buildDir/kotlin-webpack/wasmJs/productionExecutable")
+}
+
+tasks.named("wasmJsBrowserProductionWebpack") {
+    finalizedBy("copyWebResources")
+}

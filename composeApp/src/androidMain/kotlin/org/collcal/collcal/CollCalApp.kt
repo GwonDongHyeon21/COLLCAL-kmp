@@ -9,7 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import org.collcal.collcal.navigation.NavigatorGraph
+import org.collcal.collcal.navigation.AndroidNavigator
 import org.collcal.collcal.navigation.Screen
 import org.collcal.collcal.presentation.college.CollegeScreen
 import org.collcal.collcal.presentation.home.HomeScreen
@@ -18,7 +18,7 @@ import org.collcal.collcal.presentation.user.UserScreen
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun CollCalApp() {
-    val navigator = remember { NavigatorGraph() }
+    val navigator = remember { AndroidNavigator() }
     val currentScreen by navigator.currentScreen
     val currentScreenSize by navigator.currentScreenSize
 
