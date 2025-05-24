@@ -1,6 +1,5 @@
 package org.collcal.collcal
 
-import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.BottomAppBar
@@ -15,7 +14,6 @@ import org.collcal.collcal.presentation.college.CollegeScreen
 import org.collcal.collcal.presentation.home.HomeScreen
 import org.collcal.collcal.presentation.user.UserScreen
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun CollCalApp() {
     val navigator = remember { AndroidNavigator() }
@@ -31,11 +29,11 @@ fun CollCalApp() {
                 Row { Text(text = "text") }
             }
         }
-    ) {
+    ) { paddingValues ->
         when (currentScreen) {
-            Screen.Home.route -> HomeScreen(navigator)
-            Screen.College.route -> CollegeScreen(navigator)
-            Screen.User.route -> UserScreen(navigator)
+            Screen.Home.route -> HomeScreen(navigator, paddingValues)
+            Screen.College.route -> CollegeScreen(navigator, paddingValues)
+            Screen.User.route -> UserScreen(navigator, paddingValues)
         }
     }
 }
