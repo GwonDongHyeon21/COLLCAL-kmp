@@ -187,3 +187,27 @@ fabric.properties
 !/gradle/wrapper/gradle-wrapper.jar
 
 # End of https://www.toptal.com/developers/gitignore/api/kotlin,androidstudio,macos
+
+
+
+# Firebase
+.firebaserc
+firebase.json
+
+# Kotlin Multiplatform Compose
+.compose-cache/
+.kotlinc/
+.kotlin
+
+# Web (Kotlin/JS)
+node_modules/
+dist/
+npm-debug.log
+yarn.lock
+pnpm-lock.yaml
+package-lock.json
+
+# Env files
+.env
+.env.*
+*.local
