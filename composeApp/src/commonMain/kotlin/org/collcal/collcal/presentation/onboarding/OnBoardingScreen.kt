@@ -43,9 +43,9 @@ fun OnBoardingScreen(navigator: Navigator) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = Strings.appName, fontWeight = FontWeight.Bold, fontSize = (size * 4).sp)
+        Text(text = Strings.appName, fontWeight = FontWeight.W800, fontSize = (size * 4).sp)
         Spacer(Modifier.height(size.dp))
-        Text(text = Strings.appDescription, fontWeight = FontWeight.Bold, fontSize = (size * 3).sp)
+        Text(text = Strings.appDescription, fontWeight = FontWeight.W800, fontSize = (size * 3).sp)
 
         Spacer(Modifier.height((size * 2).dp))
         Button(

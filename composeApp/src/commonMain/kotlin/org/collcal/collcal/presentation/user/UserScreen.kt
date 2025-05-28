@@ -16,12 +16,12 @@ import org.collcal.collcal.navigation.Navigator
 @Composable
 fun UserScreen(
     navigator: Navigator,
-    paddingValues: PaddingValues = PaddingValues(0.dp),
+    innerPadding: PaddingValues = PaddingValues(0.dp),
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(paddingValues),
+            .padding(innerPadding),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
