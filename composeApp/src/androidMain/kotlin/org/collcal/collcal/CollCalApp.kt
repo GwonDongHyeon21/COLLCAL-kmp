@@ -11,6 +11,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.graphics.Color
 import org.collcal.collcal.navigation.AndroidNavigator
 import org.collcal.collcal.navigation.Screen
 import org.collcal.collcal.presentation.college.CollegeScreen
@@ -27,23 +28,36 @@ fun CollCalApp() {
     val currentScreen by navigator.currentScreen
     val currentScreenSize by navigator.currentScreenSize
 
+    val isTopBar = currentScreen == Screen.OnBoarding.route
+    val isBottomBar = currentScreen !in listOf(
+        Screen.OnBoarding.route,
+        Screen.SignIn.route,
+        Screen.SignUp.route
+    )
+
     if (currentScreenSize > 1) BackHandler { navigator.goBack() }
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = "test") },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = gray1)
+                title = { if (!isTopBar) Text(text = "test") },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = if (isTopBar) Color.Transparent else gray1
+                ),
             )
         },
-        bottomBar = { BottomAppBar { Row { Text(text = "test") } } }
-    ) { paddingValues ->
+        bottomBar = {
+            BottomAppBar(containerColor = if (isBottomBar) gray1 else Color.Transparent) {
+                if (isBottomBar) Row { Text(text = "test") }
+            }
+        }
+    ) { innerPadding ->
         when (currentScreen) {
             Screen.OnBoarding.route -> OnBoardingScreen(navigator)
             Screen.SignIn.route -> SignInScreen(navigator)
-            Screen.SignUp.route -> SignUpScreen(navigator)
-            Screen.College.route -> CollegeScreen(navigator, paddingValues)
-            Screen.User.route -> UserScreen(navigator, paddingValues)
+            Screen.SignUp.route -> SignUpScreen(navigator, innerPadding)
+            Screen.College.route -> CollegeScreen(navigator, innerPadding)
+            Screen.User.route -> UserScreen(navigator, innerPadding)
         }
     }
 }
