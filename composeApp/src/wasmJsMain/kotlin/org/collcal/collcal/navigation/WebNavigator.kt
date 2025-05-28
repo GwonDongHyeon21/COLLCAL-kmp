@@ -11,8 +11,8 @@ class WebNavigator : Navigator {
 
     init {
         if (window.location.pathname.removePrefix("/").isBlank()) {
-            _currentScreen.value = Screen.Home.route
-            window.history.replaceState(null, "", "/${Screen.Home.route}")
+            _currentScreen.value = Screen.OnBoarding.route
+            window.history.replaceState(null, "", "/${Screen.OnBoarding.route}")
         }
     }
 
@@ -32,6 +32,6 @@ class WebNavigator : Navigator {
 
     fun onPopState() {
         _currentScreen.value =
-            window.location.pathname.removePrefix("/").ifBlank { Screen.Home.route }
+            window.location.pathname.removePrefix("/").ifBlank { Screen.OnBoarding.route }
     }
 }
