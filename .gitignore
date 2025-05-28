@@ -189,6 +189,10 @@ fabric.properties
 # End of https://www.toptal.com/developers/gitignore/api/kotlin,androidstudio,macos
 
 
+# Firebase
+.firebaserc
+firebase.json
+
 # Kotlin Multiplatform Compose
 .compose-cache/
 .kotlinc/
