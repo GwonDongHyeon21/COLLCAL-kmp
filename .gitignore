@@ -192,7 +192,6 @@ fabric.properties
 
 # Firebase
 .firebaserc
-firebase.json
 
 # Kotlin Multiplatform Compose
 .compose-cache/
