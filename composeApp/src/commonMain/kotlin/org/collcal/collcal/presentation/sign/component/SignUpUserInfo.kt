@@ -18,7 +18,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import org.collcal.collcal.presentation.sign.SignViewModel
@@ -81,9 +80,7 @@ fun SignUpUserInfo(
         }
 
         Spacer(Modifier.height(10.dp))
-        Text(
+        Text(text = signInCheck, color = red)
             text = if (isEmpty) "빈칸을 모두 입력해주세요" else "",
-            color = if (isEmpty) Color.Red else Color.Transparent
-        )
     }
 }

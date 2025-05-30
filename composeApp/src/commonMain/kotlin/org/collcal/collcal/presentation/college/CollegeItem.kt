@@ -16,12 +16,12 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.collcal.collcal.presentation.ui.theme.gray3
 import org.collcal.collcal.presentation.ui.theme.gray4
+import org.collcal.collcal.presentation.ui.theme.transparent
 
 @Composable
 fun CollegeItem(
@@ -54,8 +54,8 @@ fun CollegeItem(
                                 .padding(5.dp),
                             shape = RoundedCornerShape(9.38.dp),
                             colors = CardDefaults.cardColors(
-                                containerColor = Color.Transparent,
-                                disabledContainerColor = Color.Transparent
+                                containerColor = transparent,
+                                disabledContainerColor = transparent
                             )
                         ) {
                             Text(text = it, fontSize = 18.75.sp)

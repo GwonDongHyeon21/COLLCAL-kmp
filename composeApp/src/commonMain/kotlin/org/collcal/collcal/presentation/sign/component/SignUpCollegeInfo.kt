@@ -20,7 +20,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import org.collcal.collcal.navigation.Navigator
@@ -31,6 +30,8 @@ import org.collcal.collcal.presentation.ui.theme.Strings
 import org.collcal.collcal.presentation.ui.theme.black
 import org.collcal.collcal.presentation.ui.theme.gray1
 import org.collcal.collcal.presentation.ui.theme.gray2
+import org.collcal.collcal.presentation.ui.theme.red
+import org.collcal.collcal.presentation.ui.theme.transparent
 
 @Composable
 fun SignUpCollegeInfo(
@@ -120,7 +121,7 @@ fun SignUpCollegeInfo(
         Spacer(Modifier.height(10.dp))
         Text(
             text = if (isEmpty) "빈칸을 모두 선택해주세요" else "",
-            color = if (isEmpty) Color.Red else Color.Transparent
+            color = if (isEmpty) red else transparent
         )
     }
 }

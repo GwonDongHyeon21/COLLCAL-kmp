@@ -11,7 +11,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import org.collcal.collcal.navigation.AndroidNavigator
 import org.collcal.collcal.navigation.Screen
@@ -21,6 +20,7 @@ import org.collcal.collcal.presentation.sign.SignInScreen
 import org.collcal.collcal.presentation.sign.SignUpScreen
 import org.collcal.collcal.presentation.ui.theme.Strings
 import org.collcal.collcal.presentation.ui.theme.gray1
+import org.collcal.collcal.presentation.ui.theme.transparent
 import org.collcal.collcal.presentation.user.UserScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -49,12 +49,12 @@ fun CollCalApp() {
                     )
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = if (isTopBar) Color.Transparent else gray1
+                    containerColor = if (isTopBar) transparent else gray1
                 ),
             )
         },
         bottomBar = {
-            BottomAppBar(containerColor = if (isBottomBar) gray1 else Color.Transparent) {
+            BottomAppBar(containerColor = if (isBottomBar) gray1 else transparent) {
                 if (isBottomBar) Row { Text(text = "test") }
             }
         }

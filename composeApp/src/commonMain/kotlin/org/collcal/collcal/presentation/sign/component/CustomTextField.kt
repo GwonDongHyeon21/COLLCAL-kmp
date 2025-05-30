@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.collcal.collcal.presentation.ui.theme.black
 import org.collcal.collcal.presentation.ui.theme.gray1
+import org.collcal.collcal.presentation.ui.theme.transparent
 
 @Composable
 fun CustomOutlinedTextField(
@@ -35,8 +36,8 @@ fun CustomOutlinedTextField(
         colors = TextFieldDefaults.colors(
             focusedContainerColor = gray1,
             unfocusedContainerColor = gray1,
-            focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent,
+            focusedIndicatorColor = transparent,
+            unfocusedIndicatorColor = transparent,
             cursorColor = black
         ),
         maxLines = 1
@@ -73,7 +74,7 @@ fun CustomDropDownTextField(
         shape = RoundedCornerShape(21.dp),
         colors = TextFieldDefaults.colors(
             disabledContainerColor = gray1,
-            disabledIndicatorColor = Color.Transparent,
+            disabledIndicatorColor = transparent,
             cursorColor = black,
             disabledTextColor = black
         ),
