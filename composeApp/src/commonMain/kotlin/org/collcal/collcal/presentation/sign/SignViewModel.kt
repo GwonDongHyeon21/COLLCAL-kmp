@@ -3,6 +3,7 @@ package org.collcal.collcal.presentation.sign
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class SignViewModel : ViewModel() {
@@ -29,10 +30,26 @@ class SignViewModel : ViewModel() {
         "4학년 하계방학",
     )
 
-    private val idText = MutableStateFlow("")
-    private val passwordText = MutableStateFlow("")
-    private val phoneNumberText = MutableStateFlow("")
-    private val emailText = MutableStateFlow("")
+    private val _idText = MutableStateFlow("")
+    private val _passwordText = MutableStateFlow("")
+    private val _phoneNumberText = MutableStateFlow("")
+    private val _emailText = MutableStateFlow("")
+
+    private val _checkRedundancy = MutableStateFlow(Pair("", false))
+    val checkRedundancy: StateFlow<Pair<String, Boolean>> = _checkRedundancy
+
+    fun checkRedundancy(id: String) {
+        viewModelScope.launch {
+            try {
+                // 아이디 중복 확인
+                val response = id != "asdf"
+                if (response) _checkRedundancy.value = Pair("사용 가능합니다", true)
+                else _checkRedundancy.value = Pair("사용할 수 없습니다", false)
+            } catch (e: Exception) {
+                println(e)
+            }
+        }
+    }
 
     fun saveUserInfo(
         id: String,
@@ -40,10 +57,10 @@ class SignViewModel : ViewModel() {
         phoneNumber: String,
         email: String,
     ) {
-        idText.value = id
-        passwordText.value = password
-        phoneNumberText.value = phoneNumber
-        emailText.value = email
+        _idText.value = id
+        _passwordText.value = password
+        _phoneNumberText.value = phoneNumber
+        _emailText.value = email
     }
 
     fun signUp(onSignUp: () -> Unit) {
