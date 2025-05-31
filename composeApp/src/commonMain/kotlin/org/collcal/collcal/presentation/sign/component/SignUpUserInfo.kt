@@ -73,6 +73,7 @@ fun SignUpUserInfo(
                 Button(
                     onClick = {
                         viewModel.checkRedundancy(id)
+                        signInCheck = ""
                         idChanged = false
                     },
                     modifier = Modifier.padding(horizontal = 10.dp),

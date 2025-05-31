@@ -82,7 +82,6 @@ fun SignUpCollegeInfo(
                     Text(text = info.label, fontWeight = FontWeight.W500)
                     CustomDropDownTextField(
                         text = info.option.value,
-                        placeholder = info.placeholder,
                         onClick = { info.isExpanded.value = !info.isExpanded.value }
                     )
                     Row {
