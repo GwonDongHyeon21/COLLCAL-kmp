@@ -69,7 +69,7 @@ fun CollCalApp() {
                             icon = { Icon(it.second, contentDescription = it.first) },
                             label = { Text(it.first) },
                             selected = currentScreen == it.third.route,
-                            onClick = { navigator.navigatePopUpTo(items.first().third, it.third) }
+                            onClick = { navigator.resetAndNavigateTo(items.first().third, it.third) }
                         )
                     }
             }
