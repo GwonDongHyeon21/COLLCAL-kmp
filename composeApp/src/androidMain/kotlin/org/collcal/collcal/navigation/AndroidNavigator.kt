@@ -27,4 +27,11 @@ class AndroidNavigator : Navigator {
         _navigationStack.clear()
         _navigationStack.add(screen.route)
     }
+
+    fun navigatePopUpTo(popUpScreen: Screen, screen: Screen) {
+        _navigationStack.clear()
+        _navigationStack.add((popUpScreen.route))
+        if (popUpScreen != screen)
+            _navigationStack.add(screen.route)
+    }
 }

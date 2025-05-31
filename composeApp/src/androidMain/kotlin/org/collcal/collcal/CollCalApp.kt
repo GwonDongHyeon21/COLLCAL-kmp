@@ -1,9 +1,13 @@
 package org.collcal.collcal
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.layout.Row
-import androidx.compose.material3.BottomAppBar
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -36,6 +40,10 @@ fun CollCalApp() {
         Screen.SignIn.route,
         Screen.SignUp.route
     )
+    val items = listOf(
+        Triple("홈", Icons.Default.Home, Screen.College),
+        Triple("마이페이지", Icons.Default.AccountCircle, Screen.User)
+    )
 
     if (currentScreenSize > 1) BackHandler { navigator.goBack() }
 
@@ -54,8 +62,16 @@ fun CollCalApp() {
             )
         },
         bottomBar = {
-            BottomAppBar(containerColor = if (isBottomBar) gray1 else transparent) {
-                if (isBottomBar) Row { Text(text = "test") }
+            NavigationBar(containerColor = if (isBottomBar) gray1 else transparent) {
+                if (isBottomBar)
+                    items.forEach {
+                        NavigationBarItem(
+                            icon = { Icon(it.second, contentDescription = it.first) },
+                            label = { Text(it.first) },
+                            selected = currentScreen == it.third.route,
+                            onClick = { navigator.navigatePopUpTo(items.first().third, it.third) }
+                        )
+                    }
             }
         }
     ) { innerPadding ->
