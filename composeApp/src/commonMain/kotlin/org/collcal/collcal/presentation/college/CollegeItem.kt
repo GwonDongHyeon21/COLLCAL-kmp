@@ -28,7 +28,7 @@ import org.collcal.collcal.presentation.ui.theme.gray3
 @Composable
 fun CollegeItem(
     modifier: Modifier,
-    collegeItem: List<Triple<String, Int, List<String>>>,
+    collegeItem: List<Pair<Pair<String, Int>, List<Pair<String, Boolean>>>>,
     semesterInt: Int,
 ) {
     collegeItem.forEach { college ->
@@ -36,17 +36,17 @@ fun CollegeItem(
             modifier = modifier.fillMaxSize(),
             shape = RoundedCornerShape(7.dp),
             colors = CardDefaults.cardColors(
-                containerColor = if (college.second < semesterInt) blue1
-                else if (college.second == semesterInt) blue2
+                containerColor = if (college.first.second < semesterInt) blue1
+                else if (college.first.second == semesterInt) blue2
                 else gray3
             )
         ) {
             Column(modifier = Modifier.padding(10.dp)) {
                 Text(
-                    text = college.first,
+                    text = college.first.first,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.W700,
-                    color = if (college.second == semesterInt) blue3 else black
+                    color = if (college.first.second == semesterInt) blue3 else black
                 )
 
                 Spacer(Modifier.height(10.dp))

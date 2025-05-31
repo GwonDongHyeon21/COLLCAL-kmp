@@ -15,12 +15,17 @@ class CollegeViewModel : ViewModel() {
     val userInfo: StateFlow<User> = _userInfo
 
     private val _colleges =
-        MutableStateFlow(emptyList<Pair<String, List<Triple<String, Int, List<String>>>>>())
-    val colleges: StateFlow<List<Pair<String, List<Triple<String, Int, List<String>>>>>> = _colleges
+        MutableStateFlow(emptyList<Pair<String, List<Pair<Pair<String, Int>, List<Pair<String, Boolean>>>>>>())
+    val colleges: StateFlow<List<Pair<String, List<Pair<Pair<String, Int>, List<Pair<String, Boolean>>>>>>> =
+        _colleges
+
+    private val _todos = MutableStateFlow(emptyList<Pair<String, Boolean>>())
+    val todos: StateFlow<List<Pair<String, Boolean>>> = _todos
 
     init {
         getCollegeData()
         getUser()
+        getTodos()
     }
 
     fun getCollegeData() {
@@ -31,50 +36,95 @@ class CollegeViewModel : ViewModel() {
                     Pair(
                         "1",
                         listOf(
-                            Triple(
-                                "1학년 1학기", 0,
+                            Pair(
+                                "1학년 1학기" to 0,
                                 listOf(
-                                    "1-1-1",
-                                    "1-1-2",
-                                    "1-1-3",
-                                    "1-1-1",
-                                    "1-1-2",
-                                    "1-1-3",
-                                    "1-1-1",
-                                    "1-1-2",
-                                    "1-1-3"
+                                    "1-1-1" to true,
+                                    "1-1-2" to true,
+                                    "1-1-3" to true,
+                                    "1-1-1" to true,
+                                    "1-1-2" to true,
+                                    "1-1-3" to true,
+                                    "1-1-1" to true,
+                                    "1-1-2" to true,
+                                    "1-1-3" to true
                                 )
                             ),
-                            Triple("1학년 하계 방학", 1, listOf("1-2-1", "1-2-2", "1-2-3")),
-                            Triple("1학년 2학기", 2, listOf("1-3-1", "1-3-2", "1-3-3")),
-                            Triple("1학년 동계 방학", 3, listOf("1-4-1", "1-4-2", "1-4-3"))
+                            Pair(
+                                "1학년 하계 방학" to 1,
+                                listOf("1-2-1" to true, "1-2-2" to true, "1-2-3" to true)
+                            ),
+                            Pair(
+                                "1학년 2학기" to 2,
+                                listOf("1-3-1" to true, "1-3-2" to false, "1-3-3" to true)
+                            ),
+                            Pair(
+                                "1학년 동계 방학" to 3,
+                                listOf("1-4-1" to true, "1-4-2" to false, "1-4-3" to true)
+                            )
                         )
                     ),
                     Pair(
                         "2",
                         listOf(
-                            Triple("2학년 1학기", 4, listOf("2-1-1", "2-1-2", "2-1-3")),
-                            Triple("2학년 하계 방학", 5, listOf("2-2-1", "2-2-2", "2-2-3")),
-                            Triple("2학년 2학기", 6, listOf("2-3-1", "2-3-2", "2-3-3")),
-                            Triple("2학년 동계 방학", 7, listOf("2-4-1", "2-4-2", "2-4-3"))
+                            Pair(
+                                "2학년 1학기" to 4,
+                                listOf("2-1-1" to true, "2-1-2" to false, "2-1-3" to false)
+                            ),
+                            Pair(
+                                "2학년 하계 방학" to 5,
+                                listOf("2-2-1" to false, "2-2-2" to true, "2-2-3" to true)
+                            ),
+                            Pair(
+                                "2학년 2학기" to 6,
+                                listOf("2-3-1" to false, "2-3-2" to false, "2-3-3" to false)
+                            ),
+                            Pair(
+                                "2학년 동계 방학" to 7,
+                                listOf("2-4-1" to false, "2-4-2" to false, "2-4-3" to false)
+                            )
                         )
                     ),
                     Pair(
                         "3",
                         listOf(
-                            Triple("3학년 1학기", 8, listOf("3-1-1", "3-1-2", "3-1-3")),
-                            Triple("3학년 하계 방학", 9, listOf("3-2-1", "3-2-2", "3-2-3")),
-                            Triple("3학년 2학기", 10, listOf("3-3-1", "3-3-2", "3-3-3")),
-                            Triple("3학년 동계 방학", 11, listOf("3-4-1", "3-4-2", "3-4-3"))
+                            Pair(
+                                "3학년 1학기" to 8,
+                                listOf("3-1-1" to false, "3-1-2" to false, "3-1-3" to false)
+                            ),
+                            Pair(
+                                "3학년 하계 방학" to 9,
+                                listOf("3-2-1" to false, "3-2-2" to false, "3-2-3" to false)
+                            ),
+                            Pair(
+                                "3학년 2학기" to 10,
+                                listOf("3-3-1" to false, "3-3-2" to false, "3-3-3" to false)
+                            ),
+                            Pair(
+                                "3학년 동계 방학" to 11,
+                                listOf("3-4-1" to false, "3-4-2" to false, "3-4-3" to false)
+                            )
                         )
                     ),
                     Pair(
                         "4",
                         listOf(
-                            Triple("4학년 1학기", 12, listOf("4-1-1", "4-1-2", "4-1-3")),
-                            Triple("4학년 하계 방학", 13, listOf("4-2-1", "4-2-2", "4-2-3")),
-                            Triple("4학년 2학기", 14, listOf("4-3-1", "4-3-2", "4-3-3")),
-                            Triple("4학년 동계 방학", 15, listOf("4-4-1", "4-4-2", "4-4-3"))
+                            Pair(
+                                "4학년 1학기" to 12,
+                                listOf("4-1-1" to false, "4-1-2" to false, "4-1-3" to false)
+                            ),
+                            Pair(
+                                "4학년 하계 방학" to 13,
+                                listOf("4-2-1" to false, "4-2-2" to false, "4-2-3" to false)
+                            ),
+                            Pair(
+                                "4학년 2학기" to 14,
+                                listOf("4-3-1" to false, "4-3-2" to false, "4-3-3" to false)
+                            ),
+                            Pair(
+                                "4학년 동계 방학" to 15,
+                                listOf("4-4-1" to false, "4-4-2" to false, "4-4-3" to false)
+                            )
                         )
                     )
                 )
@@ -90,6 +140,17 @@ class CollegeViewModel : ViewModel() {
             try {
                 _userInfo.value =
                     User("권동현", "컴퓨터공학과", "2학년 1학기", 4, 89, 3.4, 45, 50, 39, 45, 34, 50, 32, 30)
+            } catch (e: Exception) {
+                println(e)
+            }
+        }
+    }
+
+    private fun getTodos() {
+        viewModelScope.launch {
+            try {
+                _todos.value =
+                    listOf("ex) 1" to false, "ex) 2" to false, "ex) 3" to false, "ex) 4" to false)
             } catch (e: Exception) {
                 println(e)
             }
