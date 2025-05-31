@@ -58,12 +58,7 @@ fun CustomDropDownTextField(
             cursorColor = black,
             disabledTextColor = black
         ),
-        trailingIcon = {
-            Icon(
-                imageVector = DownArrowIcon,
-                contentDescription = "Dropdown Arrow"
-            )
-        },
+        trailingIcon = { Icon(imageVector = DownArrowIcon, contentDescription = "Dropdown Arrow") },
         maxLines = 1,
         enabled = false
     )

@@ -5,9 +5,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -23,10 +25,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.collcal.collcal.PlatformType
-import org.collcal.collcal.getPlatformType
 import org.collcal.collcal.navigation.Navigator
+import org.collcal.collcal.platform.PlatformType
+import org.collcal.collcal.platform.getPlatformType
+import org.collcal.collcal.presentation.tasks.TasksScreen
 import org.collcal.collcal.presentation.ui.theme.gray1
+import org.collcal.collcal.presentation.user.UserScreen
 
 @Composable
 fun CollegeScreen(
@@ -34,8 +38,8 @@ fun CollegeScreen(
     innerPadding: PaddingValues = PaddingValues(0.dp),
     viewModel: CollegeViewModel = CollegeViewModel(),
 ) {
-    val platformType = getPlatformType()
     val isLoading by viewModel.isLoading.collectAsState()
+    val userInfo by viewModel.userInfo.collectAsState()
     val colleges by viewModel.colleges.collectAsState()
 
     LaunchedEffect(Unit) { viewModel.getCollegeData() }
@@ -47,7 +51,7 @@ fun CollegeScreen(
             CircularProgressIndicator()
         }
     else
-        when (platformType) {
+        when (getPlatformType()) {
             PlatformType.WEB -> {
                 Row {
                     Column(
@@ -72,15 +76,21 @@ fun CollegeScreen(
                                     modifier = Modifier.fillMaxWidth(),
                                     horizontalArrangement = Arrangement.spacedBy(10.dp)
                                 ) {
-                                    CollegeItem(Modifier.weight(1f), college.second)
+                                    CollegeItem(
+                                        Modifier.weight(1f),
+                                        college.second,
+                                        userInfo.semesterInt
+                                    )
                                 }
                             }
                         }
                     }
 
                     VerticalDivider(color = gray1)
-                    Column(modifier = Modifier.fillMaxWidth(0.25f)) {
-
+                    Column(modifier = Modifier.padding(20.dp)) {
+                        UserScreen(navigator)
+                        Spacer(Modifier.height(10.dp))
+                        TasksScreen(navigator)
                     }
                 }
             }
@@ -105,7 +115,11 @@ fun CollegeScreen(
                             modifier = Modifier.fillMaxWidth(),
                             verticalArrangement = Arrangement.spacedBy(10.dp)
                         ) {
-                            CollegeItem(Modifier.weight(1f), colleges[page].second)
+                            CollegeItem(
+                                Modifier.weight(1f),
+                                colleges[page].second,
+                                userInfo.semesterInt
+                            )
                         }
                     }
                 }

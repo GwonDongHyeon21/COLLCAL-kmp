@@ -23,8 +23,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.collcal.collcal.PlatformType
-import org.collcal.collcal.getPlatformType
+import org.collcal.collcal.platform.PlatformType
+import org.collcal.collcal.platform.getPlatformType
 import org.collcal.collcal.presentation.sign.component.CustomOutlinedTextField
 import org.collcal.collcal.presentation.ui.theme.Strings
 import org.collcal.collcal.presentation.ui.theme.black

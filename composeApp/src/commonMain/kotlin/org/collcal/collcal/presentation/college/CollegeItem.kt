@@ -1,6 +1,5 @@
 package org.collcal.collcal.presentation.college
 
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
@@ -19,26 +18,35 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import org.collcal.collcal.presentation.component.taskItem
+import org.collcal.collcal.presentation.ui.theme.black
+import org.collcal.collcal.presentation.ui.theme.blue1
+import org.collcal.collcal.presentation.ui.theme.blue2
+import org.collcal.collcal.presentation.ui.theme.blue3
 import org.collcal.collcal.presentation.ui.theme.gray3
-import org.collcal.collcal.presentation.ui.theme.gray4
-import org.collcal.collcal.presentation.ui.theme.transparent
 
 @Composable
 fun CollegeItem(
     modifier: Modifier,
-    collegeItem: List<Pair<String, List<String>>>,
+    collegeItem: List<Pair<Pair<String, Int>, List<Pair<String, Boolean>>>>,
+    semesterInt: Int,
 ) {
     collegeItem.forEach { college ->
         Card(
             modifier = modifier.fillMaxSize(),
             shape = RoundedCornerShape(7.dp),
-            colors = CardDefaults.cardColors(containerColor = gray3)
+            colors = CardDefaults.cardColors(
+                containerColor = if (college.first.second < semesterInt) blue1
+                else if (college.first.second == semesterInt) blue2
+                else gray3
+            )
         ) {
             Column(modifier = Modifier.padding(10.dp)) {
                 Text(
-                    text = college.first,
+                    text = college.first.first,
                     fontSize = 16.sp,
-                    fontWeight = FontWeight.W700
+                    fontWeight = FontWeight.W700,
+                    color = if (college.first.second == semesterInt) blue3 else black
                 )
 
                 Spacer(Modifier.height(10.dp))
@@ -47,20 +55,7 @@ fun CollegeItem(
                     verticalArrangement = Arrangement.spacedBy(5.dp),
                     horizontalArrangement = Arrangement.spacedBy(5.dp)
                 ) {
-                    college.second.forEach {
-                        Card(
-                            modifier = Modifier
-                                .border(0.5.dp, gray4, RoundedCornerShape(9.38.dp))
-                                .padding(5.dp),
-                            shape = RoundedCornerShape(9.38.dp),
-                            colors = CardDefaults.cardColors(
-                                containerColor = transparent,
-                                disabledContainerColor = transparent
-                            )
-                        ) {
-                            Text(text = it, fontSize = 18.75.sp)
-                        }
-                    }
+                    college.second.forEach { taskItem(it) }
                 }
             }
         }

@@ -2,6 +2,7 @@ package org.collcal.collcal
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -25,6 +26,7 @@ import org.collcal.collcal.presentation.college.CollegeScreen
 import org.collcal.collcal.presentation.onboarding.OnBoardingScreen
 import org.collcal.collcal.presentation.sign.SignInScreen
 import org.collcal.collcal.presentation.sign.SignUpScreen
+import org.collcal.collcal.presentation.tasks.TasksScreen
 import org.collcal.collcal.presentation.ui.theme.Strings
 import org.collcal.collcal.presentation.ui.theme.gray1
 import org.collcal.collcal.presentation.ui.theme.transparent
@@ -45,6 +47,7 @@ fun CollCalApp() {
     )
     val items = listOf(
         Triple("홈", Icons.Default.Home, Screen.College),
+        Triple("할 일", Icons.AutoMirrored.Filled.List, Screen.Tasks),
         Triple("마이페이지", Icons.Default.AccountCircle, Screen.User)
     )
     var tabScreen by remember { mutableStateOf(items.first().third.route) }
@@ -94,6 +97,7 @@ fun CollCalApp() {
             Screen.SignIn.route -> SignInScreen(innerPadding) { navigator.resetTo(Screen.College) }
             Screen.SignUp.route -> SignUpScreen(navigator, innerPadding)
             Screen.College.route -> CollegeScreen(navigator, innerPadding)
+            Screen.Tasks.route -> TasksScreen(navigator, innerPadding)
             Screen.User.route -> UserScreen(navigator, innerPadding)
         }
     }

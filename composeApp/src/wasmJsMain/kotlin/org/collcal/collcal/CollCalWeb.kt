@@ -26,7 +26,6 @@ import org.collcal.collcal.presentation.sign.SignInScreen
 import org.collcal.collcal.presentation.sign.SignUpScreen
 import org.collcal.collcal.presentation.ui.theme.Strings
 import org.collcal.collcal.presentation.ui.theme.gray1
-import org.collcal.collcal.presentation.user.UserScreen
 
 @Composable
 fun CollCalWeb() {
@@ -69,7 +68,6 @@ fun CollCalWeb() {
             Screen.SignIn.route -> SignInScreen { navigator.replaceTo(Screen.College) }
             Screen.SignUp.route -> SignUpScreen(navigator)
             Screen.College.route -> CollegeScreen(navigator)
-            Screen.User.route -> UserScreen(navigator)
         }
     }
 }
