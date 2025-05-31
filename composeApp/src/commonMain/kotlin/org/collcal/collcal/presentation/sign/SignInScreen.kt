@@ -25,8 +25,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.collcal.collcal.PlatformType
 import org.collcal.collcal.getPlatformType
-import org.collcal.collcal.navigation.Navigator
-import org.collcal.collcal.navigation.Screen
 import org.collcal.collcal.presentation.sign.component.CustomOutlinedTextField
 import org.collcal.collcal.presentation.ui.theme.Strings
 import org.collcal.collcal.presentation.ui.theme.black
@@ -35,8 +33,8 @@ import org.collcal.collcal.presentation.ui.theme.gray2
 
 @Composable
 fun SignInScreen(
-    navigator: Navigator,
     innerPadding: PaddingValues = PaddingValues(0.dp),
+    onClick: () -> Unit,
 ) {
     var idText by remember { mutableStateOf("") }
     var passwordText by remember { mutableStateOf("") }
@@ -74,7 +72,7 @@ fun SignInScreen(
 
             Spacer(Modifier.height(20.dp))
             Button(
-                onClick = { navigator.navigateTo(Screen.College) },
+                onClick = { onClick() },
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(21.dp),
                 colors = ButtonDefaults.buttonColors(

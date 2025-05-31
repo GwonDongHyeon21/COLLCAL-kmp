@@ -7,8 +7,14 @@ import androidx.compose.runtime.mutableStateListOf
 class AndroidNavigator : Navigator {
     override val currentScreen: State<String> get() = derivedStateOf { _navigationStack.last() }
 
-    private val _navigationStack = mutableStateListOf(Screen.OnBoarding.route)
+    private val _navigationStack = mutableStateListOf("")
     val currentScreenSize: State<Int> get() = derivedStateOf { _navigationStack.size }
+
+    init {
+        // 로그인 상태 확인
+        val response = false
+        replaceTo(if (response) Screen.College else Screen.OnBoarding)
+    }
 
     override fun navigateTo(screen: Screen) {
         _navigationStack.add(screen.route)

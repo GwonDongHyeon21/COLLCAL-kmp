@@ -77,7 +77,7 @@ fun CollCalApp() {
     ) { innerPadding ->
         when (currentScreen) {
             Screen.OnBoarding.route -> OnBoardingScreen(navigator)
-            Screen.SignIn.route -> SignInScreen(navigator, innerPadding)
+            Screen.SignIn.route -> SignInScreen(innerPadding) { navigator.resetTo(Screen.College) }
             Screen.SignUp.route -> SignUpScreen(navigator, innerPadding)
             Screen.College.route -> CollegeScreen(navigator, innerPadding)
             Screen.User.route -> UserScreen(navigator, innerPadding)

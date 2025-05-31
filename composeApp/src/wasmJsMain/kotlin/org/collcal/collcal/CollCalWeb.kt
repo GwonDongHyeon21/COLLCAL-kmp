@@ -66,7 +66,7 @@ fun CollCalWeb() {
 
         when (currentScreen) {
             Screen.OnBoarding.route -> OnBoardingScreen(navigator)
-            Screen.SignIn.route -> SignInScreen(navigator)
+            Screen.SignIn.route -> SignInScreen { navigator.replaceTo(Screen.College) }
             Screen.SignUp.route -> SignUpScreen(navigator)
             Screen.College.route -> CollegeScreen(navigator)
             Screen.User.route -> UserScreen(navigator)
