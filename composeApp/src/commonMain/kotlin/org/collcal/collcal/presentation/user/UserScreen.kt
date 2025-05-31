@@ -124,10 +124,7 @@ fun UserScreen(
                             fontWeight = FontWeight.W300
                         )
                         Spacer(Modifier.weight(1f))
-                        Icon(
-                            imageVector = DownArrowIcon,
-                            contentDescription = "DownArrowIcon"
-                        )
+                        Icon(imageVector = DownArrowIcon, contentDescription = "DownArrowIcon")
                     }
                 }
             }

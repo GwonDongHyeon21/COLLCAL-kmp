@@ -20,4 +20,6 @@ object Strings {
     const val semesterPlaceholder = "현재 학년/학기를 선택해주세요."
     const val earnedCredits = "취득학점"
     const val averageCredit = "평점 평군"
+    const val tasks = "Tasks"
+    const val add = "Add"
 }
