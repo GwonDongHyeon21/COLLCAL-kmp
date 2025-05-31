@@ -1,3 +1,3 @@
-package org.collcal.collcal
+package org.collcal.collcal.platform
 
 actual fun getPlatformType(): PlatformType = PlatformType.IOS
