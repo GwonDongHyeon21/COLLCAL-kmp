@@ -99,14 +99,13 @@ fun SignUpCollegeInfo(
                     }
                 }
             }
-
         }
 
         Spacer(Modifier.height(10.dp))
         Button(
             onClick = {
                 if (listOf(year, school, department, semester).all { it.value.isNotBlank() })
-                    viewModel.signUp { navigator.replaceTo(Screen.OnBoarding) }
+                    viewModel.signUp { navigator.replaceTo(Screen.SignIn) }
                 else isEmpty = true
             },
             modifier = modifier,
