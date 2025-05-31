@@ -19,6 +19,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import org.collcal.collcal.presentation.ui.theme.black
+import org.collcal.collcal.presentation.ui.theme.blue1
+import org.collcal.collcal.presentation.ui.theme.blue2
+import org.collcal.collcal.presentation.ui.theme.blue3
 import org.collcal.collcal.presentation.ui.theme.gray3
 import org.collcal.collcal.presentation.ui.theme.gray4
 import org.collcal.collcal.presentation.ui.theme.transparent
@@ -26,19 +30,25 @@ import org.collcal.collcal.presentation.ui.theme.transparent
 @Composable
 fun CollegeItem(
     modifier: Modifier,
-    collegeItem: List<Pair<String, List<String>>>,
+    collegeItem: List<Triple<String, Int, List<String>>>,
+    semesterInt: Int,
 ) {
     collegeItem.forEach { college ->
         Card(
             modifier = modifier.fillMaxSize(),
             shape = RoundedCornerShape(7.dp),
-            colors = CardDefaults.cardColors(containerColor = gray3)
+            colors = CardDefaults.cardColors(
+                containerColor = if (college.second < semesterInt) blue1
+                else if (college.second == semesterInt) blue2
+                else gray3
+            )
         ) {
             Column(modifier = Modifier.padding(10.dp)) {
                 Text(
                     text = college.first,
                     fontSize = 16.sp,
-                    fontWeight = FontWeight.W700
+                    fontWeight = FontWeight.W700,
+                    color = if (college.second == semesterInt) blue3 else black
                 )
 
                 Spacer(Modifier.height(10.dp))
@@ -47,7 +57,7 @@ fun CollegeItem(
                     verticalArrangement = Arrangement.spacedBy(5.dp),
                     horizontalArrangement = Arrangement.spacedBy(5.dp)
                 ) {
-                    college.second.forEach {
+                    college.third.forEach {
                         Card(
                             modifier = Modifier
                                 .border(0.5.dp, gray4, RoundedCornerShape(9.38.dp))
