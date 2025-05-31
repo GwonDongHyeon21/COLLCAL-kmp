@@ -13,8 +13,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.font.FontWeight
 import org.collcal.collcal.navigation.AndroidNavigator
 import org.collcal.collcal.navigation.Screen
@@ -44,6 +47,12 @@ fun CollCalApp() {
         Triple("홈", Icons.Default.Home, Screen.College),
         Triple("마이페이지", Icons.Default.AccountCircle, Screen.User)
     )
+    var tabScreen by remember { mutableStateOf(items.first().third.route) }
+
+    LaunchedEffect(currentScreen) {
+        if (items.any { it.third.route == currentScreen })
+            tabScreen = currentScreen
+    }
 
     if (currentScreenSize > 1) BackHandler { navigator.goBack() }
 
@@ -66,10 +75,15 @@ fun CollCalApp() {
                 if (isBottomBar)
                     items.forEach {
                         NavigationBarItem(
-                            icon = { Icon(it.second, contentDescription = it.first) },
-                            label = { Text(it.first) },
-                            selected = currentScreen == it.third.route,
-                            onClick = { navigator.resetAndNavigateTo(items.first().third, it.third) }
+                            icon = { Icon(imageVector = it.second, contentDescription = it.first) },
+                            label = { Text(text = it.first) },
+                            selected = tabScreen == it.third.route,
+                            onClick = {
+                                navigator.resetAndNavigateTo(
+                                    items.first().third,
+                                    it.third
+                                )
+                            }
                         )
                     }
             }
