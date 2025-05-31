@@ -9,6 +9,7 @@ object Strings {
     const val password = "PASSWORD"
     const val phoneNumber = "PHONE NUMBER"
     const val email = "EMAIL"
+    const val checkRedundancy = "중복 확인"
     const val admissionYear = "입학 연도"
     const val admissionYearPlaceholder = "입학 연도를 선택해주세요."
     const val school = "학교"
