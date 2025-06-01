@@ -104,15 +104,15 @@ fun SignUpUserInfo(
         Spacer(Modifier.height(10.dp))
         Button(
             onClick = {
-                if (listOf(id, password, phoneNumber, email).any { it.isBlank() })
-                    signInCheck = "빈칸을 모두 입력해주세요"
-                else if (idChanged)
-                    signInCheck = "아이디 중복 체크를 해주세요"
-                else if (!checkRedundancy.second)
-                    signInCheck = "다른 아이디를 입력해주세요"
-                else {
-                    viewModel.saveUserInfo(id, password, phoneNumber, email)
-                    onClick()
+                signInCheck = when {
+                    listOf(id, password, phoneNumber, email).any { it.isBlank() } -> "빈칸을 모두 입력해주세요"
+                    idChanged -> "아이디 중복 체크를 해주세요"
+                    !checkRedundancy.second -> "다른 아이디를 입력해주세요"
+                    else -> {
+                        viewModel.saveUserInfo(id, password, phoneNumber, email)
+                        onClick()
+                        ""
+                    }
                 }
             },
             modifier = modifier,

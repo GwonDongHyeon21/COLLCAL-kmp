@@ -36,10 +36,12 @@ fun CollegeItem(
             modifier = modifier.fillMaxSize(),
             shape = RoundedCornerShape(7.dp),
             colors = CardDefaults.cardColors(
-                containerColor = if (college.first.second < semesterInt) blue1
-                else if (college.first.second == semesterInt) blue2
-                else gray3
-            )
+                containerColor = when {
+                    semesterInt < userSemesterInt -> blue1
+                    semesterInt == userSemesterInt -> blue2
+                    else -> gray3
+                }
+            ),
         ) {
             Column(modifier = Modifier.padding(10.dp)) {
                 Text(
