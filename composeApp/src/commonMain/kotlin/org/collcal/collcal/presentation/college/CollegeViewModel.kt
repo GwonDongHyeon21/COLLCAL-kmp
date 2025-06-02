@@ -36,95 +36,37 @@ class CollegeViewModel : ViewModel() {
                     Pair(
                         "1",
                         listOf(
-                            Pair(
-                                "1학년 1학기" to 0,
-                                listOf(
-                                    "1-1-1" to true,
-                                    "1-1-2" to true,
-                                    "1-1-3" to true,
-                                    "1-1-1" to true,
-                                    "1-1-2" to true,
-                                    "1-1-3" to true,
-                                    "1-1-1" to true,
-                                    "1-1-2" to true,
-                                    "1-1-3" to true
-                                )
-                            ),
-                            Pair(
-                                "1학년 하계 방학" to 1,
-                                listOf("1-2-1" to true, "1-2-2" to true, "1-2-3" to true)
-                            ),
-                            Pair(
-                                "1학년 2학기" to 2,
-                                listOf("1-3-1" to true, "1-3-2" to false, "1-3-3" to true)
-                            ),
-                            Pair(
-                                "1학년 동계 방학" to 3,
-                                listOf("1-4-1" to true, "1-4-2" to false, "1-4-3" to true)
-                            )
+                            Pair("1학년 1학기" to 0, listOf("경진대회" to true, "한국어 도우미" to true)),
+                            Pair("1학년 하계 방학" to 1, emptyList()),
+                            Pair("1학년 2학기" to 2, emptyList()),
+                            Pair("1학년 동계 방학" to 3, emptyList())
                         )
                     ),
                     Pair(
                         "2",
                         listOf(
-                            Pair(
-                                "2학년 1학기" to 4,
-                                listOf("2-1-1" to true, "2-1-2" to false, "2-1-3" to false)
-                            ),
-                            Pair(
-                                "2학년 하계 방학" to 5,
-                                listOf("2-2-1" to false, "2-2-2" to true, "2-2-3" to true)
-                            ),
-                            Pair(
-                                "2학년 2학기" to 6,
-                                listOf("2-3-1" to false, "2-3-2" to false, "2-3-3" to false)
-                            ),
-                            Pair(
-                                "2학년 동계 방학" to 7,
-                                listOf("2-4-1" to false, "2-4-2" to false, "2-4-3" to false)
-                            )
+                            Pair("2학년 1학기" to 4, emptyList()),
+                            Pair("2학년 하계 방학" to 5, emptyList()),
+                            Pair("2학년 2학기" to 6, emptyList()),
+                            Pair("2학년 동계 방학" to 7, emptyList())
                         )
                     ),
                     Pair(
                         "3",
                         listOf(
-                            Pair(
-                                "3학년 1학기" to 8,
-                                listOf("3-1-1" to false, "3-1-2" to false, "3-1-3" to false)
-                            ),
-                            Pair(
-                                "3학년 하계 방학" to 9,
-                                listOf("3-2-1" to false, "3-2-2" to false, "3-2-3" to false)
-                            ),
-                            Pair(
-                                "3학년 2학기" to 10,
-                                listOf("3-3-1" to false, "3-3-2" to false, "3-3-3" to false)
-                            ),
-                            Pair(
-                                "3학년 동계 방학" to 11,
-                                listOf("3-4-1" to false, "3-4-2" to false, "3-4-3" to false)
-                            )
+                            Pair("3학년 1학기" to 8, emptyList()),
+                            Pair("3학년 하계 방학" to 9, listOf("공모전" to false, "전공연수" to false)),
+                            Pair("3학년 2학기" to 10, emptyList()),
+                            Pair("3학년 동계 방학" to 11, emptyList())
                         )
                     ),
                     Pair(
                         "4",
                         listOf(
-                            Pair(
-                                "4학년 1학기" to 12,
-                                listOf("4-1-1" to false, "4-1-2" to false, "4-1-3" to false)
-                            ),
-                            Pair(
-                                "4학년 하계 방학" to 13,
-                                listOf("4-2-1" to false, "4-2-2" to false, "4-2-3" to false)
-                            ),
-                            Pair(
-                                "4학년 2학기" to 14,
-                                listOf("4-3-1" to false, "4-3-2" to false, "4-3-3" to false)
-                            ),
-                            Pair(
-                                "4학년 동계 방학" to 15,
-                                listOf("4-4-1" to false, "4-4-2" to false, "4-4-3" to false)
-                            )
+                            Pair("4학년 1학기" to 12, emptyList()),
+                            Pair("4학년 하계 방학" to 13, emptyList()),
+                            Pair("4학년 2학기" to 14, emptyList()),
+                            Pair("4학년 동계 방학" to 15, emptyList())
                         )
                     )
                 )
