@@ -20,8 +20,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -30,7 +28,6 @@ import androidx.compose.ui.unit.sp
 import org.collcal.collcal.navigation.Navigator
 import org.collcal.collcal.platform.PlatformType
 import org.collcal.collcal.platform.getPlatformType
-import org.collcal.collcal.presentation.college.CollegeViewModel
 import org.collcal.collcal.presentation.component.taskItem
 import org.collcal.collcal.presentation.ui.theme.Strings
 import org.collcal.collcal.presentation.ui.theme.gray10
@@ -42,12 +39,14 @@ import org.collcal.collcal.presentation.ui.theme.transparent
 @Composable
 fun TasksScreen(
     navigator: Navigator,
+    colleges: List<Pair<String, List<Pair<Pair<String, Int>, List<Pair<String, Boolean>>>>>>,
+    todos: List<Pair<String, Boolean>>,
     innerPadding: PaddingValues = PaddingValues(0.dp),
-    viewModel: CollegeViewModel = CollegeViewModel(),
+    onClick: (Pair<String, Boolean>) -> Unit,
 ) {
-    val todos by viewModel.todos.collectAsState()
-    val colleges by viewModel.colleges.collectAsState()
-    val tasks = colleges.flatMap { it.second.flatMap { list -> list.second } }
+    val tasks = colleges.flatMap { it.second.flatMap { task -> task.second } }
+    val scheduledTasks = tasks.filter { !it.second }
+    val completedTasks = tasks.filter { it.second }
 
     val modifier = when (getPlatformType()) {
         PlatformType.WEB -> Modifier.fillMaxWidth()
@@ -88,26 +87,25 @@ fun TasksScreen(
 
             listOf(
                 "To Do" to todos,
-                "Scheduled" to tasks.filter { !it.second },
-                "Completed" to tasks.filter { it.second }
-            ).forEach {
+                "Scheduled" to scheduledTasks,
+                "Completed" to completedTasks
+            ).forEach { task ->
                 Spacer(Modifier.height(10.dp))
                 Text(
-                    text = it.first,
+                    text = task.first,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.W700
                 )
                 Spacer(Modifier.height(5.dp))
-                if (it.second.isNotEmpty())
+                if (task.second.isNotEmpty())
                     FlowRow(
                         modifier = Modifier
                             .weight(1f)
                             .padding(horizontal = 10.dp)
                             .verticalScroll(rememberScrollState()),
-                        verticalArrangement = Arrangement.spacedBy(5.dp),
                         horizontalArrangement = Arrangement.spacedBy(5.dp)
                     ) {
-                        it.second.forEach { task -> taskItem(task) }
+                        task.second.forEach { taskItem(it) { onClick(it) } }
                     }
             }
         }

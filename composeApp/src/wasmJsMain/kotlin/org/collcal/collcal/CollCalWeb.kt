@@ -21,6 +21,7 @@ import org.collcal.collcal.component.getCurrentDateFormatted
 import org.collcal.collcal.navigation.Screen
 import org.collcal.collcal.navigation.WebNavigator
 import org.collcal.collcal.presentation.college.CollegeScreen
+import org.collcal.collcal.presentation.college.CollegeViewModel
 import org.collcal.collcal.presentation.onboarding.OnBoardingScreen
 import org.collcal.collcal.presentation.sign.SignInScreen
 import org.collcal.collcal.presentation.sign.SignUpScreen
@@ -30,6 +31,7 @@ import org.collcal.collcal.presentation.ui.theme.gray1
 @Composable
 fun CollCalWeb() {
     val navigator = remember { WebNavigator() }
+    val viewModel = remember { CollegeViewModel() }
     val currentScreen by navigator.currentScreen
 
     DisposableEffect(Unit) {
@@ -67,7 +69,7 @@ fun CollCalWeb() {
             Screen.OnBoarding.route -> OnBoardingScreen(navigator)
             Screen.SignIn.route -> SignInScreen { navigator.replaceTo(Screen.College) }
             Screen.SignUp.route -> SignUpScreen(navigator)
-            Screen.College.route -> CollegeScreen(navigator)
+            Screen.College.route -> CollegeScreen(navigator, viewModel)
         }
     }
 }

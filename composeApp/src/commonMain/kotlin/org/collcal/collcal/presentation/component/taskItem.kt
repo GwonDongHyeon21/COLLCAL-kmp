@@ -16,9 +16,12 @@ import org.collcal.collcal.presentation.ui.theme.gray4
 import org.collcal.collcal.presentation.ui.theme.gray5
 
 @Composable
-fun taskItem(task: Pair<String, Boolean>) {
+fun taskItem(
+    task: Pair<String, Boolean>,
+    onClick: () -> Unit,
+) {
     Card(
-        modifier = Modifier.border(0.5.dp, gray4, RoundedCornerShape(9.38.dp)),
+        onClick = { onClick() },
         shape = RoundedCornerShape(9.38.dp),
         colors = CardDefaults.cardColors(
             containerColor = if (task.second) gray12 else gray5,
@@ -29,7 +32,7 @@ fun taskItem(task: Pair<String, Boolean>) {
             text = task.first,
             fontSize = 18.75.sp,
             fontWeight = FontWeight.W500,
-            modifier = Modifier.padding(5.dp)
+            modifier = Modifier.border(0.5.dp, gray4, RoundedCornerShape(9.38.dp)).padding(5.dp)
         )
     }
 }

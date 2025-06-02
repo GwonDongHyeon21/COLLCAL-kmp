@@ -156,4 +156,27 @@ class CollegeViewModel : ViewModel() {
             }
         }
     }
+
+    fun changeTaskSemester(task: Pair<String, Boolean>, semesterInt: Int) {
+        viewModelScope.launch {
+            try {
+                val newTask = Pair(task.first, semesterInt < _userInfo.value.semesterInt)
+                _todos.value = _todos.value.filterNot { it.first == newTask.first }
+                _colleges.value = _colleges.value.map { (key, semesters) ->
+                    key to semesters.map { (semesterPair, tasks) ->
+                        val hasTask = tasks.any { it.first == newTask.first }
+                        val isSameSemester = semesterPair.second == semesterInt
+                        semesterPair to when {
+                            hasTask && isSameSemester -> tasks
+                            hasTask -> tasks.filterNot { it.first == newTask.first }
+                            isSameSemester -> tasks + newTask
+                            else -> tasks
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                println(e)
+            }
+        }
+    }
 }

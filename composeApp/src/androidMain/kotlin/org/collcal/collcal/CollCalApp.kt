@@ -15,6 +15,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -23,6 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import org.collcal.collcal.navigation.AndroidNavigator
 import org.collcal.collcal.navigation.Screen
 import org.collcal.collcal.presentation.college.CollegeScreen
+import org.collcal.collcal.presentation.college.CollegeViewModel
 import org.collcal.collcal.presentation.onboarding.OnBoardingScreen
 import org.collcal.collcal.presentation.sign.SignInScreen
 import org.collcal.collcal.presentation.sign.SignUpScreen
@@ -36,8 +38,11 @@ import org.collcal.collcal.presentation.user.UserScreen
 @Composable
 fun CollCalApp() {
     val navigator = remember { AndroidNavigator() }
+    val viewModel = remember { CollegeViewModel() }
     val currentScreen by navigator.currentScreen
     val currentScreenSize by navigator.currentScreenSize
+    val colleges by viewModel.colleges.collectAsState()
+    val todos by viewModel.todos.collectAsState()
 
     val isTopBar = currentScreen == Screen.OnBoarding.route
     val isBottomBar = currentScreen !in listOf(
@@ -96,8 +101,8 @@ fun CollCalApp() {
             Screen.OnBoarding.route -> OnBoardingScreen(navigator)
             Screen.SignIn.route -> SignInScreen(innerPadding) { navigator.resetTo(Screen.College) }
             Screen.SignUp.route -> SignUpScreen(navigator, innerPadding)
-            Screen.College.route -> CollegeScreen(navigator, innerPadding)
-            Screen.Tasks.route -> TasksScreen(navigator, innerPadding)
+            Screen.College.route -> CollegeScreen(navigator, viewModel, innerPadding)
+            Screen.Tasks.route -> TasksScreen(navigator, colleges, todos, innerPadding) {}
             Screen.User.route -> UserScreen(navigator, innerPadding)
         }
     }

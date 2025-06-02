@@ -17,9 +17,12 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -35,14 +38,16 @@ import org.collcal.collcal.presentation.user.UserScreen
 @Composable
 fun CollegeScreen(
     navigator: Navigator,
+    viewModel: CollegeViewModel,
     innerPadding: PaddingValues = PaddingValues(0.dp),
-    viewModel: CollegeViewModel = CollegeViewModel(),
 ) {
     val isLoading by viewModel.isLoading.collectAsState()
     val userInfo by viewModel.userInfo.collectAsState()
     val colleges by viewModel.colleges.collectAsState()
+    val todos by viewModel.todos.collectAsState()
 
-    LaunchedEffect(Unit) { viewModel.getCollegeData() }
+    var selectedSemester by remember { mutableStateOf<Int?>(null) }
+    val isSelected = remember { mutableStateMapOf<Int, Boolean>() }
 
     if (isLoading)
         Box(
@@ -79,7 +84,10 @@ fun CollegeScreen(
                                     CollegeItem(
                                         Modifier.weight(1f),
                                         college.second,
-                                        userInfo.semesterInt
+                                        userInfo.semesterInt,
+                                        isSelected,
+                                        { selectedSemester = if (isSelected[it] == true) it else null },
+                                        { selectedSemester?.let { int -> viewModel.changeTaskSemester(it, int) } }
                                     )
                                 }
                             }
@@ -90,7 +98,9 @@ fun CollegeScreen(
                     Column(modifier = Modifier.padding(20.dp)) {
                         UserScreen(navigator)
                         Spacer(Modifier.height(10.dp))
-                        TasksScreen(navigator)
+                        TasksScreen(navigator, colleges, todos) {
+                            selectedSemester?.let { int -> viewModel.changeTaskSemester(it, int) }
+                        }
                     }
                 }
             }
@@ -118,7 +128,10 @@ fun CollegeScreen(
                             CollegeItem(
                                 Modifier.weight(1f),
                                 colleges[page].second,
-                                userInfo.semesterInt
+                                userInfo.semesterInt,
+                                isSelected,
+                                { selectedSemester = if (isSelected[it] == true) it else null },
+                                { selectedSemester?.let { int -> viewModel.changeTaskSemester(it, int) } }
                             )
                         }
                     }
