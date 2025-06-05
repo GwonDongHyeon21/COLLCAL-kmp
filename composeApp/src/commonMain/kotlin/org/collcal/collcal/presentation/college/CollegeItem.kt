@@ -42,7 +42,7 @@ fun CollegeItem(
     isSelected: SnapshotStateMap<Int, Boolean>,
     onClick: (Int) -> Unit,
     onClickTask: (Pair<String, Boolean>) -> Unit,
-    onClickZoomIn: (Pair<Pair<String, Int>, List<Pair<String, Boolean>>>, Color) -> Unit,
+    onClickZoomIn: (Int, Color) -> Unit,
     sharedTransitionScope: SharedTransitionScope,
     animatedContentScope: AnimatedContentScope,
 ) {
@@ -66,7 +66,10 @@ fun CollegeItem(
                                 isSelected[semesterInt] = !selectedState
                                 onClick(semesterInt)
                             },
-                            onDoubleTap = { onClickZoomIn(college, collegeColor) }
+                            onDoubleTap = {
+                                onClickZoomIn(semesterInt, collegeColor)
+                                isSelected.keys.forEach { isSelected[it] = false }
+                            }
                         )
                     }
                     .sharedElement(
