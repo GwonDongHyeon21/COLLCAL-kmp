@@ -9,6 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.collcal.collcal.presentation.ui.theme.gray12
@@ -32,6 +33,7 @@ fun TaskItem(
             text = task.first,
             fontSize = 18.75.sp,
             fontWeight = FontWeight.W500,
+            textDecoration = TextDecoration.Underline,
             modifier = Modifier.border(0.5.dp, gray4, RoundedCornerShape(9.38.dp)).padding(5.dp)
         )
     }
