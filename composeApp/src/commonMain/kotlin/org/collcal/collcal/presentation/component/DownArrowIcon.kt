@@ -1,4 +1,4 @@
-package org.collcal.collcal.presentation.sign.component
+package org.collcal.collcal.presentation.component
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathFillType

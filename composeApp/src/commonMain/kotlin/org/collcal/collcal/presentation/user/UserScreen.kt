@@ -26,7 +26,7 @@ import org.collcal.collcal.navigation.Navigator
 import org.collcal.collcal.platform.PlatformType
 import org.collcal.collcal.platform.getPlatformType
 import org.collcal.collcal.presentation.college.CollegeViewModel
-import org.collcal.collcal.presentation.sign.component.DownArrowIcon
+import org.collcal.collcal.presentation.component.DownArrowIcon
 import org.collcal.collcal.presentation.ui.theme.Strings
 import org.collcal.collcal.presentation.ui.theme.gray8
 import org.collcal.collcal.presentation.ui.theme.white

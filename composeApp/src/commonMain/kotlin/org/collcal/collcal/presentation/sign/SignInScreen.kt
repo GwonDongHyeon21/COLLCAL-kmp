@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.sp
 import org.collcal.collcal.platform.PlatformType
 import org.collcal.collcal.platform.getPlatformType
 import org.collcal.collcal.presentation.sign.component.CustomOutlinedTextField
+import org.collcal.collcal.presentation.sign.component.CustomPasswordTextField
 import org.collcal.collcal.presentation.ui.theme.Strings
 import org.collcal.collcal.presentation.ui.theme.black
 import org.collcal.collcal.presentation.ui.theme.gray1
@@ -38,6 +39,7 @@ fun SignInScreen(
 ) {
     var idText by remember { mutableStateOf("") }
     var passwordText by remember { mutableStateOf("") }
+    var passwordVisible by remember { mutableStateOf(false) }
 
     val modifier = when (getPlatformType()) {
         PlatformType.WEB -> Modifier.fillMaxWidth(0.4f)
@@ -68,7 +70,12 @@ fun SignInScreen(
 
             Spacer(Modifier.height(10.dp))
             Text(text = Strings.password, fontWeight = FontWeight.W500)
-            CustomOutlinedTextField(passwordText) { passwordText = it }
+            CustomPasswordTextField(
+                passwordText,
+                passwordVisible,
+                { passwordText = it },
+                { passwordVisible = !passwordVisible }
+            )
 
             Spacer(Modifier.height(20.dp))
             Button(
