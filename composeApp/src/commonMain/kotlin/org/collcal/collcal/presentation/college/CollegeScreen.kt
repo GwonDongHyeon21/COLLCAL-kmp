@@ -200,11 +200,11 @@ fun CollegeScreen(
 
                             is Screen.CollegeDetail ->
                                 CollegeDetailScreen(
-                                    innerPadding,
                                     selectedCollegeItem,
                                     selectedCollegeItemColor,
                                     this@SharedTransitionLayout,
-                                    this@AnimatedContent
+                                    this@AnimatedContent,
+                                    innerPadding
                                 )
 
                             else -> {}
