@@ -16,7 +16,7 @@ import org.collcal.collcal.presentation.ui.theme.gray4
 import org.collcal.collcal.presentation.ui.theme.gray5
 
 @Composable
-fun taskItem(
+fun TaskItem(
     task: Pair<String, Boolean>,
     onClick: () -> Unit,
 ) {

@@ -26,7 +26,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.collcal.collcal.presentation.component.taskItem
+import org.collcal.collcal.presentation.component.TaskItem
 import org.collcal.collcal.presentation.ui.theme.black
 import org.collcal.collcal.presentation.ui.theme.blue1
 import org.collcal.collcal.presentation.ui.theme.blue2
@@ -95,7 +95,7 @@ fun CollegeItem(
                         modifier = Modifier.padding(10.dp).verticalScroll(rememberScrollState()),
                         horizontalArrangement = Arrangement.spacedBy(5.dp)
                     ) {
-                        college.second.forEach { taskItem(it) { onClickTask(it) } }
+                        college.second.forEach { TaskItem(it) { onClickTask(it) } }
                     }
                 }
             }
