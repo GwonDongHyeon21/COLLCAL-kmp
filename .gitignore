@@ -190,6 +190,7 @@ fabric.properties
 
 
 # Firebase
+.firebase
 .firebaserc
 firebase.json
 
