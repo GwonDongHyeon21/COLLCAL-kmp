@@ -38,7 +38,7 @@ import org.collcal.collcal.presentation.collegedetail.model.Task
 import org.collcal.collcal.presentation.component.MoreDotsIconButton
 import org.collcal.collcal.presentation.component.UpArrowIcon
 import org.collcal.collcal.presentation.sign.component.CustomDropDown
-import org.collcal.collcal.presentation.sign.component.DownArrowIcon
+import org.collcal.collcal.presentation.component.DownArrowIcon
 import org.collcal.collcal.presentation.ui.theme.Strings
 import org.collcal.collcal.presentation.ui.theme.black
 import org.collcal.collcal.presentation.ui.theme.gray14
