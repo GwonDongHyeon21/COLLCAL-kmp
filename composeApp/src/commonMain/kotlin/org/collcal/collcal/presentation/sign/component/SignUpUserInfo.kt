@@ -40,6 +40,7 @@ fun SignUpUserInfo(
 
     var id by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var passwordVisible by remember { mutableStateOf(false) }
     var phoneNumber by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var signInCheck by remember { mutableStateOf("") }
@@ -90,7 +91,12 @@ fun SignUpUserInfo(
 
             Spacer(Modifier.height(10.dp))
             Text(text = Strings.password, fontWeight = FontWeight.W500)
-            CustomOutlinedTextField(password) { password = it }
+            CustomPasswordTextField(
+                password,
+                passwordVisible,
+                { password = it },
+                { passwordVisible = !passwordVisible }
+            )
 
             Spacer(Modifier.height(10.dp))
             Text(text = Strings.phoneNumber, fontWeight = FontWeight.W500)
