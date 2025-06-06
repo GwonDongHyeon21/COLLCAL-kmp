@@ -22,4 +22,12 @@ object Strings {
     const val averageCredit = "평점 평군"
     const val tasks = "Tasks"
     const val add = "Add"
+    const val next = "다음"
+    const val taskContentPlaceholder = "추후 포트폴리오에 활용할 활동 내용을 기입하세요(활동 내용, 기여도, 성장 과정, 성과물 등)"
+    const val save = "저장하기"
+    const val todo = "To Do"
+    const val scheduled = "Scheduled"
+    const val completed = "Completed"
+    const val moveToTodo = "ToDo로 옮기기"
+    const val delete = "삭제하기"
 }

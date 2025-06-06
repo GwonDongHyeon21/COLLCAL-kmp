@@ -86,9 +86,9 @@ fun TasksScreen(
             }
 
             listOf(
-                "To Do" to todos,
-                "Scheduled" to scheduledTasks,
-                "Completed" to completedTasks
+                Strings.todo to todos,
+                Strings.scheduled to scheduledTasks,
+                Strings.completed to completedTasks
             ).forEach { task ->
                 Spacer(Modifier.height(10.dp))
                 Text(
