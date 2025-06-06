@@ -29,6 +29,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import org.collcal.collcal.presentation.collegedetail.model.Task
 import org.collcal.collcal.presentation.component.ArrowBackIcon
 
 @OptIn(ExperimentalSharedTransitionApi::class)
@@ -79,7 +80,7 @@ fun CollegeDetailScreen(
                     verticalArrangement = Arrangement.spacedBy(5.dp)
                 ) {
                     tasks?.let { college ->
-                        items(college.second) { CollegeDetailItem(it.first) }
+                        items(college.second) { CollegeDetailItem(Task("ex) task id", it.first)) }
                     }
                 }
             }
