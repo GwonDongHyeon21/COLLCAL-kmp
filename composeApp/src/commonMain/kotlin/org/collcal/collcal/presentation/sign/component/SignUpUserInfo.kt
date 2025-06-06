@@ -125,7 +125,7 @@ fun SignUpUserInfo(
             shape = RoundedCornerShape(10.dp),
             colors = ButtonDefaults.buttonColors(containerColor = gray1)
         ) {
-            Text(text = "다음", color = black)
+            Text(text = Strings.next, color = black)
         }
 
         Spacer(Modifier.height(10.dp))

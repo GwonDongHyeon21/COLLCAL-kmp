@@ -59,9 +59,6 @@ fun CollegeScreen(
     var screen by remember { mutableStateOf<Screen>(Screen.College) }
     val isSelected = remember { mutableStateMapOf<Int, Boolean>() }
     var selectedSemester by remember { mutableStateOf<Int?>(null) }
-    var selectedCollegeItem by remember {
-        mutableStateOf<Pair<Pair<String, Int>, List<Pair<String, Boolean>>>?>(null)
-    }
     var selectedCollegeItemColor by remember { mutableStateOf(transparent) }
 
     if (isLoading)
@@ -108,8 +105,8 @@ fun CollegeScreen(
                                                         // @formatter:off
                                                         { selectedSemester = if (isSelected[it] == true) it else null },
                                                         { selectedSemester?.let { int -> viewModel.changeTaskSemester(it, int) } },
-                                                        { college, color ->
-                                                            selectedCollegeItem = college
+                                                        { semesterInt, color ->
+                                                            selectedSemester = semesterInt
                                                             selectedCollegeItemColor = color
                                                             screen = Screen.CollegeDetail
                                                         },
@@ -123,11 +120,14 @@ fun CollegeScreen(
 
                                     is Screen.CollegeDetail ->
                                         CollegeDetailScreen(
-                                            selectedCollegeItem,
+                                            colleges,
+                                            selectedSemester,
                                             selectedCollegeItemColor,
                                             this@SharedTransitionLayout,
                                             this@AnimatedContent
-                                        )
+                                        ) {
+                                            screen = Screen.College
+                                        }
 
                                     else -> {}
                                 }
@@ -149,6 +149,7 @@ fun CollegeScreen(
             }
 
             PlatformType.ANDROID -> {
+                val pagerState = rememberPagerState(pageCount = { colleges.size })
                 SharedTransitionLayout {
                     AnimatedContent(
                         targetState = screen,
@@ -157,7 +158,6 @@ fun CollegeScreen(
                     ) { currentScreen ->
                         when (currentScreen) {
                             is Screen.College -> {
-                                val pagerState = rememberPagerState(pageCount = { colleges.size })
                                 HorizontalPager(state = pagerState) { page ->
                                     Column(
                                         modifier = Modifier
@@ -184,8 +184,8 @@ fun CollegeScreen(
                                                 // @formatter:off
                                             { selectedSemester = if (isSelected[it] == true) it else null },
                                             { selectedSemester?.let { int -> viewModel.changeTaskSemester(it, int) } },
-                                            { college, color ->
-                                                selectedCollegeItem = college
+                                            { semesterInt, color ->
+                                                selectedSemester = semesterInt
                                                 selectedCollegeItemColor = color
                                                 screen = Screen.CollegeDetail
                                             },
@@ -200,12 +200,15 @@ fun CollegeScreen(
 
                             is Screen.CollegeDetail ->
                                 CollegeDetailScreen(
-                                    innerPadding,
-                                    selectedCollegeItem,
+                                    colleges,
+                                    selectedSemester,
                                     selectedCollegeItemColor,
                                     this@SharedTransitionLayout,
-                                    this@AnimatedContent
-                                )
+                                    this@AnimatedContent,
+                                    innerPadding
+                                ) {
+                                    screen = Screen.College
+                                }
 
                             else -> {}
                         }
