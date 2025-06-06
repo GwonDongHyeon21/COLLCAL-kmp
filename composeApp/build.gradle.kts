@@ -15,7 +15,7 @@ kotlin {
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }
-    
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -26,7 +26,7 @@ kotlin {
             isStatic = true
         }
     }
-    
+
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
         moduleName = "composeApp"
@@ -46,9 +46,9 @@ kotlin {
         }
         binaries.executable()
     }
-    
+
     sourceSets {
-        
+
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
@@ -103,6 +103,11 @@ dependencies {
     debugImplementation(compose.uiTooling)
 }
 
+tasks.register<Copy>("copyFontResources") {
+    from("$buildDir/processedResources/wasmJs/main/composeResources/collcal.composeapp.generated.resources/font")
+    into("$buildDir/kotlin-webpack/wasmJs/productionExecutable/composeResources/collcal.composeapp.generated.resources/font")
+}
+
 tasks.register<Copy>("copyWebResources") {
     from("$buildDir/processedResources/wasmJs/main") {
         include("index.html", "styles.css")
@@ -111,5 +116,5 @@ tasks.register<Copy>("copyWebResources") {
 }
 
 tasks.named("wasmJsBrowserProductionWebpack") {
-    finalizedBy("copyWebResources")
+    finalizedBy("copyFontResources", "copyWebResources")
 }

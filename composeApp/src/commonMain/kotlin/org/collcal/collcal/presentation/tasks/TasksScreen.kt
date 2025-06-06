@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.sp
 import org.collcal.collcal.navigation.Navigator
 import org.collcal.collcal.platform.PlatformType
 import org.collcal.collcal.platform.getPlatformType
-import org.collcal.collcal.presentation.component.taskItem
+import org.collcal.collcal.presentation.component.TaskItem
 import org.collcal.collcal.presentation.ui.theme.Strings
 import org.collcal.collcal.presentation.ui.theme.gray10
 import org.collcal.collcal.presentation.ui.theme.gray11
@@ -86,9 +86,9 @@ fun TasksScreen(
             }
 
             listOf(
-                "To Do" to todos,
-                "Scheduled" to scheduledTasks,
-                "Completed" to completedTasks
+                Strings.todo to todos,
+                Strings.scheduled to scheduledTasks,
+                Strings.completed to completedTasks
             ).forEach { task ->
                 Spacer(Modifier.height(10.dp))
                 Text(
@@ -105,7 +105,7 @@ fun TasksScreen(
                             .verticalScroll(rememberScrollState()),
                         horizontalArrangement = Arrangement.spacedBy(5.dp)
                     ) {
-                        task.second.forEach { taskItem(it) { onClick(it) } }
+                        task.second.forEach { TaskItem(it) { onClick(it) } }
                     }
             }
         }
