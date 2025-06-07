@@ -30,4 +30,6 @@ object Strings {
     const val completed = "Completed"
     const val moveToTodo = "ToDo로 옮기기"
     const val delete = "삭제하기"
+    const val taskTilte = "활동명 입력"
+    const val taskInfo = "(추가 정보 입력)"
 }

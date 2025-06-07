@@ -138,4 +138,17 @@ class CollegeViewModel : ViewModel() {
             }
         }
     }
+
+    fun addTask(title: String, info: String) {
+        viewModelScope.launch {
+            try {
+                val response = true
+                if (response) _todos.value += Pair(
+                    Task(_todos.value.size.toString(), title, info), false
+                )
+            } catch (e: Exception) {
+                println(e)
+            }
+        }
+    }
 }
