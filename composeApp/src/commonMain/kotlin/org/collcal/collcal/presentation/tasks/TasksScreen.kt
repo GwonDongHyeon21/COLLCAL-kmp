@@ -29,6 +29,7 @@ import org.collcal.collcal.navigation.Navigator
 import org.collcal.collcal.platform.PlatformType
 import org.collcal.collcal.platform.getPlatformType
 import org.collcal.collcal.presentation.college.CollegeViewModel
+import org.collcal.collcal.presentation.collegedetail.model.Task
 import org.collcal.collcal.presentation.component.TaskItem
 import org.collcal.collcal.presentation.ui.theme.Strings
 import org.collcal.collcal.presentation.ui.theme.gray10
@@ -42,7 +43,7 @@ fun TasksScreen(
     navigator: Navigator,
     viewModel: CollegeViewModel,
     innerPadding: PaddingValues = PaddingValues(0.dp),
-    onClick: (Pair<String, Boolean>) -> Unit,
+    onClick: (Task) -> Unit,
 ) {
     val tasks = colleges.flatMap { it.second.flatMap { task -> task.second } }
     val scheduledTasks = tasks.filter { !it.second }

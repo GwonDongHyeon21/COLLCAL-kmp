@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import org.collcal.collcal.presentation.college.model.User
+import org.collcal.collcal.presentation.collegedetail.model.Task
 
 class CollegeViewModel : ViewModel() {
     private val _isLoading = MutableStateFlow(true)
@@ -15,12 +16,13 @@ class CollegeViewModel : ViewModel() {
     val userInfo: StateFlow<User> = _userInfo
 
     private val _colleges =
-        MutableStateFlow(emptyList<Pair<String, List<Pair<Pair<String, Int>, List<Pair<String, Boolean>>>>>>())
-    val colleges: StateFlow<List<Pair<String, List<Pair<Pair<String, Int>, List<Pair<String, Boolean>>>>>>> =
+        MutableStateFlow(emptyList<Pair<String, List<Pair<Pair<String, Int>, List<Pair<Task, Boolean>>>>>>())
+    val colleges: StateFlow<List<Pair<String, List<Pair<Pair<String, Int>, List<Pair<Task, Boolean>>>>>>> =
         _colleges
 
-    private val _todos = MutableStateFlow(emptyList<Pair<String, Boolean>>())
-    val todos: StateFlow<List<Pair<String, Boolean>>> = _todos
+    private val _todos =
+        MutableStateFlow(emptyList<Pair<Task, Boolean>>())
+    val todos: StateFlow<List<Pair<Task, Boolean>>> = _todos
 
     init {
         getCollegeData()
@@ -36,7 +38,13 @@ class CollegeViewModel : ViewModel() {
                     Pair(
                         "1",
                         listOf(
-                            Pair("1학년 1학기" to 0, listOf("경진대회" to true, "한국어 도우미" to true)),
+                            Pair(
+                                "1학년 1학기" to 0,
+                                listOf(
+                                    Task("0", "경진대회", "데이터톤") to true,
+                                    Task("1", "한국어 도우미", "") to true
+                                )
+                            ),
                             Pair("1학년 하계 방학" to 1, emptyList()),
                             Pair("1학년 2학기" to 2, emptyList()),
                             Pair("1학년 동계 방학" to 3, emptyList())
@@ -55,7 +63,12 @@ class CollegeViewModel : ViewModel() {
                         "3",
                         listOf(
                             Pair("3학년 1학기" to 8, emptyList()),
-                            Pair("3학년 하계 방학" to 9, listOf("공모전" to false, "전공연수" to false)),
+                            Pair(
+                                "3학년 하계 방학" to 9,
+                                listOf(
+                                    Task("3", "전공연수", "하계 독일") to false
+                                )
+                            ),
                             Pair("3학년 2학기" to 10, emptyList()),
                             Pair("3학년 동계 방학" to 11, emptyList())
                         )
@@ -92,25 +105,29 @@ class CollegeViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 _todos.value =
-                    listOf("ex) 1" to false, "ex) 2" to false, "ex) 3" to false, "ex) 4" to false)
+                    listOf(
+                        Pair(Task("0", "학부연구생", ""), false),
+                        Pair(Task("1", "현장실습", "삼성 SEMES"), false),
+                        Pair(Task("2", "인턴", "현대 SEMES"), false)
+                    )
             } catch (e: Exception) {
                 println(e)
             }
         }
     }
 
-    fun changeTaskSemester(task: Pair<String, Boolean>, semesterInt: Int) {
+    fun changeTaskSemester(task: Task, semesterInt: Int) {
         viewModelScope.launch {
             try {
-                val newTask = Pair(task.first, semesterInt < _userInfo.value.semesterInt)
-                _todos.value = _todos.value.filterNot { it.first == newTask.first }
+                val newTask = Pair(task, semesterInt < _userInfo.value.semesterInt)
+                _todos.value = _todos.value.filterNot { it.first.content == newTask.first.content }
                 _colleges.value = _colleges.value.map { (key, semesters) ->
                     key to semesters.map { (semesterPair, tasks) ->
-                        val hasTask = tasks.any { it.first == newTask.first }
+                        val hasTask = tasks.any { it.first.content == newTask.first.content }
                         val isSameSemester = semesterPair.second == semesterInt
                         semesterPair to when {
                             hasTask && isSameSemester -> tasks
-                            hasTask -> tasks.filterNot { it.first == newTask.first }
+                            hasTask -> tasks.filterNot { it.first.content == newTask.first.content }
                             isSameSemester -> tasks + newTask
                             else -> tasks
                         }

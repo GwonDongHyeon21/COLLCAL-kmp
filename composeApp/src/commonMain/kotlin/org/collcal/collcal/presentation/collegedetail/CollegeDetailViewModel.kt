@@ -11,7 +11,7 @@ class CollegeDetailViewModel : ViewModel() {
             try {
                 // 예시
                 val response = taskId
-                response?.let { onResult(it) }
+                response?.let { onResult("") }
             } catch (e: Exception) {
                 println(e)
             }

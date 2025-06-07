@@ -26,6 +26,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import org.collcal.collcal.presentation.collegedetail.model.Task
 import org.collcal.collcal.presentation.component.TaskItem
 import org.collcal.collcal.presentation.ui.theme.black
 import org.collcal.collcal.presentation.ui.theme.blue1
@@ -37,11 +38,11 @@ import org.collcal.collcal.presentation.ui.theme.gray3
 @Composable
 fun CollegeItem(
     modifier: Modifier,
-    collegeItem: List<Pair<Pair<String, Int>, List<Pair<String, Boolean>>>>,
+    collegeItem: List<Pair<Pair<String, Int>, List<Pair<Task, Boolean>>>>,
     userSemesterInt: Int,
     isSelected: SnapshotStateMap<Int, Boolean>,
     onClick: (Int) -> Unit,
-    onClickTask: (Pair<String, Boolean>) -> Unit,
+    onClickTask: (Task) -> Unit,
     onClickZoomIn: (Int, Color) -> Unit,
     sharedTransitionScope: SharedTransitionScope,
     animatedContentScope: AnimatedContentScope,
@@ -95,7 +96,7 @@ fun CollegeItem(
                         modifier = Modifier.padding(10.dp).verticalScroll(rememberScrollState()),
                         horizontalArrangement = Arrangement.spacedBy(5.dp)
                     ) {
-                        college.second.forEach { TaskItem(it) { onClickTask(it) } }
+                        college.second.forEach { TaskItem(it) { onClickTask(it.first) } }
                     }
                 }
             }
