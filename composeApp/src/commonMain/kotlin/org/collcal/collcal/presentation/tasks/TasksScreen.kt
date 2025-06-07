@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.sp
 import org.collcal.collcal.navigation.Navigator
 import org.collcal.collcal.platform.PlatformType
 import org.collcal.collcal.platform.getPlatformType
+import org.collcal.collcal.presentation.college.CollegeViewModel
 import org.collcal.collcal.presentation.component.TaskItem
 import org.collcal.collcal.presentation.ui.theme.Strings
 import org.collcal.collcal.presentation.ui.theme.gray10
@@ -39,8 +40,7 @@ import org.collcal.collcal.presentation.ui.theme.transparent
 @Composable
 fun TasksScreen(
     navigator: Navigator,
-    colleges: List<Pair<String, List<Pair<Pair<String, Int>, List<Pair<String, Boolean>>>>>>,
-    todos: List<Pair<String, Boolean>>,
+    viewModel: CollegeViewModel,
     innerPadding: PaddingValues = PaddingValues(0.dp),
     onClick: (Pair<String, Boolean>) -> Unit,
 ) {

@@ -102,7 +102,7 @@ fun CollCalApp() {
             Screen.SignIn.route -> SignInScreen(innerPadding) { navigator.resetTo(Screen.College) }
             Screen.SignUp.route -> SignUpScreen(navigator, innerPadding)
             Screen.College.route -> CollegeScreen(navigator, viewModel, innerPadding)
-            Screen.Tasks.route -> TasksScreen(navigator, colleges, todos, innerPadding) {}
+            Screen.Tasks.route -> TasksScreen(navigator, viewModel, innerPadding) {}
             Screen.User.route -> UserScreen(navigator, innerPadding)
         }
     }
