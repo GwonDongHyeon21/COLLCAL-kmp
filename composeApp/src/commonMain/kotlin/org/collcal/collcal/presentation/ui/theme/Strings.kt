@@ -32,4 +32,5 @@ object Strings {
     const val delete = "삭제하기"
     const val taskTilte = "활동명 입력"
     const val taskInfo = "(추가 정보 입력)"
+    const val modify = "수정하기"
 }
