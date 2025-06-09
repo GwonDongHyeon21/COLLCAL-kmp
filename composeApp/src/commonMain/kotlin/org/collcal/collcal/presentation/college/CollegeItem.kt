@@ -38,6 +38,7 @@ import org.collcal.collcal.presentation.ui.theme.gray3
 @Composable
 fun CollegeItem(
     modifier: Modifier,
+    viewModel: CollegeViewModel,
     collegeItem: List<Pair<Pair<String, Int>, List<Pair<Task, Boolean>>>>,
     userSemesterInt: Int,
     isSelected: SnapshotStateMap<Int, Boolean>,
@@ -94,9 +95,10 @@ fun CollegeItem(
                     Spacer(Modifier.height(10.dp))
                     FlowRow(
                         modifier = Modifier.padding(10.dp).verticalScroll(rememberScrollState()),
+                        verticalArrangement = Arrangement.spacedBy(5.dp),
                         horizontalArrangement = Arrangement.spacedBy(5.dp)
                     ) {
-                        college.second.forEach { TaskItem(it) { onClickTask(it.first) } }
+                        college.second.forEach { TaskItem(it, viewModel) { onClickTask(it.first) } }
                     }
                 }
             }

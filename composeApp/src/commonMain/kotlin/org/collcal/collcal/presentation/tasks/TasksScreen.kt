@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -130,7 +131,7 @@ fun TasksScreen(
                         verticalArrangement = Arrangement.spacedBy(5.dp),
                         horizontalArrangement = Arrangement.spacedBy(5.dp)
                     ) {
-                        todos.forEach { TaskItem(it) { onClick(it.first) } }
+                        todos.forEach { TaskItem(it, viewModel) { onClick(it.first) } }
                     }
             }
 
@@ -151,9 +152,10 @@ fun TasksScreen(
                             .weight(1f)
                             .padding(horizontal = 10.dp)
                             .verticalScroll(rememberScrollState()),
-                        horizontalArrangement = Arrangement.spacedBy(5.dp)
+                        verticalArrangement = Arrangement.spacedBy(5.dp),
+                        horizontalArrangement = Arrangement.spacedBy(5.dp),
                     ) {
-                        task.second.forEach { TaskItem(it) { onClick(it.first) } }
+                        task.second.forEach { TaskItem(it, viewModel) { onClick(it.first) } }
                     }
             }
         }

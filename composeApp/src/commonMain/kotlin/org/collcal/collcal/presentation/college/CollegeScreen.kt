@@ -98,6 +98,7 @@ fun CollegeScreen(
                                                 ) {
                                                     CollegeItem(
                                                         Modifier.weight(1f),
+                                                        viewModel,
                                                         college.second,
                                                         userInfo.semesterInt,
                                                         isSelected,
@@ -177,6 +178,7 @@ fun CollegeScreen(
                                         ) {
                                             CollegeItem(
                                                 Modifier.weight(1f),
+                                                viewModel,
                                                 colleges[page].second,
                                                 userInfo.semesterInt,
                                                 isSelected,
