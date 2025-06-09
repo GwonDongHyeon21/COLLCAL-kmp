@@ -15,7 +15,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -41,8 +40,6 @@ fun CollCalApp() {
     val viewModel = remember { CollegeViewModel() }
     val currentScreen by navigator.currentScreen
     val currentScreenSize by navigator.currentScreenSize
-    val colleges by viewModel.colleges.collectAsState()
-    val todos by viewModel.todos.collectAsState()
 
     val isTopBar = currentScreen == Screen.OnBoarding.route
     val isBottomBar = currentScreen !in listOf(
