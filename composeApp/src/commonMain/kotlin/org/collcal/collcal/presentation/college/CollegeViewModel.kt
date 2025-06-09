@@ -30,7 +30,7 @@ class CollegeViewModel : ViewModel() {
         getTodos()
     }
 
-    fun getCollegeData() {
+    private fun getCollegeData() {
         viewModelScope.launch {
             _isLoading.value = true
             try {
@@ -146,6 +146,46 @@ class CollegeViewModel : ViewModel() {
                 if (response) _todos.value += Pair(
                     Task(_todos.value.size.toString(), title, info), false
                 )
+            } catch (e: Exception) {
+                println(e)
+            }
+        }
+    }
+
+    fun modifyTask(taskId: String, title: String, info: String) {
+        viewModelScope.launch {
+            try {
+                _colleges.value = _colleges.value.map { college ->
+                    college.copy(second = college.second.map { semester ->
+                        semester.copy(second = semester.second.map { taskPair ->
+                            val task = taskPair.first
+                            val updatedTaskList =
+                                if (task.id == taskId) task.copy(content = title, info = info)
+                                else task
+                            taskPair.copy(first = updatedTaskList)
+                        })
+                    })
+                }
+            } catch (e: Exception) {
+                println(e)
+            }
+        }
+    }
+
+    fun moveToTodoTask(task: Task) {
+        viewModelScope.launch {
+            try {
+
+            } catch (e: Exception) {
+                println(e)
+            }
+        }
+    }
+
+    fun deleteTask(taskId: String) {
+        viewModelScope.launch {
+            try {
+
             } catch (e: Exception) {
                 println(e)
             }
