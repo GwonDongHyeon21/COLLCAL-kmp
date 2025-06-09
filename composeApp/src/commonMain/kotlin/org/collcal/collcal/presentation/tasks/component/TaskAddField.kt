@@ -6,7 +6,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Card
@@ -39,9 +41,7 @@ fun TaskAddField(
     onClick: () -> Unit,
 ) {
     Card(
-        modifier = Modifier
-            .padding(horizontal = 10.dp)
-            .border(0.5.dp, gray4, RoundedCornerShape(9.38.dp)),
+        modifier = Modifier.fillMaxWidth().border(0.5.dp, gray4, RoundedCornerShape(9.38.dp)),
         shape = RoundedCornerShape(9.38.dp),
         colors = CardDefaults.cardColors(
             containerColor = gray5,
@@ -49,7 +49,7 @@ fun TaskAddField(
         )
     ) {
         Row(
-            modifier = Modifier.padding(vertical = 5.dp, horizontal = 8.dp),
+            modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(5.dp)
         ) {
@@ -57,7 +57,7 @@ fun TaskAddField(
                 value = taskTitle,
                 onValueChange = { onTaskTitleChanged(it) },
                 textStyle = TextStyle(fontSize = 12.sp),
-                modifier = Modifier.border(0.5.dp, black).background(white),
+                modifier = Modifier.weight(1f).border(0.5.dp, black).background(white),
                 decorationBox = {
                     Box(
                         modifier = Modifier.padding(5.dp),
@@ -73,13 +73,14 @@ fun TaskAddField(
                             )
                         it()
                     }
-                }
+                },
+                maxLines = 1
             )
             BasicTextField(
                 value = taskInfo,
                 onValueChange = { onTaskInfoChanged(it) },
                 textStyle = TextStyle(fontSize = 12.sp),
-                modifier = Modifier.border(0.5.dp, black).background(white),
+                modifier = Modifier.weight(1f).border(0.5.dp, black).background(white),
                 decorationBox = {
                     Box(
                         modifier = Modifier.padding(5.dp),
@@ -94,7 +95,8 @@ fun TaskAddField(
                             )
                         it()
                     }
-                }
+                },
+                maxLines = 1
             )
 
             Icon(
@@ -102,6 +104,7 @@ fun TaskAddField(
                 contentDescription = "VCheckIcon",
                 tint = white,
                 modifier = Modifier
+                    .size(24.dp)
                     .clickable(
                         onClick = { if (taskTitle.isNotEmpty()) onClick() },
                         interactionSource = null,

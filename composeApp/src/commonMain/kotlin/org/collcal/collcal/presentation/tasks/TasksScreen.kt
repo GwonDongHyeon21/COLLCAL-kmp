@@ -106,23 +106,28 @@ fun TasksScreen(
             Spacer(Modifier.height(5.dp))
             Column(modifier = Modifier.weight(1f)) {
                 if (isAdd) {
-                    TaskAddField(
-                        taskTitle = taskTitle,
-                        taskInfo = taskInfo,
-                        onTaskTitleChanged = { taskTitle = it },
-                        onTaskInfoChanged = { taskInfo = it }
-                    ) {
-                        viewModel.addTask(taskTitle, taskInfo)
-                        isAdd = !isAdd
-                        taskTitle = ""
-                        taskInfo = ""
+                    Row {
+                        Spacer(Modifier.width(10.dp))
+                        TaskAddField(
+                            taskTitle = taskTitle,
+                            taskInfo = taskInfo,
+                            onTaskTitleChanged = { taskTitle = it },
+                            onTaskInfoChanged = { taskInfo = it }
+                        ) {
+                            viewModel.addTask(taskTitle, taskInfo)
+                            isAdd = !isAdd
+                            taskTitle = ""
+                            taskInfo = ""
+                        }
                     }
+                    Spacer(Modifier.height(5.dp))
                 }
                 if (todos.isNotEmpty())
                     FlowRow(
                         modifier = Modifier
                             .padding(horizontal = 10.dp)
                             .verticalScroll(rememberScrollState()),
+                        verticalArrangement = Arrangement.spacedBy(5.dp),
                         horizontalArrangement = Arrangement.spacedBy(5.dp)
                     ) {
                         todos.forEach { TaskItem(it) { onClick(it.first) } }
