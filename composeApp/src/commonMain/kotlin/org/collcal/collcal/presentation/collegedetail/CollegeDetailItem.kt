@@ -5,6 +5,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -35,13 +35,12 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.collcal.collcal.presentation.collegedetail.model.Task
-import org.collcal.collcal.presentation.component.MoreDotsIconButton
-import org.collcal.collcal.presentation.component.UpArrowIcon
-import org.collcal.collcal.presentation.sign.component.CustomDropDown
 import org.collcal.collcal.presentation.component.DownArrowIcon
+import org.collcal.collcal.presentation.component.UpArrowIcon
 import org.collcal.collcal.presentation.ui.theme.Strings
 import org.collcal.collcal.presentation.ui.theme.black
 import org.collcal.collcal.presentation.ui.theme.gray14
+import org.collcal.collcal.presentation.ui.theme.gray17
 import org.collcal.collcal.presentation.ui.theme.gray2
 import org.collcal.collcal.presentation.ui.theme.gray4
 import org.collcal.collcal.presentation.ui.theme.purple1
@@ -52,7 +51,6 @@ fun CollegeDetailItem(
     task: Task,
     viewModel: CollegeDetailViewModel = CollegeDetailViewModel(),
 ) {
-    var moreActionExpanded by remember { mutableStateOf(false) }
     var taskContentExpanded by remember { mutableStateOf(false) }
     var taskContent by remember { mutableStateOf("") }
 
@@ -78,33 +76,25 @@ fun CollegeDetailItem(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Text(
-                    text = task.content,
-                    fontSize = 20.06.sp,
-                    fontWeight = FontWeight.W500,
-                    textDecoration = TextDecoration.Underline
-                )
-
-                Spacer(Modifier.weight(1f))
-                Column {
-                    Spacer(Modifier.height(10.dp))
-                    MoreDotsIconButton { moreActionExpanded = !moreActionExpanded }
-
-                    Spacer(Modifier.height(10.dp))
-                    CustomDropDown(
-                        options = listOf(Strings.moveToTodo, Strings.delete),
-                        isExpanded = moreActionExpanded,
-                        onClickExpanded = { moreActionExpanded = !moreActionExpanded },
-                        onClickOption = {
-                            when (it) {
-                                Strings.moveToTodo -> viewModel.moveToTodoTask(task.id)
-                                Strings.delete -> viewModel.deleteTask(task.id)
-                            }
-                        }
+                Row(
+                    verticalAlignment = Alignment.Bottom,
+                    horizontalArrangement = Arrangement.spacedBy(5.dp)
+                ) {
+                    Text(
+                        text = task.content,
+                        fontSize = 20.06.sp,
+                        fontWeight = FontWeight.W500,
+                        textDecoration = TextDecoration.Underline,
+                    )
+                    Text(
+                        text = task.info,
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.W500,
+                        color = gray17,
                     )
                 }
 
-                Spacer(Modifier.width(10.dp))
+                Spacer(Modifier.weight(1f))
                 Icon(
                     modifier = Modifier.clickable(
                         onClick = { taskContentExpanded = !taskContentExpanded },
