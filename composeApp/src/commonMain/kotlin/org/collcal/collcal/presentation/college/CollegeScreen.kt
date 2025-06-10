@@ -136,7 +136,7 @@ fun CollegeScreen(
 
                         VerticalDivider(color = gray1)
                         Column(modifier = Modifier.padding(20.dp)) {
-                            UserScreen(navigator)
+                            UserScreen(navigator, viewModel)
                             Spacer(Modifier.height(10.dp))
                             TasksScreen(navigator, viewModel) {
                                 // @formatter:off

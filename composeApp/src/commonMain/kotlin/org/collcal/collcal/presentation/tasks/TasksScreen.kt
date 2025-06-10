@@ -36,7 +36,6 @@ import org.collcal.collcal.platform.PlatformType
 import org.collcal.collcal.platform.getPlatformType
 import org.collcal.collcal.presentation.college.CollegeViewModel
 import org.collcal.collcal.presentation.collegedetail.model.Task
-import org.collcal.collcal.presentation.component.TaskItem
 import org.collcal.collcal.presentation.tasks.component.TaskAddField
 import org.collcal.collcal.presentation.ui.theme.Strings
 import org.collcal.collcal.presentation.ui.theme.gray10
@@ -90,7 +89,7 @@ fun TasksScreen(
                     colors = ButtonDefaults.buttonColors(containerColor = gray8)
                 ) {
                     Text(
-                        text = "+ ${Strings.add}",
+                        text = "+ ${Strings.Add}",
                         fontSize = 15.sp,
                         fontWeight = FontWeight.W500,
                         color = gray11

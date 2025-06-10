@@ -21,7 +21,7 @@ object Strings {
     const val earnedCredits = "취득학점"
     const val averageCredit = "평점 평군"
     const val tasks = "Tasks"
-    const val add = "Add"
+    const val Add = "Add"
     const val next = "다음"
     const val taskContentPlaceholder = "추후 포트폴리오에 활용할 활동 내용을 기입하세요(활동 내용, 기여도, 성장 과정, 성과물 등)"
     const val save = "저장하기"
@@ -33,4 +33,8 @@ object Strings {
     const val taskTilte = "활동명 입력"
     const val taskInfo = "(추가 정보 입력)"
     const val modify = "수정하기"
+    const val add = "추가"
+    const val course = "과목명"
+    const val credit = "학점"
+    const val grade = "성적"
 }

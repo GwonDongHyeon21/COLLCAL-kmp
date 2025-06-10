@@ -18,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
@@ -38,14 +39,15 @@ fun TaskAddField(
     taskInfo: String,
     onTaskTitleChanged: (String) -> Unit,
     onTaskInfoChanged: (String) -> Unit,
+    color: Color = gray5,
     onClick: () -> Unit,
 ) {
     Card(
         modifier = Modifier.fillMaxWidth().border(0.5.dp, gray4, RoundedCornerShape(9.38.dp)),
         shape = RoundedCornerShape(9.38.dp),
         colors = CardDefaults.cardColors(
-            containerColor = gray5,
-            disabledContainerColor = gray5
+            containerColor = color,
+            disabledContainerColor = color
         )
     ) {
         Row(

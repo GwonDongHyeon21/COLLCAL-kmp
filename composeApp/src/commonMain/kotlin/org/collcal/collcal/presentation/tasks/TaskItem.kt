@@ -1,4 +1,4 @@
-package org.collcal.collcal.presentation.component
+package org.collcal.collcal.presentation.tasks
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -24,7 +24,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.collcal.collcal.presentation.college.CollegeViewModel
 import org.collcal.collcal.presentation.collegedetail.model.Task
-import org.collcal.collcal.presentation.sign.component.CustomDropDown
+import org.collcal.collcal.presentation.component.CustomDropDown
+import org.collcal.collcal.presentation.component.MoreDotsIconButton
 import org.collcal.collcal.presentation.tasks.component.TaskAddField
 import org.collcal.collcal.presentation.ui.theme.Strings
 import org.collcal.collcal.presentation.ui.theme.gray12
@@ -48,7 +49,8 @@ fun TaskItem(
             taskTitle = taskTitle,
             taskInfo = taskInfo,
             onTaskTitleChanged = { taskTitle = it },
-            onTaskInfoChanged = { taskInfo = it }
+            onTaskInfoChanged = { taskInfo = it },
+            color = if (task.second) gray12 else gray5
         ) {
             viewModel.modifyTask(task.first.id, taskTitle, taskInfo)
             isModify = !isModify

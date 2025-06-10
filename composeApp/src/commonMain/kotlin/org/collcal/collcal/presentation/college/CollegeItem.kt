@@ -27,7 +27,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.collcal.collcal.presentation.collegedetail.model.Task
-import org.collcal.collcal.presentation.component.TaskItem
+import org.collcal.collcal.presentation.tasks.TaskItem
 import org.collcal.collcal.presentation.ui.theme.black
 import org.collcal.collcal.presentation.ui.theme.blue1
 import org.collcal.collcal.presentation.ui.theme.blue2

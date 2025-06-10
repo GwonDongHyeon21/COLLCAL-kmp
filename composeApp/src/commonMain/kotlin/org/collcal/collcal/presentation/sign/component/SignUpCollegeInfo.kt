@@ -24,6 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import org.collcal.collcal.navigation.Navigator
 import org.collcal.collcal.navigation.Screen
+import org.collcal.collcal.presentation.component.CustomDropDown
 import org.collcal.collcal.presentation.sign.SignViewModel
 import org.collcal.collcal.presentation.sign.model.Info
 import org.collcal.collcal.presentation.ui.theme.Strings
