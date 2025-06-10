@@ -1,0 +1,197 @@
+package org.collcal.collcal.presentation.user
+
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import org.collcal.collcal.presentation.component.DownArrowIcon
+import org.collcal.collcal.presentation.component.PencilIcon
+import org.collcal.collcal.presentation.component.UpArrowIcon
+import org.collcal.collcal.presentation.ui.theme.Strings
+import org.collcal.collcal.presentation.ui.theme.black
+import org.collcal.collcal.presentation.ui.theme.gray1
+import org.collcal.collcal.presentation.ui.theme.gray8
+import org.collcal.collcal.presentation.ui.theme.white
+import org.collcal.collcal.presentation.user.component.CreditAddField
+import org.collcal.collcal.presentation.user.model.Credit
+
+@Composable
+fun UserItem(
+    creditInfo: Triple<String, Triple<Int, Int, MutableState<Boolean>>, List<Credit>>,
+    onAddCredit: (Credit) -> Unit,
+    onModifyCredit: (Credit) -> Unit,
+) {
+    var isExpanded by remember { mutableStateOf(creditInfo.second.third.value) }
+    var isAdd by remember { mutableStateOf(false) }
+    var course by remember { mutableStateOf("") }
+    var credit by remember { mutableStateOf("") }
+    var grade by remember { mutableStateOf("") }
+
+    Card(
+        shape = RoundedCornerShape(4.dp),
+        colors = CardDefaults.cardColors(containerColor = white)
+    ) {
+        Column(
+            modifier = Modifier.padding(vertical = 10.dp, horizontal = 20.dp),
+            verticalArrangement = Arrangement.spacedBy(5.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = creditInfo.first,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.W800
+                )
+                Spacer(Modifier.weight(1f))
+                Text(
+                    text = "${creditInfo.second.first}/${creditInfo.second.second}",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.W300
+                )
+                Spacer(Modifier.weight(1f))
+                Icon(
+                    imageVector = if (isExpanded) UpArrowIcon else DownArrowIcon,
+                    contentDescription = "DownArrowIcon",
+                    modifier = Modifier.clickable(
+                        onClick = {
+                            isExpanded = !isExpanded
+                            isAdd = false
+                            course = ""
+                            credit = ""
+                            grade = ""
+                        },
+                        interactionSource = null,
+                        indication = null
+                    )
+                )
+            }
+
+            if (isExpanded) {
+                Spacer(Modifier.height(5.dp))
+                creditInfo.third.forEach {
+                    var isModify by remember { mutableStateOf(false) }
+                    if (isModify) {
+                        var nowCourse by remember { mutableStateOf(it.course) }
+                        var nowCredit by remember { mutableStateOf(it.credit) }
+                        var nowGrade by remember { mutableStateOf(it.grade) }
+                        CreditAddField(
+                            course = nowCourse,
+                            credit = nowCredit,
+                            grade = nowGrade,
+                            onCourseChanged = { nowCourse = it },
+                            onCreditChanged = { nowCredit = it },
+                            onGradeChanged = { nowGrade = it },
+                            onClick = { newCourse, newCredit, newGrade ->
+                                onModifyCredit(
+                                    Credit(
+                                        it.id,
+                                        newCourse,
+                                        newCredit,
+                                        newGrade
+                                    )
+                                )
+                                isModify = !isModify
+                            }
+                        )
+                    } else
+                        Card(
+                            shape = RoundedCornerShape(5.dp),
+                            colors = CardDefaults.cardColors(containerColor = gray1)
+                        ) {
+                            Box(modifier = Modifier.fillMaxWidth().padding(10.dp)) {
+                                Text(
+                                    text = it.course,
+                                    modifier = Modifier.align(Alignment.CenterStart)
+                                )
+                                Text(text = it.credit, modifier = Modifier.align(Alignment.Center))
+                                Row(
+                                    modifier = Modifier.align(Alignment.CenterEnd),
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                                ) {
+                                    Text(text = it.grade)
+                                    Icon(
+                                        imageVector = PencilIcon,
+                                        contentDescription = "PencilIcon",
+                                        modifier = Modifier.clickable(
+                                            onClick = { isModify = !isModify },
+                                            interactionSource = null,
+                                            indication = null
+                                        )
+                                    )
+                                }
+                            }
+                        }
+                }
+
+                if (isAdd)
+                    CreditAddField(
+                        course = course,
+                        credit = credit,
+                        grade = grade,
+                        onCourseChanged = { course = it },
+                        onCreditChanged = { credit = it },
+                        onGradeChanged = { grade = it },
+                        onClick = { newCourse, newCredit, newGrade ->
+                            onAddCredit(
+                                Credit(
+                                    creditInfo.third.size.toString(),
+                                    newCourse,
+                                    newCredit,
+                                    newGrade
+                                )
+                            )
+                            isAdd = !isAdd
+                            course = ""
+                            credit = ""
+                            grade = ""
+                        }
+                    )
+
+                Card(
+                    shape = RoundedCornerShape(5.dp),
+                    colors = CardDefaults.cardColors(containerColor = gray8)
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable(
+                                onClick = { isAdd = !isAdd },
+                                interactionSource = null,
+                                indication = null
+                            )
+                            .border(1.dp, black, RoundedCornerShape(5.dp))
+                            .padding(10.dp),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Text(text = "+ ${Strings.add}")
+                    }
+                }
+            }
+        }
+    }
+}
