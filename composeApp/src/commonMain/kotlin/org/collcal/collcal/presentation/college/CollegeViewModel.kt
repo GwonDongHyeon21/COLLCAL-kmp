@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import org.collcal.collcal.presentation.college.model.User
 import org.collcal.collcal.presentation.collegedetail.model.Task
+import org.collcal.collcal.presentation.user.model.Credit
 
 class CollegeViewModel : ViewModel() {
     private val _isLoading = MutableStateFlow(true)
@@ -14,6 +15,18 @@ class CollegeViewModel : ViewModel() {
 
     private val _userInfo = MutableStateFlow(User("", "", "", 0, 0, 0.0, 0, 0, 0, 0, 0, 0, 0, 0))
     val userInfo: StateFlow<User> = _userInfo
+
+    private val _aList = MutableStateFlow(emptyList<Credit>())
+    val aList: StateFlow<List<Credit>> = _aList
+
+    private val _bList = MutableStateFlow(emptyList<Credit>())
+    val bList: StateFlow<List<Credit>> = _bList
+
+    private val _cList = MutableStateFlow(emptyList<Credit>())
+    val cList: StateFlow<List<Credit>> = _cList
+
+    private val _dList = MutableStateFlow(emptyList<Credit>())
+    val dList: StateFlow<List<Credit>> = _dList
 
     private val _colleges =
         MutableStateFlow(emptyList<Pair<String, List<Pair<Pair<String, Int>, List<Pair<Task, Boolean>>>>>>())
@@ -95,6 +108,15 @@ class CollegeViewModel : ViewModel() {
             try {
                 _userInfo.value =
                     User("권동현", "컴퓨터공학과", "2학년 1학기", 4, 89, 3.4, 45, 50, 39, 45, 34, 50, 32, 30)
+                _aList.value =
+                    listOf(
+                        Credit("0", "실험통계학", "3", "A0"),
+                        Credit("1", "미분적분학", "3", "A0"),
+                        Credit("2", "일반물리", "3", "A0")
+                    )
+                _bList.value = emptyList()
+                _cList.value = emptyList()
+                _dList.value = emptyList()
             } catch (e: Exception) {
                 println(e)
             }
@@ -186,6 +208,36 @@ class CollegeViewModel : ViewModel() {
         viewModelScope.launch {
             try {
 
+            } catch (e: Exception) {
+                println(e)
+            }
+        }
+    }
+
+    fun addCredit(creditList: Int, credit: Credit) {
+        viewModelScope.launch {
+            try {
+                when (creditList) {
+                    0 -> _aList.value += credit
+                    1 -> _bList.value += credit
+                    2 -> _cList.value += credit
+                    3 -> _dList.value += credit
+                }
+            } catch (e: Exception) {
+                println(e)
+            }
+        }
+    }
+
+    fun modifyCredit(creditList: Int, credit: Credit) {
+        viewModelScope.launch {
+            try {
+                when (creditList) {
+                    0 -> _aList.value = _aList.value.map { if (it.id == credit.id) credit else it }
+                    1 -> _bList.value = _aList.value.map { if (it.id == credit.id) credit else it }
+                    2 -> _cList.value = _aList.value.map { if (it.id == credit.id) credit else it }
+                    3 -> _dList.value = _aList.value.map { if (it.id == credit.id) credit else it }
+                }
             } catch (e: Exception) {
                 println(e)
             }
