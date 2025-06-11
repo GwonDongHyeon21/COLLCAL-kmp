@@ -138,24 +138,25 @@ fun TasksScreen(
                 Strings.scheduled to scheduledTasks,
                 Strings.completed to completedTasks
             ).forEach { task ->
-                Spacer(Modifier.height(10.dp))
-                Text(
-                    text = task.first,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.W700
-                )
-                Spacer(Modifier.height(5.dp))
-                if (task.second.isNotEmpty())
-                    FlowRow(
-                        modifier = Modifier
-                            .weight(1f)
-                            .padding(horizontal = 10.dp)
-                            .verticalScroll(rememberScrollState()),
-                        verticalArrangement = Arrangement.spacedBy(5.dp),
-                        horizontalArrangement = Arrangement.spacedBy(5.dp),
-                    ) {
-                        task.second.forEach { TaskItem(it, viewModel) { onClick(it.first) } }
-                    }
+                Column(modifier = Modifier.weight(1f)) {
+                    Spacer(Modifier.height(10.dp))
+                    Text(
+                        text = task.first,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.W700
+                    )
+                    Spacer(Modifier.height(5.dp))
+                    if (task.second.isNotEmpty())
+                        FlowRow(
+                            modifier = Modifier
+                                .padding(horizontal = 10.dp)
+                                .verticalScroll(rememberScrollState()),
+                            verticalArrangement = Arrangement.spacedBy(5.dp),
+                            horizontalArrangement = Arrangement.spacedBy(5.dp),
+                        ) {
+                            task.second.forEach { TaskItem(it, viewModel) { onClick(it.first) } }
+                        }
+                }
             }
         }
     }

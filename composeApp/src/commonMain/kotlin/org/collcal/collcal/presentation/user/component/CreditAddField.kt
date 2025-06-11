@@ -74,7 +74,7 @@ fun CreditAddField(
         colors = CardDefaults.cardColors(containerColor = gray8)
     ) {
         Row(
-            modifier = Modifier.padding(vertical = 5.dp, horizontal = 8.dp),
+            modifier = Modifier.padding(vertical = 8.dp, horizontal = 10.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(5.dp)
         ) {
