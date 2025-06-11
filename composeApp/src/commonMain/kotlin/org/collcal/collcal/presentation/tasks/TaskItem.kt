@@ -98,7 +98,7 @@ fun TaskItem(
                         when (it) {
                             Strings.moveToTodo -> viewModel.moveToTodoTask(task.first)
                             Strings.modify -> isModify = !isModify
-                            Strings.delete -> viewModel.deleteTask(task.first.id)
+                            Strings.delete -> viewModel.deleteTask(task.first.id) {}
                         }
                     }
                 )

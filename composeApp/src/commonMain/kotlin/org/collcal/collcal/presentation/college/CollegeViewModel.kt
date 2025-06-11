@@ -79,7 +79,7 @@ class CollegeViewModel : ViewModel() {
                             Pair(
                                 "3학년 하계 방학" to 9,
                                 listOf(
-                                    Task("3", "전공연수", "하계 독일") to false
+                                    Task("2", "전공연수", "하계 독일") to false
                                 )
                             ),
                             Pair("3학년 2학기" to 10, emptyList()),
@@ -128,9 +128,9 @@ class CollegeViewModel : ViewModel() {
             try {
                 _todos.value =
                     listOf(
-                        Pair(Task("0", "학부연구생", ""), false),
-                        Pair(Task("1", "현장실습", "삼성 SEMES"), false),
-                        Pair(Task("2", "인턴", "현대 SEMES"), false)
+                        Pair(Task("3", "학부연구생", ""), false),
+                        Pair(Task("4", "현장실습", "삼성 SEMES"), false),
+                        Pair(Task("5", "인턴", "현대 SEMES"), false)
                     )
             } catch (e: Exception) {
                 println(e)
@@ -166,7 +166,7 @@ class CollegeViewModel : ViewModel() {
             try {
                 val response = true
                 if (response) _todos.value += Pair(
-                    Task(_todos.value.size.toString(), title, info), false
+                    Task((_todos.value.size + _colleges.value.size).toString(), title, info), false
                 )
             } catch (e: Exception) {
                 println(e)
@@ -197,20 +197,26 @@ class CollegeViewModel : ViewModel() {
     fun moveToTodoTask(task: Task) {
         viewModelScope.launch {
             try {
-
+                deleteTask(task.id) { _todos.value += Pair(task, false) }
             } catch (e: Exception) {
                 println(e)
             }
         }
     }
 
-    fun deleteTask(taskId: String) {
+    fun deleteTask(taskId: String, onResult: () -> Unit) {
         viewModelScope.launch {
             try {
-
+                _colleges.value = _colleges.value.map { college ->
+                    college.copy(second = college.second.map { semester ->
+                        semester.copy(second = semester.second.filterNot { it.first.id == taskId })
+                    })
+                }
+                _todos.value = _todos.value.filterNot { it.first.id == taskId }
             } catch (e: Exception) {
                 println(e)
             }
+            onResult()
         }
     }
 
@@ -237,6 +243,21 @@ class CollegeViewModel : ViewModel() {
                     1 -> _bList.value = _aList.value.map { if (it.id == credit.id) credit else it }
                     2 -> _cList.value = _aList.value.map { if (it.id == credit.id) credit else it }
                     3 -> _dList.value = _aList.value.map { if (it.id == credit.id) credit else it }
+                }
+            } catch (e: Exception) {
+                println(e)
+            }
+        }
+    }
+
+    fun deleteCredit(creditList: Int, credit: Credit) {
+        viewModelScope.launch {
+            try {
+                when (creditList) {
+                    0 -> _aList.value = _aList.value.filter { it.id != credit.id }
+                    1 -> _bList.value = _aList.value.filter { it.id != credit.id }
+                    2 -> _cList.value = _aList.value.filter { it.id != credit.id }
+                    3 -> _dList.value = _aList.value.filter { it.id != credit.id }
                 }
             } catch (e: Exception) {
                 println(e)
