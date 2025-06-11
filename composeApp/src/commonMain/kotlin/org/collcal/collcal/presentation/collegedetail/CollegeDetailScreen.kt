@@ -35,7 +35,7 @@ import org.collcal.collcal.presentation.component.ArrowBackIcon
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun CollegeDetailScreen(
-    colleges: List<Pair<String, List<Pair<Pair<String, Int>, List<Pair<String, Boolean>>>>>>,
+    colleges: List<Pair<String, List<Pair<Pair<String, Int>, List<Pair<Task, Boolean>>>>>>,
     semesterInt: Int?,
     selectedCollegeItemColor: Color,
     sharedTransitionScope: SharedTransitionScope,
@@ -80,7 +80,7 @@ fun CollegeDetailScreen(
                     verticalArrangement = Arrangement.spacedBy(5.dp)
                 ) {
                     tasks?.let { college ->
-                        items(college.second) { CollegeDetailItem(Task("ex) task id", it.first)) }
+                        items(college.second) { CollegeDetailItem(it.first) }
                     }
                 }
             }

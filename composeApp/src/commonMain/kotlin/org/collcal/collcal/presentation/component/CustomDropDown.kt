@@ -1,4 +1,4 @@
-package org.collcal.collcal.presentation.sign.component
+package org.collcal.collcal.presentation.component
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.heightIn
@@ -6,11 +6,12 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import org.collcal.collcal.presentation.ui.theme.gray6
+import org.collcal.collcal.presentation.ui.theme.white
 
 @Composable
 fun CustomDropDown(
@@ -22,10 +23,11 @@ fun CustomDropDown(
     DropdownMenu(
         expanded = isExpanded,
         onDismissRequest = { onClickExpanded() },
-        containerColor = gray6
+        containerColor = white
     ) {
         Column(modifier = Modifier.heightIn(max = 200.dp).verticalScroll(rememberScrollState())) {
             options.forEach { option ->
+                HorizontalDivider()
                 DropdownMenuItem(
                     onClick = {
                         onClickOption(option)
@@ -34,6 +36,7 @@ fun CustomDropDown(
                     text = { Text(text = option) },
                 )
             }
+            HorizontalDivider()
         }
     }
 }

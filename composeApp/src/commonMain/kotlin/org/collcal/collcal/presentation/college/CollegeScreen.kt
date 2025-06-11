@@ -54,7 +54,6 @@ fun CollegeScreen(
     val isLoading by viewModel.isLoading.collectAsState()
     val userInfo by viewModel.userInfo.collectAsState()
     val colleges by viewModel.colleges.collectAsState()
-    val todos by viewModel.todos.collectAsState()
 
     var screen by remember { mutableStateOf<Screen>(Screen.College) }
     val isSelected = remember { mutableStateMapOf<Int, Boolean>() }
@@ -99,6 +98,7 @@ fun CollegeScreen(
                                                 ) {
                                                     CollegeItem(
                                                         Modifier.weight(1f),
+                                                        viewModel,
                                                         college.second,
                                                         userInfo.semesterInt,
                                                         isSelected,
@@ -136,9 +136,9 @@ fun CollegeScreen(
 
                         VerticalDivider(color = gray1)
                         Column(modifier = Modifier.padding(20.dp)) {
-                            UserScreen(navigator)
+                            UserScreen(navigator, viewModel)
                             Spacer(Modifier.height(10.dp))
-                            TasksScreen(navigator, colleges, todos) {
+                            TasksScreen(navigator, viewModel) {
                                 // @formatter:off
                                 selectedSemester?.let { int -> viewModel.changeTaskSemester(it, int) }
                                 // @formatter:on
@@ -178,6 +178,7 @@ fun CollegeScreen(
                                         ) {
                                             CollegeItem(
                                                 Modifier.weight(1f),
+                                                viewModel,
                                                 colleges[page].second,
                                                 userInfo.semesterInt,
                                                 isSelected,
