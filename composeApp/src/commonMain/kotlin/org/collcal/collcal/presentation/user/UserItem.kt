@@ -26,8 +26,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import org.collcal.collcal.presentation.component.CustomDropDown
 import org.collcal.collcal.presentation.component.DownArrowIcon
-import org.collcal.collcal.presentation.component.PencilIcon
+import org.collcal.collcal.presentation.component.MoreDotsIconButton
 import org.collcal.collcal.presentation.component.UpArrowIcon
 import org.collcal.collcal.presentation.ui.theme.Strings
 import org.collcal.collcal.presentation.ui.theme.black
@@ -42,8 +43,9 @@ fun UserItem(
     creditInfo: Triple<String, Triple<Int, Int, MutableState<Boolean>>, List<Credit>>,
     onAddCredit: (Credit) -> Unit,
     onModifyCredit: (Credit) -> Unit,
+    onDeleteTask: (Credit) -> Unit,
 ) {
-    var isExpanded by remember { mutableStateOf(creditInfo.second.third.value) }
+    var creditsExpanded by remember { mutableStateOf(creditInfo.second.third.value) }
     var isAdd by remember { mutableStateOf(false) }
     var course by remember { mutableStateOf("") }
     var credit by remember { mutableStateOf("") }
@@ -74,11 +76,11 @@ fun UserItem(
                 )
                 Spacer(Modifier.weight(1f))
                 Icon(
-                    imageVector = if (isExpanded) UpArrowIcon else DownArrowIcon,
+                    imageVector = if (creditsExpanded) UpArrowIcon else DownArrowIcon,
                     contentDescription = "DownArrowIcon",
                     modifier = Modifier.clickable(
                         onClick = {
-                            isExpanded = !isExpanded
+                            creditsExpanded = !creditsExpanded
                             isAdd = false
                             course = ""
                             credit = ""
@@ -90,10 +92,12 @@ fun UserItem(
                 )
             }
 
-            if (isExpanded) {
+            if (creditsExpanded) {
                 Spacer(Modifier.height(5.dp))
                 creditInfo.third.forEach {
                     var isModify by remember { mutableStateOf(false) }
+                    var moreActionExpanded by remember { mutableStateOf(false) }
+
                     if (isModify) {
                         var nowCourse by remember { mutableStateOf(it.course) }
                         var nowCredit by remember { mutableStateOf(it.credit) }
@@ -128,20 +132,28 @@ fun UserItem(
                                     modifier = Modifier.align(Alignment.CenterStart)
                                 )
                                 Text(text = it.credit, modifier = Modifier.align(Alignment.Center))
-                                Row(
-                                    modifier = Modifier.align(Alignment.CenterEnd),
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.spacedBy(10.dp)
-                                ) {
-                                    Text(text = it.grade)
-                                    Icon(
-                                        imageVector = PencilIcon,
-                                        contentDescription = "PencilIcon",
-                                        modifier = Modifier.clickable(
-                                            onClick = { isModify = !isModify },
-                                            interactionSource = null,
-                                            indication = null
-                                        )
+                                Column(modifier = Modifier.align(Alignment.CenterEnd)) {
+                                    Row(
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        horizontalArrangement = Arrangement.spacedBy(10.dp)
+                                    ) {
+                                        Text(text = it.grade)
+                                        MoreDotsIconButton {
+                                            moreActionExpanded = !moreActionExpanded
+                                        }
+                                    }
+                                    CustomDropDown(
+                                        options = listOf(Strings.modify, Strings.delete),
+                                        isExpanded = moreActionExpanded,
+                                        onClickExpanded = {
+                                            moreActionExpanded = !moreActionExpanded
+                                        },
+                                        onClickOption = { option ->
+                                            when (option) {
+                                                Strings.modify -> isModify = !isModify
+                                                Strings.delete -> onDeleteTask(it)
+                                            }
+                                        }
                                     )
                                 }
                             }
@@ -185,10 +197,14 @@ fun UserItem(
                                 indication = null
                             )
                             .border(1.dp, black, RoundedCornerShape(5.dp))
-                            .padding(10.dp),
+                            .padding(12.dp),
                         horizontalArrangement = Arrangement.Center
                     ) {
-                        Text(text = "+ ${Strings.add}")
+                        Text(
+                            text = "+ ${Strings.add}",
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.W400
+                        )
                     }
                 }
             }
