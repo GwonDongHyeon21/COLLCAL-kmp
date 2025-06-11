@@ -188,6 +188,12 @@ class CollegeViewModel : ViewModel() {
                         })
                     })
                 }
+                _todos.value = _todos.value.map { (task, completed) ->
+                    if (task.id == taskId)
+                        task.copy(content = title, info = info) to completed
+                    else
+                        task to completed
+                }
             } catch (e: Exception) {
                 println(e)
             }
