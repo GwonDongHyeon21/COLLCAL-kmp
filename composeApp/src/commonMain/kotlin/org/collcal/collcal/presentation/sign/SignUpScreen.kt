@@ -1,6 +1,7 @@
 package org.collcal.collcal.presentation.sign
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
@@ -26,6 +27,7 @@ import org.collcal.collcal.navigation.Navigator
 import org.collcal.collcal.presentation.sign.component.SignUpCollegeInfo
 import org.collcal.collcal.presentation.sign.component.SignUpUserInfo
 import org.collcal.collcal.presentation.ui.theme.Strings
+import org.collcal.collcal.presentation.ui.theme.mainColor
 
 @Composable
 fun SignUpScreen(
@@ -48,8 +50,9 @@ fun SignUpScreen(
         if (getPlatformType() == PlatformType.WEB) {
             Text(
                 text = Strings.signUp,
-                fontSize = 30.sp,
+                fontSize = 25.sp,
                 fontWeight = FontWeight.W700,
+                color = mainColor,
                 modifier = Modifier.align(Alignment.TopStart).padding(start = 60.dp, top = 30.dp)
             )
         }
@@ -58,11 +61,17 @@ fun SignUpScreen(
             targetState = selectedTabIndex,
             transitionSpec = {
                 if (targetState > initialState) {
-                    slideInHorizontally(initialOffsetX = { it }) togetherWith slideOutHorizontally(
-                        targetOffsetX = { -it })
+                    slideInHorizontally(
+                        initialOffsetX = { it }, animationSpec = tween(500)
+                    ) togetherWith slideOutHorizontally(
+                        targetOffsetX = { -it }, animationSpec = tween(500)
+                    )
                 } else {
-                    slideInHorizontally(initialOffsetX = { -it }) togetherWith slideOutHorizontally(
-                        targetOffsetX = { it })
+                    slideInHorizontally(
+                        initialOffsetX = { -it }, animationSpec = tween(500)
+                    ) togetherWith slideOutHorizontally(
+                        targetOffsetX = { it }, animationSpec = tween(500)
+                    )
                 }
             },
             label = "AnimatedContent"

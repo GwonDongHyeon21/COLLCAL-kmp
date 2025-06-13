@@ -30,3 +30,8 @@ val blue2 = Color(0xFFB8D1F4)
 val blue3 = Color(0xFF726FFF)
 
 val purple1 = Color(0xFFF2E3F8)
+
+
+val mainColor = Color(0xFF2D81FE)
+
+val gray18 = Color(0xFFACACAC)

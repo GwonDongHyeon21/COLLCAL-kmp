@@ -1,6 +1,7 @@
 package org.collcal.collcal.presentation.sign.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,11 +25,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import org.collcal.collcal.presentation.sign.SignViewModel
 import org.collcal.collcal.presentation.ui.theme.Strings
-import org.collcal.collcal.presentation.ui.theme.black
-import org.collcal.collcal.presentation.ui.theme.gray1
-import org.collcal.collcal.presentation.ui.theme.gray2
 import org.collcal.collcal.presentation.ui.theme.gray7
+import org.collcal.collcal.presentation.ui.theme.mainColor
 import org.collcal.collcal.presentation.ui.theme.red
+import org.collcal.collcal.presentation.ui.theme.white
 
 @Composable
 fun SignUpUserInfo(
@@ -50,16 +50,18 @@ fun SignUpUserInfo(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Column(
-            modifier = modifier
-                .background(gray2, RoundedCornerShape(10.dp))
-                .padding(20.dp)
-        ) {
-            Text(text = Strings.id, fontWeight = FontWeight.W500)
-            CustomOutlinedTextField(id) {
+        Column(modifier = modifier) {
+            Text(
+                text = Strings.id,
+                fontWeight = FontWeight.W700,
+                modifier = Modifier.padding(start = 10.dp, bottom = 2.dp)
+            )
+            CustomOutlinedTextField(id, Strings.idEn) {
                 id = it
                 idChanged = true
             }
+
+            Spacer(Modifier.height(10.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
@@ -71,64 +73,91 @@ fun SignUpUserInfo(
                     color = if (checkRedundancy.second) gray7 else red
                 )
                 Spacer(Modifier.weight(1f))
-                Button(
-                    onClick = {
-                        viewModel.checkRedundancy(id)
-                        signInCheck = ""
-                        idChanged = false
-                    },
-                    modifier = Modifier.padding(horizontal = 10.dp),
-                    shape = RoundedCornerShape(50.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = gray7)
-                ) {
-                    Text(
-                        text = Strings.checkRedundancy,
-                        color = black,
-                        fontWeight = FontWeight.W500
-                    )
-                }
+                Text(
+                    text = Strings.checkRedundancy,
+                    fontWeight = FontWeight.W500,
+                    color = white,
+                    modifier = Modifier
+                        .background(mainColor, RoundedCornerShape(11.dp))
+                        .padding(vertical = 5.dp, horizontal = 10.dp)
+                        .clickable(
+                            onClick = {
+                                viewModel.checkRedundancy(id)
+                                signInCheck = ""
+                                idChanged = false
+                            },
+                            interactionSource = null,
+                            indication = null
+                        )
+                )
             }
 
-            Spacer(Modifier.height(10.dp))
-            Text(text = Strings.password, fontWeight = FontWeight.W500)
+            Spacer(Modifier.height(15.dp))
+            Text(
+                text = Strings.password,
+                fontWeight = FontWeight.W700,
+                modifier = Modifier.padding(start = 10.dp, bottom = 2.dp)
+            )
             CustomPasswordTextField(
                 password,
+                Strings.passwordEn,
                 passwordVisible,
                 { password = it },
                 { passwordVisible = !passwordVisible }
             )
 
-            Spacer(Modifier.height(10.dp))
-            Text(text = Strings.phoneNumber, fontWeight = FontWeight.W500)
-            CustomOutlinedTextField(phoneNumber) { phoneNumber = it }
+            Spacer(Modifier.height(15.dp))
+            Text(
+                text = Strings.phoneNumber,
+                fontWeight = FontWeight.W700,
+                modifier = Modifier.padding(start = 10.dp, bottom = 2.dp)
+            )
+            CustomOutlinedTextField(phoneNumber, Strings.phoneNumberPlaceholder, true) {
+                phoneNumber = it
+            }
 
-            Spacer(Modifier.height(10.dp))
-            Text(text = Strings.email, fontWeight = FontWeight.W500)
-            CustomOutlinedTextField(email) { email = it }
-        }
+            Spacer(Modifier.height(15.dp))
+            Text(
+                text = Strings.email,
+                fontWeight = FontWeight.W700,
+                modifier = Modifier.padding(start = 10.dp, bottom = 2.dp)
+            )
+            CustomOutlinedTextField(email, Strings.emailPlaceholder) { email = it }
 
-        Spacer(Modifier.height(10.dp))
-        Button(
-            onClick = {
-                signInCheck = when {
-                    listOf(id, password, phoneNumber, email).any { it.isBlank() } -> "빈칸을 모두 입력해주세요"
-                    idChanged -> "아이디 중복 체크를 해주세요"
-                    !checkRedundancy.second -> "다른 아이디를 입력해주세요"
-                    else -> {
-                        viewModel.saveUserInfo(id, password, phoneNumber, email)
-                        onClick()
-                        ""
+            Spacer(Modifier.height(50.dp))
+            Button(
+                onClick = {
+                    signInCheck = when {
+                        listOf(
+                            id,
+                            password,
+                            phoneNumber,
+                            email
+                        ).any { it.isBlank() } -> "빈칸을 모두 입력해주세요"
+
+                        idChanged -> "아이디 중복 체크를 해주세요"
+                        !checkRedundancy.second -> "다른 아이디를 입력해주세요"
+                        else -> {
+                            viewModel.saveUserInfo(id, password, phoneNumber, email)
+                            onClick()
+                            ""
+                        }
                     }
-                }
-            },
-            modifier = modifier,
-            shape = RoundedCornerShape(10.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = gray1)
-        ) {
-            Text(text = Strings.next, color = black)
-        }
+                },
+                modifier = Modifier.fillMaxWidth().height(50.dp),
+                shape = RoundedCornerShape(21.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = mainColor)
+            ) {
+                Text(text = Strings.next, color = white)
+            }
 
-        Spacer(Modifier.height(10.dp))
-        Text(text = signInCheck, color = red)
+            Spacer(Modifier.height(15.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Text(text = signInCheck, color = red)
+            }
+        }
     }
 }
