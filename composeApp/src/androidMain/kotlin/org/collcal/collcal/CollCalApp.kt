@@ -24,7 +24,6 @@ import org.collcal.collcal.navigation.AndroidNavigator
 import org.collcal.collcal.navigation.Screen
 import org.collcal.collcal.presentation.college.CollegeScreen
 import org.collcal.collcal.presentation.college.CollegeViewModel
-import org.collcal.collcal.presentation.onboarding.OnBoardingScreen
 import org.collcal.collcal.presentation.sign.SignInScreen
 import org.collcal.collcal.presentation.sign.SignUpScreen
 import org.collcal.collcal.presentation.tasks.TasksScreen
@@ -41,9 +40,8 @@ fun CollCalApp() {
     val currentScreen by navigator.currentScreen
     val currentScreenSize by navigator.currentScreenSize
 
-    val isTopBar = currentScreen == Screen.OnBoarding.route
+    val isTopBar = currentScreen == Screen.SignIn.route
     val isBottomBar = currentScreen !in listOf(
-        Screen.OnBoarding.route,
         Screen.SignIn.route,
         Screen.SignUp.route
     )
@@ -95,8 +93,10 @@ fun CollCalApp() {
         }
     ) { innerPadding ->
         when (currentScreen) {
-            Screen.OnBoarding.route -> OnBoardingScreen(navigator)
-            Screen.SignIn.route -> SignInScreen(innerPadding) { navigator.resetTo(Screen.College) }
+            Screen.SignIn.route -> SignInScreen(navigator, innerPadding) {
+                navigator.resetTo(Screen.College)
+            }
+
             Screen.SignUp.route -> SignUpScreen(navigator, innerPadding)
             Screen.College.route -> CollegeScreen(navigator, viewModel, innerPadding)
             Screen.Tasks.route -> TasksScreen(navigator, viewModel, innerPadding) {}
