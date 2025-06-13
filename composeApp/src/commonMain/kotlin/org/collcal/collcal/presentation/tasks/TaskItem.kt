@@ -1,6 +1,5 @@
 package org.collcal.collcal.presentation.tasks
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -29,9 +28,7 @@ import org.collcal.collcal.presentation.component.MoreDotsIconButton
 import org.collcal.collcal.presentation.tasks.component.TaskAddField
 import org.collcal.collcal.presentation.ui.theme.Strings
 import org.collcal.collcal.presentation.ui.theme.gray1
-import org.collcal.collcal.presentation.ui.theme.gray1
-import org.collcal.collcal.presentation.ui.theme.gray1
-import org.collcal.collcal.presentation.ui.theme.gray1
+import org.collcal.collcal.presentation.ui.theme.mainColor
 
 @Composable
 fun TaskItem(
@@ -64,8 +61,7 @@ fun TaskItem(
                     interactionSource = null,
                     indication = null
                 )
-                .border(0.5.dp, gray1, RoundedCornerShape(9.38.dp))
-                .background(if (task.second) gray1 else gray1, RoundedCornerShape(9.38.dp))
+                .border(1.dp, mainColor, RoundedCornerShape(19.dp))
                 .padding(vertical = 5.dp, horizontal = 10.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -75,15 +71,16 @@ fun TaskItem(
             ) {
                 Text(
                     text = task.first.content,
-                    fontSize = 18.75.sp,
+                    fontSize = 14.sp,
                     fontWeight = FontWeight.W500,
                     textDecoration = TextDecoration.Underline,
+                    color = mainColor
                 )
                 Text(
                     text = task.first.info,
-                    fontSize = 10.sp,
+                    fontSize = 8.sp,
                     fontWeight = FontWeight.W500,
-                    color = gray1,
+                    color = mainColor,
                 )
             }
 

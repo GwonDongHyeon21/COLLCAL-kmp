@@ -3,7 +3,6 @@ package org.collcal.collcal.presentation.tasks
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,9 +11,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -119,15 +118,11 @@ fun TasksScreen(
                     }
                     Spacer(Modifier.height(5.dp))
                 }
+
+                Spacer(Modifier.height(5.dp))
                 if (todos.isNotEmpty())
-                    FlowRow(
-                        modifier = Modifier
-                            .padding(horizontal = 10.dp)
-                            .verticalScroll(rememberScrollState()),
-                        verticalArrangement = Arrangement.spacedBy(5.dp),
-                        horizontalArrangement = Arrangement.spacedBy(5.dp)
-                    ) {
-                        todos.forEach { TaskItem(it, viewModel) { onClick(it.first) } }
+                    LazyColumn(verticalArrangement = Arrangement.spacedBy(5.dp)) {
+                        items(todos) { TaskItem(it, viewModel) { onClick(it.first) } }
                     }
             }
 
@@ -144,14 +139,8 @@ fun TasksScreen(
                     )
                     Spacer(Modifier.height(5.dp))
                     if (task.second.isNotEmpty())
-                        FlowRow(
-                            modifier = Modifier
-                                .padding(horizontal = 10.dp)
-                                .verticalScroll(rememberScrollState()),
-                            verticalArrangement = Arrangement.spacedBy(5.dp),
-                            horizontalArrangement = Arrangement.spacedBy(5.dp),
-                        ) {
-                            task.second.forEach { TaskItem(it, viewModel) { onClick(it.first) } }
+                        LazyColumn(verticalArrangement = Arrangement.spacedBy(5.dp)) {
+                            items(task.second) { TaskItem(it, viewModel) { onClick(it.first) } }
                         }
                 }
             }
