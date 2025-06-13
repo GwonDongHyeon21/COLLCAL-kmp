@@ -8,6 +8,7 @@ import kotlinx.coroutines.launch
 import org.collcal.collcal.presentation.college.model.User
 import org.collcal.collcal.presentation.collegedetail.model.Task
 import org.collcal.collcal.presentation.user.model.Credit
+import kotlin.math.floor
 
 class CollegeViewModel : ViewModel() {
     private val _isLoading = MutableStateFlow(true)
@@ -15,6 +16,12 @@ class CollegeViewModel : ViewModel() {
 
     private val _userInfo = MutableStateFlow(User("", "", "", 0, 0, 0.0, 0, 0, 0, 0, 0, 0, 0, 0))
     val userInfo: StateFlow<User> = _userInfo
+
+    private val _earnedCredit = MutableStateFlow(0)
+    val earnedCredit: StateFlow<Int> = _earnedCredit
+
+    private val _averageCredit = MutableStateFlow(0.0)
+    val averageCredit: StateFlow<Double> = _averageCredit
 
     private val _aList = MutableStateFlow(emptyList<Credit>())
     val aList: StateFlow<List<Credit>> = _aList
@@ -41,6 +48,7 @@ class CollegeViewModel : ViewModel() {
         getCollegeData()
         getUser()
         getTodos()
+        getCredit()
     }
 
     private fun getCollegeData() {
@@ -123,6 +131,37 @@ class CollegeViewModel : ViewModel() {
         }
     }
 
+    private fun getCredit() {
+        _earnedCredit.value = _aList.value.sumOf { it.credit.toInt() } +
+                _bList.value.sumOf { it.credit.toInt() } +
+                _cList.value.sumOf { it.credit.toInt() } +
+                _dList.value.sumOf { it.credit.toInt() }
+        val allList = _aList.value + _bList.value + _cList.value + _dList.value
+        _averageCredit.value =
+            floor(allList.sumOf { it.credit.toInt() * getGradeToDouble(it.grade) } / allList.sumOf { it.credit.toInt() } * 1000) / 1000
+    }
+
+    private fun getGradeToDouble(grade: String): Double {
+        return when (grade) {
+            "A+" -> 4.3
+            "A0" -> 4.0
+            "A-" -> 3.7
+            "B+" -> 3.3
+            "B0" -> 3.0
+            "B-" -> 2.7
+            "C+" -> 2.3
+            "C0" -> 2.0
+            "C-" -> 1.7
+            "D+" -> 1.3
+            "D0" -> 1.0
+            "D-" -> 0.7
+            "F" -> 0.0
+            "P" -> 0.0
+            "NP" -> 0.0
+            else -> 0.0
+        }
+    }
+
     private fun getTodos() {
         viewModelScope.launch {
             try {
@@ -177,23 +216,25 @@ class CollegeViewModel : ViewModel() {
     fun modifyTask(taskId: String, title: String, info: String) {
         viewModelScope.launch {
             try {
-                _colleges.value = _colleges.value.map { college ->
-                    college.copy(second = college.second.map { semester ->
-                        semester.copy(second = semester.second.map { taskPair ->
-                            val task = taskPair.first
-                            val updatedTaskList =
-                                if (task.id == taskId) task.copy(content = title, info = info)
-                                else task
-                            taskPair.copy(first = updatedTaskList)
+                if (_todos.value.find { it.first.id == taskId } != null)
+                    _todos.value = _todos.value.map { (task, completed) ->
+                        if (task.id == taskId)
+                            task.copy(content = title, info = info) to completed
+                        else
+                            task to completed
+                    }
+                else
+                    _colleges.value = _colleges.value.map { college ->
+                        college.copy(second = college.second.map { semester ->
+                            semester.copy(second = semester.second.map { taskPair ->
+                                val task = taskPair.first
+                                val updatedTaskList =
+                                    if (task.id == taskId) task.copy(content = title, info = info)
+                                    else task
+                                taskPair.copy(first = updatedTaskList)
+                            })
                         })
-                    })
-                }
-                _todos.value = _todos.value.map { (task, completed) ->
-                    if (task.id == taskId)
-                        task.copy(content = title, info = info) to completed
-                    else
-                        task to completed
-                }
+                    }
             } catch (e: Exception) {
                 println(e)
             }
@@ -213,12 +254,14 @@ class CollegeViewModel : ViewModel() {
     fun deleteTask(taskId: String, onResult: () -> Unit) {
         viewModelScope.launch {
             try {
-                _colleges.value = _colleges.value.map { college ->
-                    college.copy(second = college.second.map { semester ->
-                        semester.copy(second = semester.second.filterNot { it.first.id == taskId })
-                    })
-                }
-                _todos.value = _todos.value.filterNot { it.first.id == taskId }
+                if (_todos.value.find { it.first.id == taskId } != null)
+                    _todos.value = _todos.value.filterNot { it.first.id == taskId }
+                else
+                    _colleges.value = _colleges.value.map { college ->
+                        college.copy(second = college.second.map { semester ->
+                            semester.copy(second = semester.second.filterNot { it.first.id == taskId })
+                        })
+                    }
             } catch (e: Exception) {
                 println(e)
             }
@@ -235,6 +278,7 @@ class CollegeViewModel : ViewModel() {
                     2 -> _cList.value += credit
                     3 -> _dList.value += credit
                 }
+                getCredit()
             } catch (e: Exception) {
                 println(e)
             }
@@ -250,6 +294,7 @@ class CollegeViewModel : ViewModel() {
                     2 -> _cList.value = _aList.value.map { if (it.id == credit.id) credit else it }
                     3 -> _dList.value = _aList.value.map { if (it.id == credit.id) credit else it }
                 }
+                getCredit()
             } catch (e: Exception) {
                 println(e)
             }
@@ -265,6 +310,7 @@ class CollegeViewModel : ViewModel() {
                     2 -> _cList.value = _aList.value.filter { it.id != credit.id }
                     3 -> _dList.value = _aList.value.filter { it.id != credit.id }
                 }
+                getCredit()
             } catch (e: Exception) {
                 println(e)
             }
