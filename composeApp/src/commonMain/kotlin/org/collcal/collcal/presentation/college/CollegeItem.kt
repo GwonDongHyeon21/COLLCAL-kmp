@@ -30,9 +30,7 @@ import org.collcal.collcal.presentation.collegedetail.model.Task
 import org.collcal.collcal.presentation.tasks.TaskItem
 import org.collcal.collcal.presentation.ui.theme.black
 import org.collcal.collcal.presentation.ui.theme.blue1
-import org.collcal.collcal.presentation.ui.theme.blue2
-import org.collcal.collcal.presentation.ui.theme.blue3
-import org.collcal.collcal.presentation.ui.theme.gray3
+import org.collcal.collcal.presentation.ui.theme.gray1
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
@@ -53,8 +51,8 @@ fun CollegeItem(
         val selectedState = isSelected[semesterInt] ?: false
         val collegeColor = when {
             semesterInt < userSemesterInt -> blue1
-            semesterInt == userSemesterInt -> blue2
-            else -> gray3
+            semesterInt == userSemesterInt -> blue1
+            else -> gray1
         }
 
         with(sharedTransitionScope) {
@@ -82,14 +80,14 @@ fun CollegeItem(
                     ),
                 shape = RoundedCornerShape(7.dp),
                 colors = CardDefaults.cardColors(containerColor = collegeColor),
-                border = if (isSelected[semesterInt] == true) BorderStroke(3.dp, blue2) else null
+                border = if (isSelected[semesterInt] == true) BorderStroke(3.dp, blue1) else null
             ) {
                 Column(modifier = Modifier.padding(10.dp)) {
                     Text(
                         text = college.first.first,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.W700,
-                        color = if (semesterInt == userSemesterInt) blue3 else black
+                        color = if (semesterInt == userSemesterInt) blue1 else black
                     )
 
                     Spacer(Modifier.height(10.dp))

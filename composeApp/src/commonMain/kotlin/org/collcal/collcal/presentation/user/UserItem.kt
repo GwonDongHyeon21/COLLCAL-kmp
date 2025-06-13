@@ -33,7 +33,6 @@ import org.collcal.collcal.presentation.component.UpArrowIcon
 import org.collcal.collcal.presentation.ui.theme.Strings
 import org.collcal.collcal.presentation.ui.theme.black
 import org.collcal.collcal.presentation.ui.theme.gray1
-import org.collcal.collcal.presentation.ui.theme.gray8
 import org.collcal.collcal.presentation.ui.theme.white
 import org.collcal.collcal.presentation.user.component.CreditAddField
 import org.collcal.collcal.presentation.user.model.Credit
@@ -186,7 +185,7 @@ fun UserItem(
 
                 Card(
                     shape = RoundedCornerShape(5.dp),
-                    colors = CardDefaults.cardColors(containerColor = gray8)
+                    colors = CardDefaults.cardColors(containerColor = gray1)
                 ) {
                     Row(
                         modifier = Modifier

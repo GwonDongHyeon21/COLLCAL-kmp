@@ -30,7 +30,7 @@ import org.collcal.collcal.platform.PlatformType
 import org.collcal.collcal.platform.getPlatformType
 import org.collcal.collcal.presentation.college.CollegeViewModel
 import org.collcal.collcal.presentation.ui.theme.Strings
-import org.collcal.collcal.presentation.ui.theme.gray8
+import org.collcal.collcal.presentation.ui.theme.gray1
 import org.collcal.collcal.presentation.ui.theme.white
 
 @Composable
@@ -61,7 +61,7 @@ fun UserScreen(
     Card(
         modifier = modifier,
         shape = RoundedCornerShape(7.dp),
-        colors = CardDefaults.cardColors(containerColor = gray8)
+        colors = CardDefaults.cardColors(containerColor = gray1)
     ) {
         Column(
             modifier = Modifier.padding(10.dp),

@@ -14,7 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import org.collcal.collcal.presentation.ui.theme.gray13
+import org.collcal.collcal.presentation.ui.theme.gray1
 
 @Composable
 fun MoreDotsIconButton(onClick: () -> Unit) {
@@ -33,21 +33,21 @@ fun MoreDotsIconButton(onClick: () -> Unit) {
             modifier = Modifier
                 .size(4.dp)
                 .clip(CircleShape)
-                .background(gray13)
+                .background(gray1)
         )
         Spacer(Modifier.height(2.dp))
         Box(
             modifier = Modifier
                 .size(4.dp)
                 .clip(CircleShape)
-                .background(gray13)
+                .background(gray1)
         )
         Spacer(Modifier.height(2.dp))
         Box(
             modifier = Modifier
                 .size(4.dp)
                 .clip(CircleShape)
-                .background(gray13)
+                .background(gray1)
         )
     }
 }

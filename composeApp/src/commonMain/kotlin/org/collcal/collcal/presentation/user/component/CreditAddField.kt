@@ -29,15 +29,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.collcal.collcal.presentation.component.VCheckIcon
 import org.collcal.collcal.presentation.component.CustomDropDown
+import org.collcal.collcal.presentation.component.VCheckIcon
 import org.collcal.collcal.presentation.ui.theme.Strings
 import org.collcal.collcal.presentation.ui.theme.black
-import org.collcal.collcal.presentation.ui.theme.gray15
-import org.collcal.collcal.presentation.ui.theme.gray16
-import org.collcal.collcal.presentation.ui.theme.gray8
+import org.collcal.collcal.presentation.ui.theme.gray1
 import org.collcal.collcal.presentation.ui.theme.white
-import org.collcal.collcal.presentation.user.model.Credit
 
 @Composable
 fun CreditAddField(
@@ -71,7 +68,7 @@ fun CreditAddField(
     Card(
         modifier = Modifier.fillMaxWidth().border(1.dp, black, RoundedCornerShape(5.dp)),
         shape = RoundedCornerShape(5.dp),
-        colors = CardDefaults.cardColors(containerColor = gray8)
+        colors = CardDefaults.cardColors(containerColor = gray1)
     ) {
         Row(
             modifier = Modifier.padding(vertical = 8.dp, horizontal = 10.dp),
@@ -93,7 +90,7 @@ fun CreditAddField(
                                 text = Strings.course,
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.W500,
-                                color = gray15
+                                color = gray1
                             )
                         it()
                     }
@@ -117,7 +114,7 @@ fun CreditAddField(
                                 text = Strings.credit,
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.W500,
-                                color = gray15
+                                color = gray1
                             )
                         it()
                     }
@@ -144,7 +141,7 @@ fun CreditAddField(
                                     text = Strings.grade,
                                     fontSize = 12.sp,
                                     fontWeight = FontWeight.W500,
-                                    color = gray15
+                                    color = gray1
                                 )
                             it()
                         }
@@ -173,7 +170,7 @@ fun CreditAddField(
                         interactionSource = null,
                         indication = null
                     )
-                    .background(gray16, RoundedCornerShape(5.dp))
+                    .background(gray1, RoundedCornerShape(5.dp))
                     .padding(2.dp)
             )
         }

@@ -27,10 +27,7 @@ import androidx.compose.ui.unit.sp
 import org.collcal.collcal.presentation.component.VCheckIcon
 import org.collcal.collcal.presentation.ui.theme.Strings
 import org.collcal.collcal.presentation.ui.theme.black
-import org.collcal.collcal.presentation.ui.theme.gray15
-import org.collcal.collcal.presentation.ui.theme.gray16
-import org.collcal.collcal.presentation.ui.theme.gray4
-import org.collcal.collcal.presentation.ui.theme.gray5
+import org.collcal.collcal.presentation.ui.theme.gray1
 import org.collcal.collcal.presentation.ui.theme.white
 
 @Composable
@@ -39,11 +36,11 @@ fun TaskAddField(
     taskInfo: String,
     onTaskTitleChanged: (String) -> Unit,
     onTaskInfoChanged: (String) -> Unit,
-    color: Color = gray5,
+    color: Color = gray1,
     onClick: () -> Unit,
 ) {
     Card(
-        modifier = Modifier.fillMaxWidth().border(0.5.dp, gray4, RoundedCornerShape(9.38.dp)),
+        modifier = Modifier.fillMaxWidth().border(0.5.dp, gray1, RoundedCornerShape(9.38.dp)),
         shape = RoundedCornerShape(9.38.dp),
         colors = CardDefaults.cardColors(
             containerColor = color,
@@ -71,7 +68,7 @@ fun TaskAddField(
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.W500,
                                 textDecoration = TextDecoration.Underline,
-                                color = gray15
+                                color = gray1
                             )
                         it()
                     }
@@ -93,7 +90,7 @@ fun TaskAddField(
                                 text = Strings.taskInfo,
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.W500,
-                                color = gray15
+                                color = gray1
                             )
                         it()
                     }
@@ -112,7 +109,7 @@ fun TaskAddField(
                         interactionSource = null,
                         indication = null
                     )
-                    .background(gray16, RoundedCornerShape(5.dp))
+                    .background(gray1, RoundedCornerShape(5.dp))
                     .padding(2.dp)
             )
         }

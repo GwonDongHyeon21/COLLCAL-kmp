@@ -38,10 +38,7 @@ import org.collcal.collcal.presentation.college.CollegeViewModel
 import org.collcal.collcal.presentation.collegedetail.model.Task
 import org.collcal.collcal.presentation.tasks.component.TaskAddField
 import org.collcal.collcal.presentation.ui.theme.Strings
-import org.collcal.collcal.presentation.ui.theme.gray10
-import org.collcal.collcal.presentation.ui.theme.gray11
-import org.collcal.collcal.presentation.ui.theme.gray8
-import org.collcal.collcal.presentation.ui.theme.gray9
+import org.collcal.collcal.presentation.ui.theme.gray1
 
 @Composable
 fun TasksScreen(
@@ -68,7 +65,7 @@ fun TasksScreen(
 
     Card(
         modifier = modifier,
-        colors = CardDefaults.cardColors(containerColor = gray8)
+        colors = CardDefaults.cardColors(containerColor = gray1)
     ) {
         Column(modifier = Modifier.padding(10.dp)) {
             Row(
@@ -80,19 +77,19 @@ fun TasksScreen(
                     text = Strings.tasks,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.W700,
-                    color = gray9
+                    color = gray1
                 )
                 Button(
                     onClick = { isAdd = !isAdd },
                     shape = RoundedCornerShape(5.dp),
-                    border = BorderStroke(2.dp, gray10),
-                    colors = ButtonDefaults.buttonColors(containerColor = gray8)
+                    border = BorderStroke(2.dp, gray1),
+                    colors = ButtonDefaults.buttonColors(containerColor = gray1)
                 ) {
                     Text(
                         text = "+ ${Strings.Add}",
                         fontSize = 15.sp,
                         fontWeight = FontWeight.W500,
-                        color = gray11
+                        color = gray1
                     )
                 }
             }
