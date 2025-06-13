@@ -5,7 +5,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.HorizontalDivider
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -25,7 +26,6 @@ import org.collcal.collcal.presentation.college.CollegeViewModel
 import org.collcal.collcal.presentation.sign.SignInScreen
 import org.collcal.collcal.presentation.sign.SignUpScreen
 import org.collcal.collcal.presentation.ui.theme.Strings
-import org.collcal.collcal.presentation.ui.theme.gray1
 import org.collcal.collcal.presentation.ui.theme.mainColor
 
 @Composable
@@ -46,25 +46,30 @@ fun CollCalWeb() {
 
     Column {
         if (currentScreen != Screen.SignIn.route) {
-            Row(
-                modifier = Modifier.fillMaxWidth().padding(10.dp),
-                verticalAlignment = Alignment.CenterVertically
+            Surface(
+                shadowElevation = 10.dp,
+                modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp),
+                shape = RoundedCornerShape(bottomStart = 19.dp, bottomEnd = 19.dp),
             ) {
-                Text(
-                    text = Strings.appName,
-                    fontSize = 40.sp,
-                    fontWeight = FontWeight.W800,
-                    color = mainColor
-                )
-                Spacer(Modifier.weight(1f))
-                Text(
-                    text = getCurrentDateFormatted(),
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.W800,
-                    color = mainColor
-                )
+                Row(
+                    modifier = Modifier.padding(10.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = Strings.appName,
+                        fontSize = 40.sp,
+                        fontWeight = FontWeight.W800,
+                        color = mainColor
+                    )
+                    Spacer(Modifier.weight(1f))
+                    Text(
+                        text = getCurrentDateFormatted(),
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.W800,
+                        color = mainColor
+                    )
+                }
             }
-            HorizontalDivider(color = gray1)
         }
 
         when (currentScreen) {
