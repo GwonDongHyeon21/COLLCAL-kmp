@@ -5,7 +5,7 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
-import org.collcal.collcal.presentation.ui.theme.gray13
+import org.collcal.collcal.presentation.ui.theme.black
 
 val DownArrowIcon = ImageVector.Builder(
     defaultWidth = 24.dp,
@@ -14,7 +14,7 @@ val DownArrowIcon = ImageVector.Builder(
     viewportHeight = 24f
 ).apply {
     path(
-        fill = SolidColor(gray13),
+        fill = SolidColor(black),
         pathFillType = PathFillType.NonZero
     ) {
         moveTo(7f, 10f)

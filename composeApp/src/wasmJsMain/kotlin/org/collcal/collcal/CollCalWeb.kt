@@ -22,11 +22,11 @@ import org.collcal.collcal.navigation.Screen
 import org.collcal.collcal.navigation.WebNavigator
 import org.collcal.collcal.presentation.college.CollegeScreen
 import org.collcal.collcal.presentation.college.CollegeViewModel
-import org.collcal.collcal.presentation.onboarding.OnBoardingScreen
 import org.collcal.collcal.presentation.sign.SignInScreen
 import org.collcal.collcal.presentation.sign.SignUpScreen
 import org.collcal.collcal.presentation.ui.theme.Strings
 import org.collcal.collcal.presentation.ui.theme.gray1
+import org.collcal.collcal.presentation.ui.theme.mainColor
 
 @Composable
 fun CollCalWeb() {
@@ -45,29 +45,30 @@ fun CollCalWeb() {
     }
 
     Column {
-        if (currentScreen != Screen.OnBoarding.route) {
+        if (currentScreen != Screen.SignIn.route) {
             Row(
-                modifier = Modifier.fillMaxWidth().padding(20.dp),
+                modifier = Modifier.fillMaxWidth().padding(10.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
                     text = Strings.appName,
-                    fontSize = 50.sp,
-                    fontWeight = FontWeight.Bold
+                    fontSize = 40.sp,
+                    fontWeight = FontWeight.W800,
+                    color = mainColor
                 )
                 Spacer(Modifier.weight(1f))
                 Text(
                     text = getCurrentDateFormatted(),
-                    fontSize = 30.sp,
-                    fontWeight = FontWeight.Bold
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.W800,
+                    color = mainColor
                 )
             }
             HorizontalDivider(color = gray1)
         }
 
         when (currentScreen) {
-            Screen.OnBoarding.route -> OnBoardingScreen(navigator)
-            Screen.SignIn.route -> SignInScreen { navigator.replaceTo(Screen.College) }
+            Screen.SignIn.route -> SignInScreen(navigator) { navigator.replaceTo(Screen.College) }
             Screen.SignUp.route -> SignUpScreen(navigator)
             Screen.College.route -> CollegeScreen(navigator, viewModel)
         }

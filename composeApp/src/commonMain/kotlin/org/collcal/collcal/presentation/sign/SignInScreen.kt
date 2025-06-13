@@ -1,6 +1,6 @@
 package org.collcal.collcal.presentation.sign
 
-import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -23,17 +23,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import org.collcal.collcal.navigation.Navigator
+import org.collcal.collcal.navigation.Screen
 import org.collcal.collcal.platform.PlatformType
 import org.collcal.collcal.platform.getPlatformType
 import org.collcal.collcal.presentation.sign.component.CustomOutlinedTextField
 import org.collcal.collcal.presentation.sign.component.CustomPasswordTextField
 import org.collcal.collcal.presentation.ui.theme.Strings
-import org.collcal.collcal.presentation.ui.theme.black
-import org.collcal.collcal.presentation.ui.theme.gray1
-import org.collcal.collcal.presentation.ui.theme.gray2
+import org.collcal.collcal.presentation.ui.theme.mainColor
+import org.collcal.collcal.presentation.ui.theme.white
 
 @Composable
 fun SignInScreen(
+    navigator: Navigator,
     innerPadding: PaddingValues = PaddingValues(0.dp),
     onClick: () -> Unit,
 ) {
@@ -46,49 +48,81 @@ fun SignInScreen(
         PlatformType.ANDROID -> Modifier.fillMaxWidth(0.8f)
         PlatformType.IOS -> Modifier.fillMaxWidth(0.8f)
     }
+    val size = when (getPlatformType()) {
+        PlatformType.WEB -> 15
+        PlatformType.ANDROID -> 10
+        PlatformType.IOS -> 10
+    }
 
     Box(
         modifier = Modifier.fillMaxSize().padding(innerPadding),
         contentAlignment = Alignment.Center
     ) {
-        if (getPlatformType() == PlatformType.WEB) {
-            Text(
-                text = Strings.signIn,
-                fontSize = 30.sp,
-                fontWeight = FontWeight.W700,
-                modifier = Modifier.align(Alignment.TopStart).padding(start = 60.dp, top = 30.dp)
-            )
-        }
-
         Column(
-            modifier = modifier
-                .background(gray2, RoundedCornerShape(10.dp))
-                .padding(20.dp)
+            modifier = modifier,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = Strings.id, fontWeight = FontWeight.W500)
-            CustomOutlinedTextField(idText) { idText = it }
-
-            Spacer(Modifier.height(10.dp))
-            Text(text = Strings.password, fontWeight = FontWeight.W500)
-            CustomPasswordTextField(
-                passwordText,
-                passwordVisible,
-                { passwordText = it },
-                { passwordVisible = !passwordVisible }
+            Text(
+                text = Strings.appName,
+                fontWeight = FontWeight.W800,
+                fontSize = (size * 4).sp,
+                color = mainColor
+            )
+            Text(
+                text = Strings.appDescription,
+                fontWeight = FontWeight.W800,
+                fontSize = (size * 2).sp,
+                color = mainColor
             )
 
-            Spacer(Modifier.height(20.dp))
+            Spacer(Modifier.height((size * 6).dp))
+            Column {
+                Text(
+                    text = Strings.id,
+                    fontWeight = FontWeight.W700,
+                    modifier = Modifier.padding(start = 10.dp, bottom = 2.dp)
+                )
+                CustomOutlinedTextField(idText, Strings.idEn) { idText = it }
+            }
+
+            Spacer(Modifier.height(15.dp))
+            Column {
+                Text(
+                    text = Strings.password,
+                    fontWeight = FontWeight.W700,
+                    modifier = Modifier.padding(start = 10.dp, bottom = 2.dp)
+                )
+                CustomPasswordTextField(
+                    passwordText,
+                    Strings.passwordEn,
+                    passwordVisible,
+                    { passwordText = it },
+                    { passwordVisible = !passwordVisible }
+                )
+            }
+
+            Spacer(Modifier.height((size * 6).dp))
             Button(
                 onClick = { onClick() },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().height(50.dp),
                 shape = RoundedCornerShape(21.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = gray1,
-                    contentColor = black
+                    containerColor = mainColor,
+                    contentColor = mainColor
                 )
             ) {
-                Text(text = Strings.signIn)
+                Text(text = Strings.signIn, color = white)
             }
+
+            Spacer(Modifier.height(15.dp))
+            Text(
+                text = Strings.signUp,
+                modifier = Modifier.clickable(
+                    onClick = { navigator.navigateTo(Screen.SignUp) },
+                    interactionSource = null,
+                    indication = null
+                )
+            )
         }
     }
 }

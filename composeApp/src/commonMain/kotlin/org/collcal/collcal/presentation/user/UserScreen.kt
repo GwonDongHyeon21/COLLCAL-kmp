@@ -40,6 +40,8 @@ fun UserScreen(
     innerPadding: PaddingValues = PaddingValues(0.dp),
 ) {
     val userInfo by viewModel.userInfo.collectAsState()
+    val earnedCredit by viewModel.earnedCredit.collectAsState()
+    val averageCredit by viewModel.averageCredit.collectAsState()
     val aList by viewModel.aList.collectAsState()
     val bList by viewModel.bList.collectAsState()
     val cList by viewModel.cList.collectAsState()
@@ -85,8 +87,8 @@ fun UserScreen(
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
                     listOf(
-                        Strings.earnedCredits to userInfo.earnedCredits.toString(),
-                        Strings.averageCredit to userInfo.averageCredit.toString()
+                        Strings.earnedCredits to earnedCredit,
+                        Strings.averageCredit to averageCredit
                     ).forEach {
                         Column(
                             modifier = Modifier.weight(1f),
@@ -99,7 +101,7 @@ fun UserScreen(
                             )
                             Spacer(Modifier.height(5.dp))
                             Text(
-                                text = it.second,
+                                text = it.second.toString(),
                                 fontSize = 16.sp,
                                 fontWeight = FontWeight.W300
                             )

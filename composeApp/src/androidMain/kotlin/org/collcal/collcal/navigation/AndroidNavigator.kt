@@ -13,7 +13,7 @@ class AndroidNavigator : Navigator {
     init {
         // 로그인 상태 확인
         val response = false
-        replaceTo(if (response) Screen.College else Screen.OnBoarding)
+        replaceTo(if (response) Screen.College else Screen.SignIn)
     }
 
     override fun navigateTo(screen: Screen) {

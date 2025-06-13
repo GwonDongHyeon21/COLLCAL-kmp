@@ -1,6 +1,5 @@
 package org.collcal.collcal.presentation.sign.component
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -28,11 +27,10 @@ import org.collcal.collcal.presentation.component.CustomDropDown
 import org.collcal.collcal.presentation.sign.SignViewModel
 import org.collcal.collcal.presentation.sign.model.Info
 import org.collcal.collcal.presentation.ui.theme.Strings
-import org.collcal.collcal.presentation.ui.theme.black
-import org.collcal.collcal.presentation.ui.theme.gray1
-import org.collcal.collcal.presentation.ui.theme.gray2
+import org.collcal.collcal.presentation.ui.theme.mainColor
 import org.collcal.collcal.presentation.ui.theme.red
 import org.collcal.collcal.presentation.ui.theme.transparent
+import org.collcal.collcal.presentation.ui.theme.white
 
 @Composable
 fun SignUpCollegeInfo(
@@ -75,14 +73,19 @@ fun SignUpCollegeInfo(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Column(
-            modifier = modifier.background(gray2, RoundedCornerShape(10.dp)).padding(20.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp)
+            modifier = modifier,
+            verticalArrangement = Arrangement.spacedBy(15.dp)
         ) {
             infoList.forEach { info ->
                 Column {
-                    Text(text = info.label, fontWeight = FontWeight.W500)
+                    Text(
+                        text = info.label,
+                        fontWeight = FontWeight.W700,
+                        modifier = Modifier.padding(start = 10.dp, bottom = 2.dp)
+                    )
                     CustomDropDownTextField(
                         text = info.option.value,
+                        placeholder = info.placeholder,
                         onClick = { info.isExpanded.value = !info.isExpanded.value }
                     )
                     Row {
@@ -100,26 +103,25 @@ fun SignUpCollegeInfo(
                     }
                 }
             }
-        }
 
-        Spacer(Modifier.height(10.dp))
-        Button(
-            onClick = {
-                if (listOf(year, school, department, semester).all { it.value.isNotBlank() })
-                    viewModel.signUp { navigator.replaceTo(Screen.SignIn) }
-                else isEmpty = true
-            },
-            modifier = modifier,
-            shape = RoundedCornerShape(10.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = gray1)
-        ) {
-            Text(text = Strings.signUp, color = black)
-        }
+            Spacer(Modifier.height(50.dp))
+            Button(
+                onClick = {
+                    if (listOf(year, school, department, semester).all { it.value.isNotBlank() })
+                        viewModel.signUp { navigator.replaceTo(Screen.SignIn) }
+                    else isEmpty = true
+                },
+                modifier = Modifier.fillMaxWidth().height(50.dp),
+                shape = RoundedCornerShape(10.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = mainColor)
+            ) {
+                Text(text = Strings.signUp, color = white)
+            }
 
-        Spacer(Modifier.height(10.dp))
-        Text(
-            text = if (isEmpty) "빈칸을 모두 선택해주세요" else "",
-            color = if (isEmpty) red else transparent
-        )
+            Text(
+                text = if (isEmpty) "빈칸을 모두 선택해주세요" else "",
+                color = if (isEmpty) red else transparent
+            )
+        }
     }
 }
