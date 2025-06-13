@@ -3,6 +3,7 @@ package org.collcal.collcal.presentation.collegedetail
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -25,19 +26,23 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.collcal.collcal.presentation.collegedetail.model.Task
 import org.collcal.collcal.presentation.component.ArrowBackIcon
+import org.collcal.collcal.presentation.ui.theme.mainColor
+import org.collcal.collcal.presentation.ui.theme.white
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun CollegeDetailScreen(
     colleges: List<Pair<String, List<Pair<Pair<String, Int>, List<Pair<Task, Boolean>>>>>>,
+    userSemesterInt: Int,
     semesterInt: Int?,
-    selectedCollegeItemColor: Color,
     sharedTransitionScope: SharedTransitionScope,
     animatedContentScope: AnimatedContentScope,
     innerPadding: PaddingValues = PaddingValues(0.dp),
@@ -52,20 +57,34 @@ fun CollegeDetailScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(20.dp)
+                .shadow(10.dp, RoundedCornerShape(21.dp))
                 .sharedElement(
                     sharedContentState = rememberSharedContentState(
                         key = "college-$semesterInt"
                     ),
                     animatedVisibilityScope = animatedContentScope
                 ),
-            shape = RoundedCornerShape(7.dp),
-            colors = CardDefaults.cardColors(containerColor = selectedCollegeItemColor)
+            shape = RoundedCornerShape(21.dp),
+            colors = CardDefaults.cardColors(containerColor = white)
         ) {
-            Column(modifier = Modifier.padding(10.dp)) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(
+                        brush = Brush.verticalGradient(
+                            colors = listOf(
+                                white,
+                                if (userSemesterInt == semesterInt) mainColor.copy(0.4f) else white
+                            )
+                        ),
+                        shape = RoundedCornerShape(21.dp)
+                    )
+                    .clip(RoundedCornerShape(21.dp))
+                    .padding(10.dp)
+            ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     IconButton(onClick = { onClick() }) {
-                        Icon(imageVector = ArrowBackIcon, contentDescription = "")
+                        Icon(imageVector = ArrowBackIcon, contentDescription = "ArrowBackIcon")
                     }
                     Text(
                         text = tasks?.first?.first ?: "",
