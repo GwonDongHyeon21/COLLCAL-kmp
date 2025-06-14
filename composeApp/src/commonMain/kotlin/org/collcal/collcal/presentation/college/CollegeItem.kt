@@ -63,7 +63,7 @@ fun CollegeItem(
             Card(
                 modifier = modifier
                     .fillMaxSize()
-                    .shadow(10.dp, RoundedCornerShape(21.dp))
+                    .shadow(5.dp, RoundedCornerShape(21.dp))
                     .sharedElement(
                         sharedContentState = rememberSharedContentState(
                             key = "college-$semesterInt"
@@ -98,7 +98,7 @@ fun CollegeItem(
                             shape = RoundedCornerShape(21.dp)
                         )
                         .clip(RoundedCornerShape(21.dp))
-                        .padding(10.dp)
+                        .padding(15.dp)
                 ) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),

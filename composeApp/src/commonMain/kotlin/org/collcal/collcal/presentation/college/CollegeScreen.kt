@@ -18,6 +18,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
@@ -64,7 +66,7 @@ fun CollegeScreen(
                     Row(
                         modifier = Modifier
                             .background(blue1)
-                            .padding(vertical = 30.dp, horizontal = 60.dp),
+                            .padding(horizontal = 60.dp),
                         horizontalArrangement = Arrangement.spacedBy(20.dp)
                     ) {
                         AnimatedContent(
@@ -75,7 +77,8 @@ fun CollegeScreen(
                             Column(
                                 modifier = Modifier
                                     .fillMaxHeight()
-                                    .fillMaxWidth(0.75f),
+                                    .fillMaxWidth(0.75f)
+                                    .padding(vertical = 30.dp),
                                 verticalArrangement = Arrangement.spacedBy(30.dp)
                             ) {
                                 when (currentScreen) {
@@ -131,7 +134,12 @@ fun CollegeScreen(
                             modifier = Modifier.padding(vertical = 5.dp)
                         )
 
-                        Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                        Column(
+                            verticalArrangement = Arrangement.spacedBy(10.dp),
+                            modifier = Modifier
+                                .padding(vertical = 20.dp)
+                                .verticalScroll(rememberScrollState())
+                        ) {
                             UserScreen(navigator, viewModel)
                             TasksScreen(navigator, viewModel) {
                                 // @formatter:off

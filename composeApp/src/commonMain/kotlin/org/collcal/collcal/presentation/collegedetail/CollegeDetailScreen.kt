@@ -57,7 +57,7 @@ fun CollegeDetailScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .shadow(10.dp, RoundedCornerShape(21.dp))
+                .shadow(5.dp, RoundedCornerShape(21.dp))
                 .sharedElement(
                     sharedContentState = rememberSharedContentState(
                         key = "college-$semesterInt"
