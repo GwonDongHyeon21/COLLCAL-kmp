@@ -1,6 +1,6 @@
 package org.collcal.collcal.presentation.tasks
 
-import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -14,10 +14,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -27,6 +26,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -38,6 +38,9 @@ import org.collcal.collcal.presentation.collegedetail.model.Task
 import org.collcal.collcal.presentation.tasks.component.TaskAddField
 import org.collcal.collcal.presentation.ui.theme.Strings
 import org.collcal.collcal.presentation.ui.theme.gray1
+import org.collcal.collcal.presentation.ui.theme.gray3
+import org.collcal.collcal.presentation.ui.theme.mainColor
+import org.collcal.collcal.presentation.ui.theme.white
 
 @Composable
 fun TasksScreen(
@@ -63,10 +66,12 @@ fun TasksScreen(
     }
 
     Card(
-        modifier = modifier,
-        colors = CardDefaults.cardColors(containerColor = gray1)
+        modifier = modifier
+            .padding(vertical = 5.dp)
+            .shadow(5.dp, RoundedCornerShape(7.dp)),
+        shape = RoundedCornerShape(7.dp)
     ) {
-        Column(modifier = Modifier.padding(10.dp)) {
+        Column(modifier = Modifier.padding(15.dp)) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
@@ -76,68 +81,77 @@ fun TasksScreen(
                     text = Strings.tasks,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.W700,
-                    color = gray1
+                    color = mainColor
                 )
-                Button(
+                Card(
                     onClick = { isAdd = !isAdd },
-                    shape = RoundedCornerShape(5.dp),
-                    border = BorderStroke(2.dp, gray1),
-                    colors = ButtonDefaults.buttonColors(containerColor = gray1)
+                    shape = RoundedCornerShape(26.dp),
+                    colors = CardDefaults.cardColors(containerColor = mainColor),
                 ) {
                     Text(
                         text = "+ ${Strings.Add}",
                         fontSize = 15.sp,
                         fontWeight = FontWeight.W500,
-                        color = gray1
+                        color = white,
+                        modifier = Modifier.padding(vertical = 5.dp, horizontal = 10.dp)
                     )
                 }
             }
 
-            Spacer(Modifier.height(10.dp))
+            HorizontalDivider(color = gray1, modifier = Modifier.padding(bottom = 10.dp))
+
             Text(
                 text = Strings.todo,
-                fontSize = 20.sp,
+                fontSize = 16.sp,
                 fontWeight = FontWeight.W700
             )
             Spacer(Modifier.height(5.dp))
-            Column(modifier = Modifier.weight(1f)) {
+            Column(
+                modifier = Modifier
+                    .height(100.dp)
+                    .fillMaxWidth()
+                    .background(gray3, RoundedCornerShape(7.dp))
+                    .padding(5.dp)
+            ) {
                 if (isAdd) {
-                    Row {
-                        Spacer(Modifier.width(10.dp))
-                        TaskAddField(
-                            taskTitle = taskTitle,
-                            taskInfo = taskInfo,
-                            onTaskTitleChanged = { taskTitle = it },
-                            onTaskInfoChanged = { taskInfo = it }
-                        ) {
-                            viewModel.addTask(taskTitle, taskInfo)
-                            isAdd = !isAdd
-                            taskTitle = ""
-                            taskInfo = ""
-                        }
+                    TaskAddField(
+                        taskTitle = taskTitle,
+                        taskInfo = taskInfo,
+                        onTaskTitleChanged = { taskTitle = it },
+                        onTaskInfoChanged = { taskInfo = it }
+                    ) {
+                        viewModel.addTask(taskTitle, taskInfo)
+                        isAdd = !isAdd
+                        taskTitle = ""
+                        taskInfo = ""
                     }
                     Spacer(Modifier.height(5.dp))
                 }
-
-                Spacer(Modifier.height(5.dp))
                 if (todos.isNotEmpty())
                     LazyColumn(verticalArrangement = Arrangement.spacedBy(5.dp)) {
                         items(todos) { TaskItem(it, viewModel) { onClick(it.first) } }
                     }
             }
 
+            Spacer(Modifier.height(10.dp))
             listOf(
                 Strings.scheduled to scheduledTasks,
                 Strings.completed to completedTasks
             ).forEach { task ->
-                Column(modifier = Modifier.weight(1f)) {
-                    Spacer(Modifier.height(10.dp))
-                    Text(
-                        text = task.first,
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.W700
-                    )
-                    Spacer(Modifier.height(5.dp))
+                Text(
+                    text = task.first,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.W700
+                )
+
+                Spacer(Modifier.height(5.dp))
+                Column(
+                    modifier = Modifier
+                        .height(100.dp)
+                        .fillMaxWidth()
+                        .background(gray3, RoundedCornerShape(7.dp))
+                        .padding(5.dp)
+                ) {
                     if (task.second.isNotEmpty())
                         LazyColumn(verticalArrangement = Arrangement.spacedBy(5.dp)) {
                             items(task.second) { TaskItem(it, viewModel) { onClick(it.first) } }

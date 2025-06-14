@@ -12,13 +12,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
@@ -28,6 +26,7 @@ import org.collcal.collcal.presentation.component.VCheckIcon
 import org.collcal.collcal.presentation.ui.theme.Strings
 import org.collcal.collcal.presentation.ui.theme.black
 import org.collcal.collcal.presentation.ui.theme.gray1
+import org.collcal.collcal.presentation.ui.theme.mainColor
 import org.collcal.collcal.presentation.ui.theme.white
 
 @Composable
@@ -36,19 +35,14 @@ fun TaskAddField(
     taskInfo: String,
     onTaskTitleChanged: (String) -> Unit,
     onTaskInfoChanged: (String) -> Unit,
-    color: Color = gray1,
     onClick: () -> Unit,
 ) {
     Card(
-        modifier = Modifier.fillMaxWidth().border(0.5.dp, gray1, RoundedCornerShape(9.38.dp)),
-        shape = RoundedCornerShape(9.38.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = color,
-            disabledContainerColor = color
-        )
+        modifier = Modifier.fillMaxWidth().border(1.dp, mainColor, RoundedCornerShape(19.dp)),
+        shape = RoundedCornerShape(19.dp)
     ) {
         Row(
-            modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp),
+            modifier = Modifier.padding(vertical = 5.dp, horizontal = 10.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(5.dp)
         ) {
@@ -56,10 +50,13 @@ fun TaskAddField(
                 value = taskTitle,
                 onValueChange = { onTaskTitleChanged(it) },
                 textStyle = TextStyle(fontSize = 12.sp),
-                modifier = Modifier.weight(1f).border(0.5.dp, black).background(white),
+                modifier = Modifier
+                    .weight(1f)
+                    .border(0.5.dp, black, RoundedCornerShape(2.dp))
+                    .background(white),
                 decorationBox = {
                     Box(
-                        modifier = Modifier.padding(5.dp),
+                        modifier = Modifier.padding(2.dp),
                         contentAlignment = Alignment.CenterStart
                     ) {
                         if (taskTitle.isEmpty())
@@ -79,10 +76,13 @@ fun TaskAddField(
                 value = taskInfo,
                 onValueChange = { onTaskInfoChanged(it) },
                 textStyle = TextStyle(fontSize = 12.sp),
-                modifier = Modifier.weight(1f).border(0.5.dp, black).background(white),
+                modifier = Modifier
+                    .weight(1f)
+                    .border(0.5.dp, black, RoundedCornerShape(2.dp))
+                    .background(white),
                 decorationBox = {
                     Box(
-                        modifier = Modifier.padding(5.dp),
+                        modifier = Modifier.padding(2.dp),
                         contentAlignment = Alignment.CenterStart
                     ) {
                         if (taskTitle.isEmpty())
@@ -103,14 +103,13 @@ fun TaskAddField(
                 contentDescription = "VCheckIcon",
                 tint = white,
                 modifier = Modifier
-                    .size(24.dp)
+                    .size(20.dp)
                     .clickable(
                         onClick = { if (taskTitle.isNotEmpty()) onClick() },
                         interactionSource = null,
                         indication = null
                     )
-                    .background(gray1, RoundedCornerShape(5.dp))
-                    .padding(2.dp)
+                    .background(mainColor, RoundedCornerShape(2.dp))
             )
         }
     }

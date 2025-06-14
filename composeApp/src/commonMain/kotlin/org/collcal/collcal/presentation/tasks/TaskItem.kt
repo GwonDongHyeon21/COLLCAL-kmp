@@ -27,7 +27,6 @@ import org.collcal.collcal.presentation.component.CustomDropDown
 import org.collcal.collcal.presentation.component.MoreDotsIconButton
 import org.collcal.collcal.presentation.tasks.component.TaskAddField
 import org.collcal.collcal.presentation.ui.theme.Strings
-import org.collcal.collcal.presentation.ui.theme.gray1
 import org.collcal.collcal.presentation.ui.theme.mainColor
 
 @Composable
@@ -47,7 +46,6 @@ fun TaskItem(
             taskInfo = taskInfo,
             onTaskTitleChanged = { taskTitle = it },
             onTaskInfoChanged = { taskInfo = it },
-            color = if (task.second) gray1 else gray1
         ) {
             viewModel.modifyTask(task.first.id, taskTitle, taskInfo)
             isModify = !isModify
