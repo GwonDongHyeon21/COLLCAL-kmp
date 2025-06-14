@@ -109,7 +109,7 @@ fun TaskAddField(
                         interactionSource = null,
                         indication = null
                     )
-                    .background(mainColor, RoundedCornerShape(2.dp))
+                    .background(mainColor, RoundedCornerShape(5.dp))
             )
         }
     }

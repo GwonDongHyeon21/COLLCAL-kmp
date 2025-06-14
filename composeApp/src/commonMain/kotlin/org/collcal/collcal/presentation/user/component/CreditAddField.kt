@@ -179,7 +179,7 @@ fun CreditAddField(
                         interactionSource = null,
                         indication = null
                     )
-                    .background(mainColor, RoundedCornerShape(2.dp))
+                    .background(mainColor, RoundedCornerShape(5.dp))
                     .padding(2.dp)
             )
         }

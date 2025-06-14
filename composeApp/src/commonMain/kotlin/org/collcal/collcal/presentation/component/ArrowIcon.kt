@@ -48,9 +48,9 @@ val DownArrowIcon = ImageVector.Builder(
         fill = SolidColor(black),
         pathFillType = PathFillType.NonZero
     ) {
-        moveTo(7f, 10f)
-        lineTo(12f, 15f)
-        lineTo(17f, 10f)
+        moveTo(5f, 6f)
+        lineTo(12f, 18f)
+        lineTo(19f, 6f)
         close()
     }
 }.build()
@@ -65,9 +65,9 @@ val UpArrowIcon = ImageVector.Builder(
         fill = SolidColor(black),
         pathFillType = PathFillType.NonZero
     ) {
-        moveTo(7f, 14f)
-        lineTo(12f, 9f)
-        lineTo(17f, 14f)
+        moveTo(5f, 18f)
+        lineTo(12f, 6f)
+        lineTo(19f, 18f)
         close()
     }
 }.build()
