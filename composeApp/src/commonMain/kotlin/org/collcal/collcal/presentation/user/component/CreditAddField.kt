@@ -1,5 +1,6 @@
 package org.collcal.collcal.presentation.user.component
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -34,6 +35,8 @@ import org.collcal.collcal.presentation.component.VCheckIcon
 import org.collcal.collcal.presentation.ui.theme.Strings
 import org.collcal.collcal.presentation.ui.theme.black
 import org.collcal.collcal.presentation.ui.theme.gray1
+import org.collcal.collcal.presentation.ui.theme.gray4
+import org.collcal.collcal.presentation.ui.theme.mainColor
 import org.collcal.collcal.presentation.ui.theme.white
 
 @Composable
@@ -62,13 +65,13 @@ fun CreditAddField(
         "D-",
         "F",
         "P",
-        "NP"
+        "NP",
+        "-"
     )
 
     Card(
-        modifier = Modifier.fillMaxWidth().border(1.dp, black, RoundedCornerShape(5.dp)),
-        shape = RoundedCornerShape(5.dp),
-        colors = CardDefaults.cardColors(containerColor = gray1)
+        shape = RoundedCornerShape(7.dp),
+        border = BorderStroke(1.dp, gray4)
     ) {
         Row(
             modifier = Modifier.padding(vertical = 8.dp, horizontal = 10.dp),
@@ -79,7 +82,10 @@ fun CreditAddField(
                 value = course,
                 onValueChange = { onCourseChanged(it) },
                 textStyle = TextStyle(fontSize = 12.sp),
-                modifier = Modifier.weight(1f).border(0.5.dp, black).background(white),
+                modifier = Modifier
+                    .weight(1f)
+                    .border(0.5.dp, black, RoundedCornerShape(2.dp))
+                    .background(white),
                 decorationBox = {
                     Box(
                         modifier = Modifier.padding(5.dp),
@@ -103,7 +109,10 @@ fun CreditAddField(
                 onValueChange = { if (it.all { value -> value.isDigit() }) onCreditChanged(it) },
                 keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                 textStyle = TextStyle(fontSize = 12.sp),
-                modifier = Modifier.weight(1f).border(0.5.dp, black).background(white),
+                modifier = Modifier
+                    .weight(1f)
+                    .border(0.5.dp, black, RoundedCornerShape(2.dp))
+                    .background(white),
                 decorationBox = {
                     Box(
                         modifier = Modifier.padding(5.dp),
@@ -129,7 +138,7 @@ fun CreditAddField(
                     textStyle = TextStyle(fontSize = 12.sp),
                     modifier = Modifier
                         .clickable { gradeExpanded = !gradeExpanded }
-                        .border(0.5.dp, black)
+                        .border(0.5.dp, black, RoundedCornerShape(2.dp))
                         .background(white),
                     decorationBox = {
                         Box(
@@ -170,7 +179,7 @@ fun CreditAddField(
                         interactionSource = null,
                         indication = null
                     )
-                    .background(gray1, RoundedCornerShape(5.dp))
+                    .background(mainColor, RoundedCornerShape(2.dp))
                     .padding(2.dp)
             )
         }

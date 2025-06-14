@@ -9,11 +9,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -22,6 +21,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -31,7 +31,8 @@ import org.collcal.collcal.platform.getPlatformType
 import org.collcal.collcal.presentation.college.CollegeViewModel
 import org.collcal.collcal.presentation.ui.theme.Strings
 import org.collcal.collcal.presentation.ui.theme.gray1
-import org.collcal.collcal.presentation.ui.theme.white
+import org.collcal.collcal.presentation.ui.theme.gray3
+import org.collcal.collcal.presentation.ui.theme.mainColor
 
 @Composable
 fun UserScreen(
@@ -59,18 +60,20 @@ fun UserScreen(
     }
 
     Card(
-        modifier = modifier,
+        modifier = modifier
+            .padding(vertical = 5.dp)
+            .shadow(5.dp, RoundedCornerShape(7.dp)),
         shape = RoundedCornerShape(7.dp),
-        colors = CardDefaults.cardColors(containerColor = gray1)
     ) {
         Column(
-            modifier = Modifier.padding(10.dp),
+            modifier = Modifier.padding(15.dp),
             verticalArrangement = Arrangement.spacedBy(5.dp),
         ) {
             Text(
                 text = userInfo.department,
                 fontSize = 20.sp,
-                fontWeight = FontWeight.W800
+                fontWeight = FontWeight.W800,
+                color = mainColor
             )
             Text(
                 text = userInfo.semester,
@@ -78,9 +81,11 @@ fun UserScreen(
                 fontWeight = FontWeight.W500
             )
 
+            HorizontalDivider(color = gray1, modifier = Modifier.padding(vertical = 5.dp))
+
             Card(
-                shape = RoundedCornerShape(4.dp),
-                colors = CardDefaults.cardColors(containerColor = white)
+                shape = RoundedCornerShape(7.dp),
+                colors = CardDefaults.cardColors(containerColor = gray3)
             ) {
                 Row(
                     modifier = Modifier.fillMaxWidth().padding(vertical = 20.dp),
@@ -110,10 +115,7 @@ fun UserScreen(
                 }
             }
 
-            Column(
-                modifier = Modifier.verticalScroll(rememberScrollState()),
-                verticalArrangement = Arrangement.spacedBy(5.dp),
-            ) {
+            Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
                 listOf(
                     Triple(
                         "전공필수",
