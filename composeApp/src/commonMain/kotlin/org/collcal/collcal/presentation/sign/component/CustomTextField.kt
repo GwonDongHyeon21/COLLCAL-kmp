@@ -21,7 +21,7 @@ import org.collcal.collcal.presentation.component.DownArrowIcon
 import org.collcal.collcal.presentation.component.EyeIcon
 import org.collcal.collcal.presentation.component.EyeOffIcon
 import org.collcal.collcal.presentation.ui.theme.black
-import org.collcal.collcal.presentation.ui.theme.gray18
+import org.collcal.collcal.presentation.ui.theme.gray1
 import org.collcal.collcal.presentation.ui.theme.mainColor
 import org.collcal.collcal.presentation.ui.theme.transparent
 
@@ -47,7 +47,7 @@ fun CustomOutlinedTextField(
             Text(
                 text = placeholder,
                 fontWeight = FontWeight.W400,
-                color = gray18
+                color = gray1
             )
         },
         keyboardOptions = if (numBerOption) KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number) else KeyboardOptions.Default,
@@ -79,7 +79,7 @@ fun CustomPasswordTextField(
             Text(
                 text = placeholder,
                 fontWeight = FontWeight.W400,
-                color = gray18
+                color = gray1
             )
         },
         modifier = Modifier.fillMaxWidth().border(1.dp, mainColor, RoundedCornerShape(21.dp)),
@@ -121,7 +121,7 @@ fun CustomDropDownTextField(
             Text(
                 text = placeholder,
                 fontWeight = FontWeight.W400,
-                color = gray18
+                color = gray1
             )
         },
         modifier = Modifier

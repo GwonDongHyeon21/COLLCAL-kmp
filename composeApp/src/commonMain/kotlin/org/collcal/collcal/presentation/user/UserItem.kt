@@ -1,5 +1,6 @@
 package org.collcal.collcal.presentation.user
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -33,7 +34,9 @@ import org.collcal.collcal.presentation.component.UpArrowIcon
 import org.collcal.collcal.presentation.ui.theme.Strings
 import org.collcal.collcal.presentation.ui.theme.black
 import org.collcal.collcal.presentation.ui.theme.gray1
-import org.collcal.collcal.presentation.ui.theme.gray8
+import org.collcal.collcal.presentation.ui.theme.gray3
+import org.collcal.collcal.presentation.ui.theme.gray4
+import org.collcal.collcal.presentation.ui.theme.mainColor
 import org.collcal.collcal.presentation.ui.theme.white
 import org.collcal.collcal.presentation.user.component.CreditAddField
 import org.collcal.collcal.presentation.user.model.Credit
@@ -52,15 +55,15 @@ fun UserItem(
     var grade by remember { mutableStateOf("") }
 
     Card(
-        shape = RoundedCornerShape(4.dp),
-        colors = CardDefaults.cardColors(containerColor = white)
+        shape = RoundedCornerShape(7.dp),
+        colors = CardDefaults.cardColors(containerColor = gray3)
     ) {
         Column(
-            modifier = Modifier.padding(vertical = 10.dp, horizontal = 20.dp),
+            modifier = Modifier.padding(10.dp),
             verticalArrangement = Arrangement.spacedBy(5.dp)
         ) {
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 5.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
@@ -78,6 +81,7 @@ fun UserItem(
                 Icon(
                     imageVector = if (creditsExpanded) UpArrowIcon else DownArrowIcon,
                     contentDescription = "DownArrowIcon",
+                    tint = mainColor,
                     modifier = Modifier.clickable(
                         onClick = {
                             creditsExpanded = !creditsExpanded
@@ -93,7 +97,6 @@ fun UserItem(
             }
 
             if (creditsExpanded) {
-                Spacer(Modifier.height(5.dp))
                 creditInfo.third.forEach {
                     var isModify by remember { mutableStateOf(false) }
                     var moreActionExpanded by remember { mutableStateOf(false) }
@@ -123,8 +126,8 @@ fun UserItem(
                         )
                     } else
                         Card(
-                            shape = RoundedCornerShape(5.dp),
-                            colors = CardDefaults.cardColors(containerColor = gray1)
+                            shape = RoundedCornerShape(7.dp),
+                            border = BorderStroke(1.dp, gray4)
                         ) {
                             Box(modifier = Modifier.fillMaxWidth().padding(10.dp)) {
                                 Text(
@@ -185,8 +188,8 @@ fun UserItem(
                     )
 
                 Card(
-                    shape = RoundedCornerShape(5.dp),
-                    colors = CardDefaults.cardColors(containerColor = gray8)
+                    shape = RoundedCornerShape(7.dp),
+                    border = BorderStroke(1.dp, gray4)
                 ) {
                     Row(
                         modifier = Modifier

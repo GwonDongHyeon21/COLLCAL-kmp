@@ -138,7 +138,9 @@ class CollegeViewModel : ViewModel() {
                 _dList.value.sumOf { it.credit.toInt() }
         val allList = _aList.value + _bList.value + _cList.value + _dList.value
         _averageCredit.value =
-            floor(allList.sumOf { it.credit.toInt() * getGradeToDouble(it.grade) } / allList.sumOf { it.credit.toInt() } * 1000) / 1000
+            floor(allList.sumOf {
+                (if (it.credit == "-") 0 else it.credit.toInt()) * getGradeToDouble(it.grade)
+            } / allList.sumOf { if (it.credit == "-") 0 else it.credit.toInt() } * 1000) / 1000
     }
 
     private fun getGradeToDouble(grade: String): Double {
@@ -158,6 +160,7 @@ class CollegeViewModel : ViewModel() {
             "F" -> 0.0
             "P" -> 0.0
             "NP" -> 0.0
+            "-" -> 0.0
             else -> 0.0
         }
     }

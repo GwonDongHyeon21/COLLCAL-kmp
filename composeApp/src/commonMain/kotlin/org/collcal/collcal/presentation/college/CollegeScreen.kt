@@ -6,21 +6,21 @@ import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -29,19 +29,17 @@ import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import org.collcal.collcal.navigation.Navigator
 import org.collcal.collcal.navigation.Screen
 import org.collcal.collcal.platform.PlatformType
 import org.collcal.collcal.platform.getPlatformType
 import org.collcal.collcal.presentation.collegedetail.CollegeDetailScreen
 import org.collcal.collcal.presentation.tasks.TasksScreen
-import org.collcal.collcal.presentation.ui.theme.gray1
-import org.collcal.collcal.presentation.ui.theme.transparent
+import org.collcal.collcal.presentation.ui.theme.blue1
+import org.collcal.collcal.presentation.ui.theme.gray2
+import org.collcal.collcal.presentation.ui.theme.mainColor
 import org.collcal.collcal.presentation.user.UserScreen
 
 @OptIn(ExperimentalSharedTransitionApi::class)
@@ -58,7 +56,6 @@ fun CollegeScreen(
     var screen by remember { mutableStateOf<Screen>(Screen.College) }
     val isSelected = remember { mutableStateMapOf<Int, Boolean>() }
     var selectedSemester by remember { mutableStateOf<Int?>(null) }
-    var selectedCollegeItemColor by remember { mutableStateOf(transparent) }
 
     if (isLoading)
         Box(modifier = Modifier.fillMaxSize()) { CircularProgressIndicator() }
@@ -66,7 +63,12 @@ fun CollegeScreen(
         when (getPlatformType()) {
             PlatformType.WEB -> {
                 SharedTransitionLayout {
-                    Row {
+                    Row(
+                        modifier = Modifier
+                            .background(blue1)
+                            .padding(horizontal = 60.dp),
+                        horizontalArrangement = Arrangement.spacedBy(20.dp)
+                    ) {
                         AnimatedContent(
                             targetState = screen,
                             transitionSpec = { fadeIn() togetherWith fadeOut() },
@@ -76,26 +78,20 @@ fun CollegeScreen(
                                 modifier = Modifier
                                     .fillMaxHeight()
                                     .fillMaxWidth(0.75f)
-                                    .padding(20.dp)
+                                    .padding(vertical = 30.dp),
+                                verticalArrangement = Arrangement.spacedBy(30.dp)
                             ) {
                                 when (currentScreen) {
                                     is Screen.College ->
                                         colleges.forEach { college ->
-                                            Row(
-                                                modifier = Modifier.weight(1f).padding(10.dp),
-                                                verticalAlignment = Alignment.CenterVertically,
-                                                horizontalArrangement = Arrangement.spacedBy(20.dp)
-                                            ) {
-                                                Text(
-                                                    text = college.first,
-                                                    fontSize = 30.sp,
-                                                    fontWeight = FontWeight.W800,
+                                            Box(modifier = Modifier.weight(1f).fillMaxWidth()) {
+                                                Box(
+                                                    modifier = Modifier
+                                                        .fillMaxSize()
+                                                        .padding(15.dp)
+                                                        .background(mainColor)
                                                 )
-
-                                                Row(
-                                                    modifier = Modifier.fillMaxWidth(),
-                                                    horizontalArrangement = Arrangement.spacedBy(10.dp)
-                                                ) {
+                                                Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                                                     CollegeItem(
                                                         Modifier.weight(1f),
                                                         viewModel,
@@ -105,9 +101,8 @@ fun CollegeScreen(
                                                         // @formatter:off
                                                         { selectedSemester = if (isSelected[it] == true) it else null },
                                                         { selectedSemester?.let { int -> viewModel.changeTaskSemester(it, int) } },
-                                                        { semesterInt, color ->
-                                                            selectedSemester = semesterInt
-                                                            selectedCollegeItemColor = color
+                                                        {
+                                                            selectedSemester = it
                                                             screen = Screen.CollegeDetail
                                                         },
                                                         this@SharedTransitionLayout,
@@ -121,8 +116,8 @@ fun CollegeScreen(
                                     is Screen.CollegeDetail ->
                                         CollegeDetailScreen(
                                             colleges,
+                                            userInfo.semesterInt,
                                             selectedSemester,
-                                            selectedCollegeItemColor,
                                             this@SharedTransitionLayout,
                                             this@AnimatedContent
                                         ) {
@@ -134,10 +129,18 @@ fun CollegeScreen(
                             }
                         }
 
-                        VerticalDivider(color = gray1)
-                        Column(modifier = Modifier.padding(20.dp)) {
+                        VerticalDivider(
+                            color = gray2,
+                            modifier = Modifier.padding(vertical = 5.dp)
+                        )
+
+                        Column(
+                            verticalArrangement = Arrangement.spacedBy(10.dp),
+                            modifier = Modifier
+                                .padding(vertical = 20.dp)
+                                .verticalScroll(rememberScrollState())
+                        ) {
                             UserScreen(navigator, viewModel)
-                            Spacer(Modifier.height(10.dp))
                             TasksScreen(navigator, viewModel) {
                                 // @formatter:off
                                 selectedSemester?.let { int -> viewModel.changeTaskSemester(it, int) }
@@ -162,53 +165,44 @@ fun CollegeScreen(
                                     Column(
                                         modifier = Modifier
                                             .fillMaxSize()
+                                            .background(blue1)
                                             .padding(innerPadding)
                                             .padding(20.dp),
                                         verticalArrangement = Arrangement.spacedBy(10.dp)
                                     ) {
-                                        Text(
-                                            text = colleges[page].first,
-                                            fontSize = 30.sp,
-                                            fontWeight = FontWeight.W800,
-                                        )
-
-                                        Column(
-                                            modifier = Modifier.fillMaxWidth(),
-                                            verticalArrangement = Arrangement.spacedBy(10.dp)
-                                        ) {
-                                            CollegeItem(
-                                                Modifier.weight(1f),
-                                                viewModel,
-                                                colleges[page].second,
-                                                userInfo.semesterInt,
-                                                isSelected,
-                                                // @formatter:off
+                                        CollegeItem(
+                                            Modifier.weight(1f),
+                                            viewModel,
+                                            colleges[page].second,
+                                            userInfo.semesterInt,
+                                            isSelected,
+                                            // @formatter:off
                                             { selectedSemester = if (isSelected[it] == true) it else null },
                                             { selectedSemester?.let { int -> viewModel.changeTaskSemester(it, int) } },
-                                            { semesterInt, color ->
-                                                selectedSemester = semesterInt
-                                                selectedCollegeItemColor = color
+                                            {
+                                                selectedSemester = it
                                                 screen = Screen.CollegeDetail
                                             },
                                             this@SharedTransitionLayout,
                                             this@AnimatedContent
                                             // @formatter:on
-                                            )
-                                        }
+                                        )
                                     }
                                 }
                             }
 
                             is Screen.CollegeDetail ->
-                                CollegeDetailScreen(
-                                    colleges,
-                                    selectedSemester,
-                                    selectedCollegeItemColor,
-                                    this@SharedTransitionLayout,
-                                    this@AnimatedContent,
-                                    innerPadding
-                                ) {
-                                    screen = Screen.College
+                                Box(modifier = Modifier.padding(20.dp)) {
+                                    CollegeDetailScreen(
+                                        colleges,
+                                        userInfo.semesterInt,
+                                        selectedSemester,
+                                        this@SharedTransitionLayout,
+                                        this@AnimatedContent,
+                                        innerPadding
+                                    ) {
+                                        screen = Screen.College
+                                    }
                                 }
 
                             else -> {}

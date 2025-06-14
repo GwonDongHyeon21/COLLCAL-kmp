@@ -1,6 +1,5 @@
 package org.collcal.collcal.presentation.tasks
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -28,10 +27,7 @@ import org.collcal.collcal.presentation.component.CustomDropDown
 import org.collcal.collcal.presentation.component.MoreDotsIconButton
 import org.collcal.collcal.presentation.tasks.component.TaskAddField
 import org.collcal.collcal.presentation.ui.theme.Strings
-import org.collcal.collcal.presentation.ui.theme.gray12
-import org.collcal.collcal.presentation.ui.theme.gray17
-import org.collcal.collcal.presentation.ui.theme.gray4
-import org.collcal.collcal.presentation.ui.theme.gray5
+import org.collcal.collcal.presentation.ui.theme.mainColor
 
 @Composable
 fun TaskItem(
@@ -50,7 +46,6 @@ fun TaskItem(
             taskInfo = taskInfo,
             onTaskTitleChanged = { taskTitle = it },
             onTaskInfoChanged = { taskInfo = it },
-            color = if (task.second) gray12 else gray5
         ) {
             viewModel.modifyTask(task.first.id, taskTitle, taskInfo)
             isModify = !isModify
@@ -64,8 +59,7 @@ fun TaskItem(
                     interactionSource = null,
                     indication = null
                 )
-                .border(0.5.dp, gray4, RoundedCornerShape(9.38.dp))
-                .background(if (task.second) gray12 else gray5, RoundedCornerShape(9.38.dp))
+                .border(1.dp, mainColor, RoundedCornerShape(19.dp))
                 .padding(vertical = 5.dp, horizontal = 10.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -75,15 +69,16 @@ fun TaskItem(
             ) {
                 Text(
                     text = task.first.content,
-                    fontSize = 18.75.sp,
+                    fontSize = 14.sp,
                     fontWeight = FontWeight.W500,
                     textDecoration = TextDecoration.Underline,
+                    color = mainColor
                 )
                 Text(
                     text = task.first.info,
-                    fontSize = 10.sp,
+                    fontSize = 8.sp,
                     fontWeight = FontWeight.W500,
-                    color = gray17,
+                    color = mainColor,
                 )
             }
 

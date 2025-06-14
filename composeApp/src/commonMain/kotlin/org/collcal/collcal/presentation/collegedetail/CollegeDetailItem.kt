@@ -39,11 +39,8 @@ import org.collcal.collcal.presentation.component.DownArrowIcon
 import org.collcal.collcal.presentation.component.UpArrowIcon
 import org.collcal.collcal.presentation.ui.theme.Strings
 import org.collcal.collcal.presentation.ui.theme.black
-import org.collcal.collcal.presentation.ui.theme.gray14
-import org.collcal.collcal.presentation.ui.theme.gray17
-import org.collcal.collcal.presentation.ui.theme.gray2
-import org.collcal.collcal.presentation.ui.theme.gray4
-import org.collcal.collcal.presentation.ui.theme.purple1
+import org.collcal.collcal.presentation.ui.theme.blue1
+import org.collcal.collcal.presentation.ui.theme.gray1
 import org.collcal.collcal.presentation.ui.theme.transparent
 
 @Composable
@@ -65,8 +62,8 @@ fun CollegeDetailItem(
 
     Card(
         shape = RoundedCornerShape(10.03.dp),
-        border = BorderStroke(0.53.dp, gray4),
-        colors = CardDefaults.cardColors(containerColor = purple1)
+        border = BorderStroke(0.53.dp, gray1),
+        colors = CardDefaults.cardColors(containerColor = blue1)
     ) {
         Column(
             modifier = Modifier.padding(10.dp),
@@ -90,7 +87,7 @@ fun CollegeDetailItem(
                         text = task.info,
                         fontSize = 12.sp,
                         fontWeight = FontWeight.W500,
-                        color = gray17,
+                        color = gray1,
                     )
                 }
 
@@ -120,9 +117,9 @@ fun CollegeDetailItem(
                             .fillMaxSize()
                             .border(1.dp, black, RoundedCornerShape(3.dp)),
                         colors = TextFieldDefaults.colors(
-                            focusedContainerColor = gray2,
-                            unfocusedContainerColor = gray2,
-                            disabledContainerColor = gray2,
+                            focusedContainerColor = gray1,
+                            unfocusedContainerColor = gray1,
+                            disabledContainerColor = gray1,
                             focusedIndicatorColor = transparent,
                             unfocusedIndicatorColor = transparent,
                             disabledIndicatorColor = transparent,
@@ -132,7 +129,7 @@ fun CollegeDetailItem(
                             Text(
                                 text = Strings.taskContentPlaceholder,
                                 fontWeight = FontWeight.W500,
-                                color = gray14
+                                color = gray1
                             )
                         }
                     )

@@ -25,7 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import org.collcal.collcal.presentation.sign.SignViewModel
 import org.collcal.collcal.presentation.ui.theme.Strings
-import org.collcal.collcal.presentation.ui.theme.gray7
+import org.collcal.collcal.presentation.ui.theme.gray1
 import org.collcal.collcal.presentation.ui.theme.mainColor
 import org.collcal.collcal.presentation.ui.theme.red
 import org.collcal.collcal.presentation.ui.theme.white
@@ -70,7 +70,7 @@ fun SignUpUserInfo(
                 Text(
                     text = checkRedundancy.first,
                     modifier = Modifier.padding(start = 30.dp),
-                    color = if (checkRedundancy.second) gray7 else red
+                    color = if (checkRedundancy.second) gray1 else red
                 )
                 Spacer(Modifier.weight(1f))
                 Text(
