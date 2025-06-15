@@ -56,6 +56,7 @@ fun CollegeScreen(
     var screen by remember { mutableStateOf<Screen>(Screen.College) }
     val isSelected = remember { mutableStateMapOf<Int, Boolean>() }
     var selectedSemester by remember { mutableStateOf<Int?>(null) }
+    var selectedSemesterForDetail by remember { mutableStateOf<Int?>(null) }
 
     if (isLoading)
         Box(modifier = Modifier.fillMaxSize()) { CircularProgressIndicator() }
@@ -79,7 +80,7 @@ fun CollegeScreen(
                                     .fillMaxHeight()
                                     .fillMaxWidth(0.75f)
                                     .padding(vertical = 30.dp),
-                                verticalArrangement = Arrangement.spacedBy(30.dp)
+                                verticalArrangement = Arrangement.spacedBy(20.dp)
                             ) {
                                 when (currentScreen) {
                                     is Screen.College ->
@@ -88,10 +89,10 @@ fun CollegeScreen(
                                                 Box(
                                                     modifier = Modifier
                                                         .fillMaxSize()
-                                                        .padding(15.dp)
+                                                        .padding(25.dp)
                                                         .background(mainColor)
                                                 )
-                                                Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                                                Row {
                                                     CollegeItem(
                                                         Modifier.weight(1f),
                                                         viewModel,
@@ -102,7 +103,7 @@ fun CollegeScreen(
                                                         { selectedSemester = if (isSelected[it] == true) it else null },
                                                         { selectedSemester?.let { int -> viewModel.changeTaskSemester(it, int) } },
                                                         {
-                                                            selectedSemester = it
+                                                            selectedSemesterForDetail = it
                                                             screen = Screen.CollegeDetail
                                                         },
                                                         this@SharedTransitionLayout,
@@ -117,7 +118,7 @@ fun CollegeScreen(
                                         CollegeDetailScreen(
                                             colleges,
                                             userInfo.semesterInt,
-                                            selectedSemester,
+                                            selectedSemesterForDetail,
                                             this@SharedTransitionLayout,
                                             this@AnimatedContent
                                         ) {
@@ -152,7 +153,10 @@ fun CollegeScreen(
             }
 
             PlatformType.ANDROID -> {
-                val pagerState = rememberPagerState(pageCount = { colleges.size })
+                val pagerState = rememberPagerState(
+                    pageCount = { colleges.size },
+                    initialPage = userInfo.semesterInt / colleges.size
+                )
                 SharedTransitionLayout {
                     AnimatedContent(
                         targetState = screen,
@@ -167,8 +171,7 @@ fun CollegeScreen(
                                             .fillMaxSize()
                                             .background(blue1)
                                             .padding(innerPadding)
-                                            .padding(20.dp),
-                                        verticalArrangement = Arrangement.spacedBy(10.dp)
+                                            .padding(20.dp)
                                     ) {
                                         CollegeItem(
                                             Modifier.weight(1f),
@@ -180,7 +183,7 @@ fun CollegeScreen(
                                             { selectedSemester = if (isSelected[it] == true) it else null },
                                             { selectedSemester?.let { int -> viewModel.changeTaskSemester(it, int) } },
                                             {
-                                                selectedSemester = it
+                                                selectedSemesterForDetail = it
                                                 screen = Screen.CollegeDetail
                                             },
                                             this@SharedTransitionLayout,
@@ -196,7 +199,7 @@ fun CollegeScreen(
                                     CollegeDetailScreen(
                                         colleges,
                                         userInfo.semesterInt,
-                                        selectedSemester,
+                                        selectedSemesterForDetail,
                                         this@SharedTransitionLayout,
                                         this@AnimatedContent,
                                         innerPadding
