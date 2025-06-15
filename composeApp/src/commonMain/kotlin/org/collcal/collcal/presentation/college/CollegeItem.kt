@@ -7,6 +7,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -46,7 +47,7 @@ import org.collcal.collcal.presentation.ui.theme.white
 fun CollegeItem(
     modifier: Modifier,
     viewModel: CollegeViewModel,
-    collegeItem: List<Pair<Pair<String, Int>, List<Pair<Task, Boolean>>>>,
+    collegeItem: List<Pair<Pair<String, Int>, List<Task>>>,
     userSemesterInt: Int,
     isSelected: SnapshotStateMap<Int, Boolean>,
     onClick: (Int) -> Unit,
@@ -60,78 +61,90 @@ fun CollegeItem(
         val selectedState = isSelected[semesterInt] ?: false
 
         with(sharedTransitionScope) {
-            Card(
-                modifier = modifier
-                    .fillMaxSize()
-                    .shadow(5.dp, RoundedCornerShape(21.dp))
-                    .sharedElement(
-                        sharedContentState = rememberSharedContentState(
-                            key = "college-$semesterInt"
-                        ),
-                        animatedVisibilityScope = animatedContentScope
-                    ),
-                shape = RoundedCornerShape(21.dp),
-                border = if (isSelected[semesterInt] == true) BorderStroke(
-                    2.dp,
-                    mainColor
-                ) else null
-            ) {
-                Column(
-                    modifier = Modifier
+            Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                if (isSelected[semesterInt] == true)
+                    Box(
+                        modifier = modifier
+                            .fillMaxSize()
+                            .clip(RoundedCornerShape(21.dp))
+                            .background(mainColor.copy(0.5f))
+                    )
+                Card(
+                    modifier = modifier
                         .fillMaxSize()
-                        .clickable(
-                            onClick = {
-                                isSelected.keys.forEach { isSelected[it] = false }
-                                isSelected[semesterInt] = !selectedState
-                                onClick(semesterInt)
-                            },
-                            interactionSource = null,
-                            indication = null
-                        )
-                        .background(
-                            brush = Brush.verticalGradient(
-                                colors = listOf(
-                                    white,
-                                    if (userSemesterInt == semesterInt) mainColor.copy(0.4f) else white
-                                )
+                        .padding(5.dp)
+                        .shadow(5.dp, RoundedCornerShape(21.dp))
+                        .sharedElement(
+                            sharedContentState = rememberSharedContentState(
+                                key = "college-$semesterInt"
                             ),
-                            shape = RoundedCornerShape(21.dp)
-                        )
-                        .clip(RoundedCornerShape(21.dp))
-                        .padding(15.dp)
+                            animatedVisibilityScope = animatedContentScope
+                        ),
+                    shape = RoundedCornerShape(21.dp),
+                    border = if (isSelected[semesterInt] == true) BorderStroke(
+                        2.dp,
+                        mainColor
+                    ) else null
                 ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.Bottom,
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text(
-                            text = college.first.first,
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.W700,
-                        )
-                        IconButton(
-                            onClick = {
-                                onClickZoomIn(semesterInt)
-                                isSelected.keys.forEach { isSelected[it] = false }
-                            },
-                            modifier = Modifier.size(20.dp),
-                            colors = IconButtonDefaults.iconButtonColors(containerColor = mainColor)
-                        ) {
-                            Icon(
-                                imageVector = RightArrowIcon,
-                                contentDescription = "RightArrowIcon",
-                                tint = white
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .clickable(
+                                onClick = {
+                                    isSelected.keys.forEach { isSelected[it] = false }
+                                    isSelected[semesterInt] = !selectedState
+                                    onClick(semesterInt)
+                                },
+                                interactionSource = null,
+                                indication = null
                             )
+                            .background(
+                                brush = Brush.verticalGradient(
+                                    colors = listOf(
+                                        white,
+                                        if (userSemesterInt == semesterInt) mainColor.copy(0.4f) else white
+                                    )
+                                ),
+                                shape = RoundedCornerShape(21.dp)
+                            )
+                            .clip(RoundedCornerShape(21.dp))
+                            .padding(15.dp)
+                    ) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.Bottom,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                text = college.first.first,
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.W700,
+                            )
+                            IconButton(
+                                onClick = {
+                                    onClickZoomIn(semesterInt)
+                                    isSelected.keys.forEach { isSelected[it] = false }
+                                },
+                                modifier = Modifier.size(20.dp),
+                                colors = IconButtonDefaults.iconButtonColors(containerColor = mainColor)
+                            ) {
+                                Icon(
+                                    imageVector = RightArrowIcon,
+                                    contentDescription = "RightArrowIcon",
+                                    tint = white
+                                )
+                            }
                         }
-                    }
 
-                    Spacer(Modifier.height(10.dp))
-                    HorizontalDivider(color = gray1)
+                        Spacer(Modifier.height(10.dp))
+                        HorizontalDivider(color = gray1)
 
-                    Spacer(Modifier.height(10.dp))
-                    LazyColumn(verticalArrangement = Arrangement.spacedBy(5.dp)) {
-                        items(college.second) { TaskItem(it, viewModel) { onClickTask(it.first) } }
+                        Spacer(Modifier.height(10.dp))
+                        LazyColumn(verticalArrangement = Arrangement.spacedBy(5.dp)) {
+                            items(college.second) {
+                                TaskItem(it, viewModel) { onClickTask(it) }
+                            }
+                        }
                     }
                 }
             }
