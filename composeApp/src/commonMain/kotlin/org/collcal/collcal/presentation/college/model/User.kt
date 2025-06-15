@@ -7,6 +7,8 @@ data class User(
     val semesterInt: Int,
     val earnedCredits: Int,
     val averageCredit: Double,
+    val userMajorBasicCredits: Int,
+    val majorBasicCredits: Int,
     val userMajorRequiredCredits: Int,
     val majorRequiredCredits: Int,
     val userMajorElectiveCredits: Int,
@@ -15,4 +17,6 @@ data class User(
     val requiredLiberalArtsCredits: Int,
     val userDistributedCredits: Int,
     val distributedCredits: Int,
+    val userFreeComplementCredits: Int,
+    val freeComplementCredits: Int
 )

@@ -49,7 +49,7 @@ fun CollegeDetailItem(
     viewModel: CollegeDetailViewModel = CollegeDetailViewModel(),
 ) {
     var taskContentExpanded by remember { mutableStateOf(false) }
-    var taskContent by remember { mutableStateOf("") }
+    var taskContent by remember { mutableStateOf(task.content) }
 
     val cardHeight by animateDpAsState(
         targetValue = if (taskContentExpanded) 200.dp else 20.dp,
@@ -78,7 +78,7 @@ fun CollegeDetailItem(
                     horizontalArrangement = Arrangement.spacedBy(5.dp)
                 ) {
                     Text(
-                        text = task.content,
+                        text = task.title,
                         fontSize = 20.06.sp,
                         fontWeight = FontWeight.W500,
                         textDecoration = TextDecoration.Underline,

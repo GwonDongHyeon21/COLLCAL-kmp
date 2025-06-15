@@ -31,14 +31,14 @@ import org.collcal.collcal.presentation.ui.theme.mainColor
 
 @Composable
 fun TaskItem(
-    task: Pair<Task, Boolean>,
+    task: Task,
     viewModel: CollegeViewModel,
     onClick: () -> Unit,
 ) {
     var moreActionExpanded by remember { mutableStateOf(false) }
     var isModify by remember { mutableStateOf(false) }
-    var taskTitle by remember { mutableStateOf(task.first.content) }
-    var taskInfo by remember { mutableStateOf(task.first.info) }
+    var taskTitle by remember { mutableStateOf(task.title) }
+    var taskInfo by remember { mutableStateOf(task.info) }
 
     if (isModify)
         TaskAddField(
@@ -47,7 +47,7 @@ fun TaskItem(
             onTaskTitleChanged = { taskTitle = it },
             onTaskInfoChanged = { taskInfo = it },
         ) {
-            viewModel.modifyTask(task.first.id, taskTitle, taskInfo)
+            viewModel.modifyTask(task.id, taskTitle, taskInfo)
             isModify = !isModify
         }
     else
@@ -68,14 +68,14 @@ fun TaskItem(
                 horizontalArrangement = Arrangement.spacedBy(5.dp)
             ) {
                 Text(
-                    text = task.first.content,
+                    text = task.title,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.W500,
                     textDecoration = TextDecoration.Underline,
                     color = mainColor
                 )
                 Text(
-                    text = task.first.info,
+                    text = task.info,
                     fontSize = 8.sp,
                     fontWeight = FontWeight.W500,
                     color = mainColor,
@@ -91,9 +91,9 @@ fun TaskItem(
                     onClickExpanded = { moreActionExpanded = !moreActionExpanded },
                     onClickOption = {
                         when (it) {
-                            Strings.moveToTodo -> viewModel.moveToTodoTask(task.first)
+                            Strings.moveToTodo -> viewModel.moveToTodoTask(task)
                             Strings.modify -> isModify = !isModify
-                            Strings.delete -> viewModel.deleteTask(task.first.id) {}
+                            Strings.delete -> viewModel.deleteTask(task.id) {}
                         }
                     }
                 )

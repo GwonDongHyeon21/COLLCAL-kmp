@@ -40,7 +40,7 @@ import org.collcal.collcal.presentation.ui.theme.white
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun CollegeDetailScreen(
-    colleges: List<Pair<String, List<Pair<Pair<String, Int>, List<Pair<Task, Boolean>>>>>>,
+    colleges: List<Pair<String, List<Pair<Pair<String, Int>, List<Task>>>>>,
     userSemesterInt: Int,
     semesterInt: Int?,
     sharedTransitionScope: SharedTransitionScope,
@@ -99,7 +99,7 @@ fun CollegeDetailScreen(
                     verticalArrangement = Arrangement.spacedBy(5.dp)
                 ) {
                     tasks?.let { college ->
-                        items(college.second) { CollegeDetailItem(it.first) }
+                        items(college.second) { CollegeDetailItem(it) }
                     }
                 }
             }
