@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -37,6 +36,7 @@ import org.collcal.collcal.presentation.college.CollegeViewModel
 import org.collcal.collcal.presentation.collegedetail.model.Task
 import org.collcal.collcal.presentation.tasks.component.TaskAddField
 import org.collcal.collcal.presentation.ui.theme.Strings
+import org.collcal.collcal.presentation.ui.theme.blue1
 import org.collcal.collcal.presentation.ui.theme.gray1
 import org.collcal.collcal.presentation.ui.theme.gray3
 import org.collcal.collcal.presentation.ui.theme.mainColor
@@ -52,8 +52,8 @@ fun TasksScreen(
     val todos by viewModel.todos.collectAsState()
     val colleges by viewModel.colleges.collectAsState()
     val tasks = colleges.flatMap { it.second.flatMap { task -> task.second } }
-    val scheduledTasks = tasks.filter { !it.second }
-    val completedTasks = tasks.filter { it.second }
+    val scheduledTasks = tasks.filter { it.status == 1 }
+    val completedTasks = tasks.filter { it.status == 2 }
 
     var isAdd by remember { mutableStateOf(false) }
     var taskTitle by remember { mutableStateOf("") }
@@ -61,8 +61,17 @@ fun TasksScreen(
 
     val modifier = when (getPlatformType()) {
         PlatformType.WEB -> Modifier.fillMaxWidth()
-        PlatformType.ANDROID -> Modifier.fillMaxSize().padding(innerPadding).padding(20.dp)
-        PlatformType.IOS -> Modifier.fillMaxSize().padding(innerPadding).padding(20.dp)
+        PlatformType.ANDROID -> Modifier
+            .fillMaxSize()
+            .background(blue1)
+            .padding(innerPadding)
+            .padding(20.dp)
+
+        PlatformType.IOS -> Modifier
+            .fillMaxSize()
+            .background(blue1)
+            .padding(innerPadding)
+            .padding(20.dp)
     }
 
     Card(
@@ -107,8 +116,11 @@ fun TasksScreen(
             )
             Spacer(Modifier.height(5.dp))
             Column(
-                modifier = Modifier
-                    .height(100.dp)
+                modifier = when (getPlatformType()) {
+                    PlatformType.WEB -> Modifier.height(100.dp)
+                    PlatformType.ANDROID -> Modifier.weight(1f)
+                    PlatformType.IOS -> Modifier.weight(1f)
+                }
                     .fillMaxWidth()
                     .background(gray3, RoundedCornerShape(7.dp))
                     .padding(5.dp)
@@ -129,7 +141,7 @@ fun TasksScreen(
                 }
                 if (todos.isNotEmpty())
                     LazyColumn(verticalArrangement = Arrangement.spacedBy(5.dp)) {
-                        items(todos) { TaskItem(it, viewModel) { onClick(it.first) } }
+                        items(todos) { TaskItem(it, viewModel) { onClick(it) } }
                     }
             }
 
@@ -143,18 +155,20 @@ fun TasksScreen(
                     fontSize = 16.sp,
                     fontWeight = FontWeight.W700
                 )
-
                 Spacer(Modifier.height(5.dp))
                 Column(
-                    modifier = Modifier
-                        .height(100.dp)
+                    modifier = when (getPlatformType()) {
+                        PlatformType.WEB -> Modifier.height(100.dp)
+                        PlatformType.ANDROID -> Modifier.weight(1f)
+                        PlatformType.IOS -> Modifier.weight(1f)
+                    }
                         .fillMaxWidth()
                         .background(gray3, RoundedCornerShape(7.dp))
                         .padding(5.dp)
                 ) {
                     if (task.second.isNotEmpty())
                         LazyColumn(verticalArrangement = Arrangement.spacedBy(5.dp)) {
-                            items(task.second) { TaskItem(it, viewModel) { onClick(it.first) } }
+                            items(task.second) { TaskItem(it, viewModel) { onClick(it) } }
                         }
                 }
             }
