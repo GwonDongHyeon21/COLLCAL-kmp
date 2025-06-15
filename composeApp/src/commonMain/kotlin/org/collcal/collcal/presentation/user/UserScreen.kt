@@ -1,5 +1,6 @@
 package org.collcal.collcal.presentation.user
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -30,6 +31,7 @@ import org.collcal.collcal.platform.PlatformType
 import org.collcal.collcal.platform.getPlatformType
 import org.collcal.collcal.presentation.college.CollegeViewModel
 import org.collcal.collcal.presentation.ui.theme.Strings
+import org.collcal.collcal.presentation.ui.theme.blue1
 import org.collcal.collcal.presentation.ui.theme.gray1
 import org.collcal.collcal.presentation.ui.theme.gray3
 import org.collcal.collcal.presentation.ui.theme.mainColor
@@ -43,20 +45,28 @@ fun UserScreen(
     val userInfo by viewModel.userInfo.collectAsState()
     val earnedCredit by viewModel.earnedCredit.collectAsState()
     val averageCredit by viewModel.averageCredit.collectAsState()
-    val aList by viewModel.aList.collectAsState()
-    val bList by viewModel.bList.collectAsState()
-    val cList by viewModel.cList.collectAsState()
-    val dList by viewModel.dList.collectAsState()
+    val courses = viewModel.courses.collectAsState()
 
+    val majorBasicExpanded = remember { mutableStateOf(false) }
     val majorRequiredExpanded = remember { mutableStateOf(false) }
     val majorElectiveExpanded = remember { mutableStateOf(false) }
     val requiredLiberalArtsExpanded = remember { mutableStateOf(false) }
     val distributedExpanded = remember { mutableStateOf(false) }
+    val freeComplementExpanded = remember { mutableStateOf(false) }
 
     val modifier = when (getPlatformType()) {
         PlatformType.WEB -> Modifier.fillMaxWidth()
-        PlatformType.ANDROID -> Modifier.fillMaxSize().padding(innerPadding).padding(20.dp)
-        PlatformType.IOS -> Modifier.fillMaxSize().padding(innerPadding).padding(20.dp)
+        PlatformType.ANDROID -> Modifier
+            .fillMaxSize()
+            .background(blue1)
+            .padding(innerPadding)
+            .padding(20.dp)
+
+        PlatformType.IOS -> Modifier
+            .fillMaxSize()
+            .background(blue1)
+            .padding(innerPadding)
+            .padding(20.dp)
     }
 
     Card(
@@ -118,40 +128,58 @@ fun UserScreen(
             Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
                 listOf(
                     Triple(
-                        "전공필수",
+                        "전공 기초",
                         Triple(
-                            aList.sumOf { it.credit.toInt() },
+                            courses.value[0].sumOf { it.credit.toInt() },
+                            userInfo.majorRequiredCredits,
+                            majorBasicExpanded
+                        ),
+                        courses.value[0]
+                    ),
+                    Triple(
+                        "전공 필수",
+                        Triple(
+                            courses.value[1].sumOf { it.credit.toInt() },
                             userInfo.majorRequiredCredits,
                             majorRequiredExpanded
                         ),
-                        aList
+                        courses.value[1]
                     ),
                     Triple(
-                        "전공선택",
+                        "전공 선택",
                         Triple(
-                            bList.sumOf { it.credit.toInt() },
+                            courses.value[2].sumOf { it.credit.toInt() },
                             userInfo.majorElectiveCredits,
                             majorElectiveExpanded
                         ),
-                        bList
+                        courses.value[2]
                     ),
                     Triple(
-                        "필수교양",
+                        "필수 교과",
                         Triple(
-                            cList.sumOf { it.credit.toInt() },
+                            courses.value[3].sumOf { it.credit.toInt() },
                             userInfo.requiredLiberalArtsCredits,
                             requiredLiberalArtsExpanded
                         ),
-                        cList
+                        courses.value[3]
                     ),
                     Triple(
-                        "배분이수",
+                        "배분 이수",
                         Triple(
-                            dList.sumOf { it.credit.toInt() },
+                            courses.value[4].sumOf { it.credit.toInt() },
                             userInfo.distributedCredits,
                             distributedExpanded
                         ),
-                        dList
+                        courses.value[4]
+                    ),
+                    Triple(
+                        "자유 이수",
+                        Triple(
+                            courses.value[5].sumOf { it.credit.toInt() },
+                            userInfo.distributedCredits,
+                            freeComplementExpanded
+                        ),
+                        courses.value[5]
                     )
                 ).forEachIndexed { index, creditInfo ->
                     UserItem(
