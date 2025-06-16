@@ -94,11 +94,11 @@ class SignViewModel(private val apiService: ApiService = ApiService()) : ViewMod
         }
     }
 
-    fun signIn(id: String, password: String, onSignIn: () -> Unit) {
+    fun signIn(id: String, password: String, onSignIn: (String) -> Unit) {
         viewModelScope.launch {
             try {
                 val response = apiService.signIn(SignIn(id, password))
-                if (response.message == "로그인 성공") onSignIn()
+                if (response.message == "로그인 성공") onSignIn(response.token)
             } catch (e: Exception) {
                 println(e)
             }
