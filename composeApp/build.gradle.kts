@@ -76,11 +76,12 @@ kotlin {
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.kotlinx.serialization.json)
         }
+        wasmJsMain.dependencies {
+            // Ktor
+            implementation(libs.ktor.client.js)
+        }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
-
-            //Ktor
-            implementation(libs.ktor.client.darwin)
         }
     }
 }
