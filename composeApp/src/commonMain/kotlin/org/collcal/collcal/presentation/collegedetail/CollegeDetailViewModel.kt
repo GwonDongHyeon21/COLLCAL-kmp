@@ -3,7 +3,7 @@ package org.collcal.collcal.presentation.collegedetail
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import org.collcal.collcal.presentation.collegedetail.model.Task
+import org.collcal.collcal.presentation.tasks.model.Task
 
 class CollegeDetailViewModel : ViewModel() {
 

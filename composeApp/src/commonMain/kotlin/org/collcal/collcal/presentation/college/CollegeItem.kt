@@ -35,7 +35,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.collcal.collcal.presentation.collegedetail.model.Task
+import org.collcal.collcal.presentation.tasks.model.Task
 import org.collcal.collcal.presentation.component.RightArrowIcon
 import org.collcal.collcal.presentation.tasks.TaskItem
 import org.collcal.collcal.presentation.ui.theme.gray1
