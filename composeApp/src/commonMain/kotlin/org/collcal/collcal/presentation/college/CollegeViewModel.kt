@@ -27,8 +27,8 @@ class CollegeViewModel(private val apiService: ApiService = ApiService()) : View
     private val _averageCredit = MutableStateFlow(0.0)
     val averageCredit: StateFlow<Double> = _averageCredit
 
-    private val _courses = MutableStateFlow(emptyList<List<Credit>>())
-    val courses: StateFlow<List<List<Credit>>> = _courses
+    private val _credits = MutableStateFlow(emptyList<List<Credit>>())
+    val credits: StateFlow<List<List<Credit>>> = _credits
 
     private val _colleges =
         MutableStateFlow(emptyList<Pair<String, List<Pair<Pair<String, Int>, List<Task>>>>>())
