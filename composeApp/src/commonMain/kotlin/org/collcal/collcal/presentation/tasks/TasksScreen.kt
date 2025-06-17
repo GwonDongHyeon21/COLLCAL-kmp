@@ -33,7 +33,7 @@ import org.collcal.collcal.navigation.Navigator
 import org.collcal.collcal.platform.PlatformType
 import org.collcal.collcal.platform.getPlatformType
 import org.collcal.collcal.presentation.college.CollegeViewModel
-import org.collcal.collcal.presentation.collegedetail.model.Task
+import org.collcal.collcal.presentation.tasks.model.Task
 import org.collcal.collcal.presentation.tasks.component.TaskAddField
 import org.collcal.collcal.presentation.ui.theme.Strings
 import org.collcal.collcal.presentation.ui.theme.blue1
@@ -145,11 +145,11 @@ fun TasksScreen(
                     }
             }
 
-            Spacer(Modifier.height(10.dp))
             listOf(
                 Strings.scheduled to scheduledTasks,
                 Strings.completed to completedTasks
             ).forEach { task ->
+                Spacer(Modifier.height(10.dp))
                 Text(
                     text = task.first,
                     fontSize = 16.sp,

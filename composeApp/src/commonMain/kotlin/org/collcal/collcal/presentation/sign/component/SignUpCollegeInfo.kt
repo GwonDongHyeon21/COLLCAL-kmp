@@ -108,7 +108,12 @@ fun SignUpCollegeInfo(
             Button(
                 onClick = {
                     if (listOf(year, school, department, semester).all { it.value.isNotBlank() })
-                        viewModel.signUp { navigator.replaceTo(Screen.SignIn) }
+                        viewModel.signUp(
+                            year.value,
+                            school.value,
+                            department.value,
+                            semester.value
+                        ) { navigator.replaceTo(Screen.SignIn) }
                     else isEmpty = true
                 },
                 modifier = Modifier.fillMaxWidth().height(50.dp),
@@ -118,10 +123,15 @@ fun SignUpCollegeInfo(
                 Text(text = Strings.signUp, color = white)
             }
 
-            Text(
-                text = if (isEmpty) "빈칸을 모두 선택해주세요" else "",
-                color = if (isEmpty) red else transparent
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = if (isEmpty) "빈칸을 모두 선택해주세요" else "",
+                    color = if (isEmpty) red else transparent
+                )
+            }
         }
     }
 }

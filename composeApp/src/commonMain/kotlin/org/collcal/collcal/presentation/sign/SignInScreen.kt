@@ -37,7 +37,8 @@ import org.collcal.collcal.presentation.ui.theme.white
 fun SignInScreen(
     navigator: Navigator,
     innerPadding: PaddingValues = PaddingValues(0.dp),
-    onClick: () -> Unit,
+    viewModel: SignViewModel = SignViewModel(),
+    onClick: (String) -> Unit,
 ) {
     var idText by remember { mutableStateOf("") }
     var passwordText by remember { mutableStateOf("") }
@@ -103,7 +104,7 @@ fun SignInScreen(
 
             Spacer(Modifier.height((size * 6).dp))
             Button(
-                onClick = { onClick() },
+                onClick = { viewModel.signIn(idText, passwordText) { onClick(it) } },
                 modifier = Modifier.fillMaxWidth().height(50.dp),
                 shape = RoundedCornerShape(21.dp),
                 colors = ButtonDefaults.buttonColors(

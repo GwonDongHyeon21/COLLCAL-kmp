@@ -6,7 +6,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -27,7 +26,6 @@ fun CustomDropDown(
     ) {
         Column(modifier = Modifier.heightIn(max = 200.dp).verticalScroll(rememberScrollState())) {
             options.forEach { option ->
-                HorizontalDivider()
                 DropdownMenuItem(
                     onClick = {
                         onClickOption(option)
@@ -36,7 +34,6 @@ fun CustomDropDown(
                     text = { Text(text = option) },
                 )
             }
-            HorizontalDivider()
         }
     }
 }

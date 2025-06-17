@@ -1,31 +1,22 @@
 package org.collcal.collcal
 
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.platform.LocalContext
+import org.collcal.collcal.component.BottomBar
+import org.collcal.collcal.component.TopBar
 import org.collcal.collcal.navigation.AndroidNavigator
 import org.collcal.collcal.navigation.Screen
 import org.collcal.collcal.presentation.college.CollegeScreen
@@ -33,14 +24,11 @@ import org.collcal.collcal.presentation.college.CollegeViewModel
 import org.collcal.collcal.presentation.sign.SignInScreen
 import org.collcal.collcal.presentation.sign.SignUpScreen
 import org.collcal.collcal.presentation.tasks.TasksScreen
-import org.collcal.collcal.presentation.ui.theme.Strings
-import org.collcal.collcal.presentation.ui.theme.mainColor
-import org.collcal.collcal.presentation.ui.theme.white
 import org.collcal.collcal.presentation.user.UserScreen
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CollCalApp() {
+    val context = LocalContext.current
     val navigator = remember { AndroidNavigator() }
     val viewModel = remember { CollegeViewModel() }
     val currentScreen by navigator.currentScreen
@@ -71,60 +59,17 @@ fun CollCalApp() {
     Scaffold(
         topBar = {
             if (isTopBar)
-                Surface(
-                    shadowElevation = 10.dp,
-                    shape = RoundedCornerShape(bottomStart = 19.dp, bottomEnd = 19.dp),
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    TopAppBar(
-                        title = {
-                            Text(
-                                text = Strings.appName,
-                                fontSize = 40.sp,
-                                fontWeight = FontWeight.W800,
-                                color = mainColor
-                            )
-                        }
-                    )
-                }
+                TopBar()
         },
         bottomBar = {
             if (isBottomBar)
-                Surface(
-                    shadowElevation = 10.dp,
-                    shape = RoundedCornerShape(topStart = 19.dp, topEnd = 19.dp),
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    NavigationBar(containerColor = white) {
-                        items.forEach {
-                            NavigationBarItem(
-                                icon = {
-                                    Icon(
-                                        imageVector = it.second,
-                                        contentDescription = it.first
-                                    )
-                                },
-                                label = { Text(text = it.first) },
-                                selected = tabScreen == it.third.route,
-                                colors = NavigationBarItemDefaults.colors(
-                                    selectedIconColor = mainColor,
-                                    selectedTextColor = mainColor
-                                ),
-                                onClick = {
-                                    navigator.resetAndNavigateTo(
-                                        items.first().third,
-                                        it.third
-                                    )
-                                }
-                            )
-                        }
-                    }
-                }
+                BottomBar(items, navigator, tabScreen)
         }
     ) { innerPadding ->
         when (currentScreen) {
             Screen.SignIn.route -> SignInScreen(navigator, innerPadding) {
                 navigator.resetTo(Screen.College)
+                saveUserToken(context, it)
             }
 
             Screen.SignUp.route -> SignUpScreen(navigator, innerPadding)
@@ -133,4 +78,12 @@ fun CollCalApp() {
             Screen.User.route -> UserScreen(navigator, viewModel, innerPadding)
         }
     }
+}
+
+fun saveUserToken(context: Context, token: String) {
+    val sharedPreferences: SharedPreferences =
+        context.getSharedPreferences("CollCal", Context.MODE_PRIVATE)
+    val editor = sharedPreferences.edit()
+    editor.putString("CollCalToken", token)
+    editor.apply()
 }

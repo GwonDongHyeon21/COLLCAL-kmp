@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import org.collcal.collcal.presentation.college.model.User
-import org.collcal.collcal.presentation.collegedetail.model.Task
+import org.collcal.collcal.presentation.tasks.model.Task
 import org.collcal.collcal.presentation.user.model.Credit
 import kotlin.math.floor
 

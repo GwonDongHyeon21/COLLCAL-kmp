@@ -5,29 +5,32 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import org.collcal.collcal.network.ApiService
+import org.collcal.collcal.presentation.sign.model.SignIn
+import org.collcal.collcal.presentation.sign.model.SignUp
 
-class SignViewModel : ViewModel() {
+class SignViewModel(private val apiService: ApiService = ApiService()) : ViewModel() {
     val years = (2000..2025).reversed().map { it.toString() }
     val schools = listOf("경희대학교")
     val departments =
         listOf("기계공학과", "화학공학과", "산업공학과", "신소재공학과", "건축학과", "사회기반시스템공학과", "원자력공학과", "환경학및환경공학과")
     val semesters = listOf(
-        "1-1",
-        "1학년 하계방학",
-        "1-2",
-        "1학년 하계방학",
-        "2-1",
-        "2학년 하계방학",
-        "2-2",
-        "2학년 하계방학",
-        "3-1",
-        "3학년 하계방학",
-        "3-2",
-        "3학년 하계방학",
-        "4-1",
-        "4학년 하계방학",
-        "4-2",
-        "4학년 하계방학",
+        "1학년 1학기",
+        "1학년 하계 방학",
+        "1학년 2학기",
+        "1학년 동계 방학",
+        "2학년 1학기",
+        "2학년 하계 방학",
+        "2학년 2학기",
+        "2학년 동계 방학",
+        "3학년 1학기",
+        "3학년 하계 방학",
+        "3학년 2학기",
+        "3학년 동계 방학",
+        "4학년 1학기",
+        "4학년 하계 방학",
+        "4학년 2학기",
+        "4학년 동계 방학",
     )
 
     private val _idText = MutableStateFlow("")
@@ -63,11 +66,39 @@ class SignViewModel : ViewModel() {
         _emailText.value = email
     }
 
-    fun signUp(onSignUp: () -> Unit) {
+    fun signUp(
+        year: String,
+        school: String,
+        department: String,
+        semester: String,
+        onSignUp: () -> Unit,
+    ) {
         viewModelScope.launch {
             try {
-                // 회원가입
-                onSignUp()
+                val response = apiService.signUp(
+                    SignUp(
+                        _idText.value,
+                        _passwordText.value,
+                        _emailText.value,
+                        _phoneNumberText.value,
+                        school,
+                        year.takeLast(2).toInt(),
+                        department,
+                        semester,
+                    )
+                )
+                if (response.message == "회원가입 성공") onSignUp()
+            } catch (e: Exception) {
+                println(e)
+            }
+        }
+    }
+
+    fun signIn(id: String, password: String, onSignIn: (String) -> Unit) {
+        viewModelScope.launch {
+            try {
+                val response = apiService.signIn(SignIn(id, password))
+                if (response.message == "로그인 성공") onSignIn(response.token)
             } catch (e: Exception) {
                 println(e)
             }

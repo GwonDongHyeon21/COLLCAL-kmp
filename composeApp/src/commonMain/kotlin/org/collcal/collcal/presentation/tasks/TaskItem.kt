@@ -22,7 +22,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.collcal.collcal.presentation.college.CollegeViewModel
-import org.collcal.collcal.presentation.collegedetail.model.Task
+import org.collcal.collcal.presentation.tasks.model.Task
 import org.collcal.collcal.presentation.component.CustomDropDown
 import org.collcal.collcal.presentation.component.MoreDotsIconButton
 import org.collcal.collcal.presentation.tasks.component.TaskAddField
