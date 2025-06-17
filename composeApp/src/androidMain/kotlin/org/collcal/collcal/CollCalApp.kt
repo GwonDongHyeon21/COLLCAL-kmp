@@ -82,8 +82,8 @@ fun CollCalApp() {
 
 fun saveUserToken(context: Context, token: String) {
     val sharedPreferences: SharedPreferences =
-        context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
+        context.getSharedPreferences("CollCal", Context.MODE_PRIVATE)
     val editor = sharedPreferences.edit()
-    editor.putString("userToken", token)
+    editor.putString("CollCalToken", token)
     editor.apply()
 }

@@ -15,6 +15,8 @@ import org.collcal.collcal.presentation.sign.model.SignUp
 
 class ApiService {
 
+    private val token = getToken()
+
     suspend fun signUp(request: SignUp): ResponseMessage {
         return ApiClient.httpClient.post("$BASE_URL$SIGN_UP_PATH") {
             contentType(ContentType.Application.Json)
