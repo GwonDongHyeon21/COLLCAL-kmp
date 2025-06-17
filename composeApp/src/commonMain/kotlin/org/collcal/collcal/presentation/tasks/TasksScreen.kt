@@ -145,11 +145,11 @@ fun TasksScreen(
                     }
             }
 
-            Spacer(Modifier.height(10.dp))
             listOf(
                 Strings.scheduled to scheduledTasks,
                 Strings.completed to completedTasks
             ).forEach { task ->
+                Spacer(Modifier.height(10.dp))
                 Text(
                     text = task.first,
                     fontSize = 16.sp,

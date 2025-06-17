@@ -23,7 +23,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,9 +33,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.collcal.collcal.presentation.tasks.model.Task
 import org.collcal.collcal.presentation.component.DownArrowIcon
 import org.collcal.collcal.presentation.component.UpArrowIcon
+import org.collcal.collcal.presentation.tasks.model.Task
 import org.collcal.collcal.presentation.ui.theme.Strings
 import org.collcal.collcal.presentation.ui.theme.black
 import org.collcal.collcal.presentation.ui.theme.blue1
@@ -55,10 +54,6 @@ fun CollegeDetailItem(
         targetValue = if (taskContentExpanded) 200.dp else 20.dp,
         animationSpec = tween(durationMillis = 500)
     )
-
-    LaunchedEffect(Unit) {
-        viewModel.getTaskContent(task.id) { taskContent = it }
-    }
 
     Card(
         shape = RoundedCornerShape(10.03.dp),
