@@ -18,7 +18,7 @@ class CollegeViewModel(private val apiService: ApiService = ApiService()) : View
     val isLoading: StateFlow<Boolean> = _isLoading
 
     private val _userInfo =
-        MutableStateFlow(User("", "", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
+        MutableStateFlow(User("", "", "", 0, 0, 0, 0, 0, 0, 0))
     val userInfo: StateFlow<User> = _userInfo
 
     private val _earnedCredit = MutableStateFlow(0)
@@ -54,37 +54,37 @@ class CollegeViewModel(private val apiService: ApiService = ApiService()) : View
                     Pair(
                         "1",
                         listOf(
-                            Pair("1학년 1학기" to 1, tasks.filter { it.status == 1 }.ifEmpty { emptyList() }),
-                            Pair("1학년 하계 방학" to 2, tasks.filter { it.status == 2 }.ifEmpty { emptyList() }),
-                            Pair("1학년 2학기" to 3, tasks.filter { it.status == 3 }.ifEmpty { emptyList() }),
-                            Pair("1학년 동계 방학" to 4, tasks.filter { it.status == 4 }.ifEmpty { emptyList() }),
+                            Pair("1학년 1학기" to 1, tasks.filter { it.status == 1 }),
+                            Pair("1학년 하계 방학" to 2, tasks.filter { it.status == 2 }),
+                            Pair("1학년 2학기" to 3, tasks.filter { it.status == 3 }),
+                            Pair("1학년 동계 방학" to 4, tasks.filter { it.status == 4 }),
                         )
                     ),
                     Pair(
                         "2",
                         listOf(
-                            Pair("2학년 1학기" to 5, tasks.filter { it.status == 5 }.ifEmpty { emptyList() }),
-                            Pair("2학년 하계 방학" to 6, tasks.filter { it.status == 6 }.ifEmpty { emptyList() }),
-                            Pair("2학년 2학기" to 7, tasks.filter { it.status == 7 }.ifEmpty { emptyList() }),
-                            Pair("2학년 동계 방학" to 8, tasks.filter { it.status == 8 }.ifEmpty { emptyList() }),
+                            Pair("2학년 1학기" to 5, tasks.filter { it.status == 5 }),
+                            Pair("2학년 하계 방학" to 6, tasks.filter { it.status == 6 }),
+                            Pair("2학년 2학기" to 7, tasks.filter { it.status == 7 }),
+                            Pair("2학년 동계 방학" to 8, tasks.filter { it.status == 8 }),
                         )
                     ),
                     Pair(
                         "3",
                         listOf(
-                            Pair("3학년 1학기" to 9, tasks.filter { it.status == 9 }.ifEmpty { emptyList() }),
-                            Pair("3학년 하계 방학" to 10, tasks.filter { it.status == 10 }.ifEmpty { emptyList() }),
-                            Pair("3학년 2학기" to 11, tasks.filter { it.status == 11 }.ifEmpty { emptyList() }),
-                            Pair("3학년 동계 방학" to 12, tasks.filter { it.status == 12 }.ifEmpty { emptyList() }),
+                            Pair("3학년 1학기" to 9, tasks.filter { it.status == 9 }),
+                            Pair("3학년 하계 방학" to 10, tasks.filter { it.status == 10 }),
+                            Pair("3학년 2학기" to 11, tasks.filter { it.status == 11 }),
+                            Pair("3학년 동계 방학" to 12, tasks.filter { it.status == 12 }),
                         )
                     ),
                     Pair(
                         "4",
                         listOf(
-                            Pair("4학년 1학기" to 13, tasks.filter { it.status == 13 }.ifEmpty { emptyList() }),
-                            Pair("4학년 하계 방학" to 14, tasks.filter { it.status == 14 }.ifEmpty { emptyList() }),
-                            Pair("4학년 2학기" to 15, tasks.filter { it.status == 15 }.ifEmpty { emptyList() }),
-                            Pair("4학년 동계 방학" to 16, tasks.filter { it.status == 16 }.ifEmpty { emptyList() }),
+                            Pair("4학년 1학기" to 13, tasks.filter { it.status == 13 }),
+                            Pair("4학년 하계 방학" to 14, tasks.filter { it.status == 14 }),
+                            Pair("4학년 2학기" to 15, tasks.filter { it.status == 15 }),
+                            Pair("4학년 동계 방학" to 16, tasks.filter { it.status == 16 }),
                         )
                     )
                     // @formatter:on
@@ -132,7 +132,7 @@ class CollegeViewModel(private val apiService: ApiService = ApiService()) : View
         }
     }
 
-    private fun getCredit() {
+    private fun calculateCredit() {
         _earnedCredit.value =
             _courses.value.flatten().sumOf { if (it.grade == "-") 0 else it.credit.toInt() }
 

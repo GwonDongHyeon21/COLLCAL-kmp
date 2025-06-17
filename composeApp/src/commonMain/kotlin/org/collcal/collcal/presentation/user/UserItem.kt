@@ -46,7 +46,7 @@ fun UserItem(
     creditInfo: Triple<String, Triple<Int, Int, MutableState<Boolean>>, List<Credit>>,
     onAddCredit: (Credit) -> Unit,
     onModifyCredit: (Credit) -> Unit,
-    onDeleteTask: (Credit) -> Unit,
+    onDeleteCredit: (Credit) -> Unit,
 ) {
     var creditsExpanded by remember { mutableStateOf(creditInfo.second.third.value) }
     var isAdd by remember { mutableStateOf(false) }
