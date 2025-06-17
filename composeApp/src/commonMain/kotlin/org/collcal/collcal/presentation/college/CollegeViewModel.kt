@@ -5,17 +5,20 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import org.collcal.collcal.network.ApiService
 import org.collcal.collcal.presentation.college.model.User
+import org.collcal.collcal.presentation.tasks.model.AddTaskRequest
+import org.collcal.collcal.presentation.tasks.model.ModifyTaskRequest
 import org.collcal.collcal.presentation.tasks.model.Task
 import org.collcal.collcal.presentation.user.model.Credit
 import kotlin.math.floor
 
-class CollegeViewModel : ViewModel() {
+class CollegeViewModel(private val apiService: ApiService = ApiService()) : ViewModel() {
     private val _isLoading = MutableStateFlow(true)
     val isLoading: StateFlow<Boolean> = _isLoading
 
     private val _userInfo =
-        MutableStateFlow(User("", "", "", 0, 0, 0.0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
+        MutableStateFlow(User("", "", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
     val userInfo: StateFlow<User> = _userInfo
 
     private val _earnedCredit = MutableStateFlow(0)
@@ -36,64 +39,55 @@ class CollegeViewModel : ViewModel() {
     val todos: StateFlow<List<Task>> = _todos
 
     init {
-        getCollegeData()
+        getTasks()
         getUser()
-        getTodos()
-        getCredit()
     }
 
-    private fun getCollegeData() {
+    private fun getTasks() {
         viewModelScope.launch {
             _isLoading.value = true
             try {
+                val tasks = apiService.getTasks().tasks ?: emptyList()
+                _todos.value = tasks.filter { it.status == 0 }
                 _colleges.value = listOf(
+                    // @formatter:off
                     Pair(
                         "1",
                         listOf(
-                            Pair(
-                                "1학년 1학기" to 0,
-                                listOf(
-                                    Task("0", "경진대회", "데이터톤", "", 2),
-                                    Task("1", "한국어 도우미", "", "", 2)
-                                )
-                            ),
-                            Pair("1학년 하계 방학" to 1, emptyList()),
-                            Pair("1학년 2학기" to 2, emptyList()),
-                            Pair("1학년 동계 방학" to 3, emptyList())
+                            Pair("1학년 1학기" to 1, tasks.filter { it.status == 1 }.ifEmpty { emptyList() }),
+                            Pair("1학년 하계 방학" to 2, tasks.filter { it.status == 2 }.ifEmpty { emptyList() }),
+                            Pair("1학년 2학기" to 3, tasks.filter { it.status == 3 }.ifEmpty { emptyList() }),
+                            Pair("1학년 동계 방학" to 4, tasks.filter { it.status == 4 }.ifEmpty { emptyList() }),
                         )
                     ),
                     Pair(
                         "2",
                         listOf(
-                            Pair("2학년 1학기" to 4, emptyList()),
-                            Pair("2학년 하계 방학" to 5, emptyList()),
-                            Pair("2학년 2학기" to 6, emptyList()),
-                            Pair("2학년 동계 방학" to 7, emptyList())
+                            Pair("2학년 1학기" to 5, tasks.filter { it.status == 5 }.ifEmpty { emptyList() }),
+                            Pair("2학년 하계 방학" to 6, tasks.filter { it.status == 6 }.ifEmpty { emptyList() }),
+                            Pair("2학년 2학기" to 7, tasks.filter { it.status == 7 }.ifEmpty { emptyList() }),
+                            Pair("2학년 동계 방학" to 8, tasks.filter { it.status == 8 }.ifEmpty { emptyList() }),
                         )
                     ),
                     Pair(
                         "3",
                         listOf(
-                            Pair("3학년 1학기" to 8, emptyList()),
-                            Pair(
-                                "3학년 하계 방학" to 9,
-                                listOf(
-                                    Task("2", "전공연수", "하계 독일", "ex) content", 1)
-                                )
-                            ),
-                            Pair("3학년 2학기" to 10, emptyList()),
-                            Pair("3학년 동계 방학" to 11, emptyList())
+                            Pair("3학년 1학기" to 9, tasks.filter { it.status == 9 }.ifEmpty { emptyList() }),
+                            Pair("3학년 하계 방학" to 10, tasks.filter { it.status == 10 }.ifEmpty { emptyList() }),
+                            Pair("3학년 2학기" to 11, tasks.filter { it.status == 11 }.ifEmpty { emptyList() }),
+                            Pair("3학년 동계 방학" to 12, tasks.filter { it.status == 12 }.ifEmpty { emptyList() }),
                         )
                     ),
                     Pair(
                         "4",
                         listOf(
-                            Pair("4학년 1학기" to 12, emptyList()),
-                            Pair("4학년 하계 방학" to 13, emptyList()),
-                            Pair("4학년 2학기" to 14, emptyList()),
-                            Pair("4학년 동계 방학" to 15, emptyList())
+                            Pair("4학년 1학기" to 13, tasks.filter { it.status == 13 }.ifEmpty { emptyList() }),
+                            Pair("4학년 하계 방학" to 14, tasks.filter { it.status == 14 }.ifEmpty { emptyList() }),
+                            Pair("4학년 2학기" to 15, tasks.filter { it.status == 15 }.ifEmpty { emptyList() }),
+                            Pair("4학년 동계 방학" to 16, tasks.filter { it.status == 16 }.ifEmpty { emptyList() }),
                         )
                     )
+                    // @formatter:on
                 )
             } catch (e: Exception) {
                 println(e)
@@ -110,9 +104,7 @@ class CollegeViewModel : ViewModel() {
                         "권동현",
                         "컴퓨터공학과",
                         "2학년 1학기",
-                        4,
-                        89,
-                        3.4,
+                        5,
                         12,
                         12,
                         45,
@@ -133,6 +125,7 @@ class CollegeViewModel : ViewModel() {
                         Credit("2", "일반물리", "3", "A0")
                     ), emptyList(), emptyList(), emptyList(), emptyList(), emptyList()
                 )
+                getCredit()
             } catch (e: Exception) {
                 println(e)
             }
@@ -172,32 +165,17 @@ class CollegeViewModel : ViewModel() {
         }
     }
 
-    private fun getTodos() {
-        viewModelScope.launch {
-            try {
-                _todos.value =
-                    listOf(
-                        Task("3", "학부연구생", "", "", 0),
-                        Task("4", "현장실습", "삼성 SEMES", "", 0),
-                        Task("5", "인턴", "현대 SEMES", "", 0)
-                    )
-            } catch (e: Exception) {
-                println(e)
-            }
-        }
-    }
-
     fun changeTaskSemester(task: Task, semesterInt: Int) {
         viewModelScope.launch {
             try {
-                _todos.value = _todos.value.filterNot { it.id == task.id }
+                _todos.value = _todos.value.filterNot { it.taskId == task.taskId }
                 _colleges.value = _colleges.value.map { (key, semesters) ->
                     key to semesters.map { (semesterPair, tasks) ->
-                        val hasTask = tasks.any { it.id == task.id }
+                        val hasTask = tasks.any { it.taskId == task.taskId }
                         val isSameSemester = semesterPair.second == semesterInt
                         semesterPair to when {
                             hasTask && isSameSemester -> tasks
-                            hasTask -> tasks.filterNot { it.id == task.id }
+                            hasTask -> tasks.filterNot { it.taskId == task.taskId }
                             isSameSemester -> tasks + task
                             else -> tasks
                         }
@@ -212,32 +190,43 @@ class CollegeViewModel : ViewModel() {
     fun addTask(title: String, info: String) {
         viewModelScope.launch {
             try {
-                val response = true
-                if (response) _todos.value +=
-                    Task("", (_todos.value.size + _colleges.value.size).toString(), title, info, 0)
+                val response = apiService.addTask(AddTaskRequest(title, info, ""))
+                if (response.message == "할 일이 성공적으로 추가되었습니다.") {
+                    _todos.value += Task("", "", title, info, "", 0)
+                    _todos.value =
+                        (apiService.getTasks().tasks ?: emptyList()).filter { it.status == 0 }
+                }
             } catch (e: Exception) {
                 println(e)
             }
         }
     }
 
-    fun modifyTask(taskId: String, title: String, info: String) {
+    fun modifyTask(task: Task, title: String, info: String) {
         viewModelScope.launch {
             try {
-                if (_todos.value.find { it.id == taskId } != null)
-                    _todos.value = _todos.value.map { task ->
-                        if (task.id == taskId) task.copy(title = title, info = info)
-                        else task
-                    }
-                else
-                    _colleges.value = _colleges.value.map { college ->
-                        college.copy(second = college.second.map { semester ->
-                            semester.copy(second = semester.second.map { task ->
-                                if (task.id == taskId) task.copy(title = title, info = info)
-                                else task
+                val response =
+                    apiService.modifyTask(ModifyTaskRequest(task.taskId, title, info, ""))
+                if (response.message == "성공적으로 업데이트되었습니다.") {
+                    if (_todos.value.find { it.taskId == task.taskId } != null)
+                        _todos.value = _todos.value.map {
+                            if (it.taskId == task.taskId) task.copy(title = title, info = info)
+                            else it
+                        }
+                    else
+                        _colleges.value = _colleges.value.map { college ->
+                            college.copy(second = college.second.map { semester ->
+                                semester.copy(second = semester.second.map {
+                                    if (it.taskId == task.taskId) task.copy(
+                                        title = title,
+                                        info = info
+                                    )
+                                    else it
+                                })
                             })
-                        })
-                    }
+                        }
+                    getTasks()
+                }
             } catch (e: Exception) {
                 println(e)
             }
@@ -247,22 +236,22 @@ class CollegeViewModel : ViewModel() {
     fun moveToTodoTask(task: Task) {
         viewModelScope.launch {
             try {
-                deleteTask(task.id) { _todos.value += task }
+                deleteTask(task) { _todos.value += task }
             } catch (e: Exception) {
                 println(e)
             }
         }
     }
 
-    fun deleteTask(taskId: String, onResult: () -> Unit) {
+    fun deleteTask(task: Task, onResult: () -> Unit) {
         viewModelScope.launch {
             try {
-                if (_todos.value.find { it.id == taskId } != null)
-                    _todos.value = _todos.value.filterNot { it.id == taskId }
+                if (_todos.value.find { it.taskId == task.taskId } != null)
+                    _todos.value = _todos.value.filterNot { it.taskId == task.taskId }
                 else
                     _colleges.value = _colleges.value.map { college ->
                         college.copy(second = college.second.map { semester ->
-                            semester.copy(second = semester.second.filterNot { it.id == taskId })
+                            semester.copy(second = semester.second.filterNot { it.taskId == task.taskId })
                         })
                     }
             } catch (e: Exception) {

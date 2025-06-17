@@ -5,8 +5,6 @@ data class User(
     val department: String,
     val semester: String,
     val semesterInt: Int,
-    val earnedCredits: Int,
-    val averageCredit: Double,
     val userMajorBasicCredits: Int,
     val majorBasicCredits: Int,
     val userMajorRequiredCredits: Int,
