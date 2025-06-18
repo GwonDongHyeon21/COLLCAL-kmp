@@ -29,6 +29,7 @@ import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.collcal.collcal.navigation.Navigator
@@ -59,7 +60,12 @@ fun CollegeScreen(
     var selectedSemesterForDetail by remember { mutableStateOf<Int?>(null) }
 
     if (isLoading)
-        Box(modifier = Modifier.fillMaxSize()) { CircularProgressIndicator() }
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            CircularProgressIndicator(color = mainColor)
+        }
     else
         when (getPlatformType()) {
             PlatformType.WEB -> {
