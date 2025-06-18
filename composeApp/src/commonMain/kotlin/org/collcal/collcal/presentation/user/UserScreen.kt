@@ -186,7 +186,7 @@ fun UserScreen(
                         creditInfo = creditInfo,
                         onAddCredit = { viewModel.addCredit(index, it) },
                         onModifyCredit = { viewModel.modifyCredit(index, it) },
-                        onDeleteCredit= { viewModel.deleteCredit(index, it) }
+                        onDeleteCredit= { viewModel.deleteCredit(it) }
                     )
                 }
             }

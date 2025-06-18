@@ -6,6 +6,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import org.collcal.collcal.network.ApiService
+import org.collcal.collcal.network.model.AddCourseRequest
+import org.collcal.collcal.network.model.ModifyCourseRequest
 import org.collcal.collcal.presentation.college.model.User
 import org.collcal.collcal.presentation.tasks.model.AddTaskRequest
 import org.collcal.collcal.presentation.tasks.model.ModifyTaskRequest
@@ -41,6 +43,7 @@ class CollegeViewModel(private val apiService: ApiService = ApiService()) : View
     init {
         getTasks()
         getUser()
+        getCredits()
     }
 
     private fun getTasks() {
@@ -99,33 +102,26 @@ class CollegeViewModel(private val apiService: ApiService = ApiService()) : View
     private fun getUser() {
         viewModelScope.launch {
             try {
-                _userInfo.value =
-                    User(
-                        "권동현",
-                        "컴퓨터공학과",
-                        "2학년 1학기",
-                        5,
-                        12,
-                        12,
-                        45,
-                        50,
-                        39,
-                        45,
-                        34,
-                        50,
-                        32,
-                        30,
-                        6,
-                        6
-                    )
-                _courses.value = listOf(
-                    listOf(
-                        Credit("0", "실험통계학", "3", "A0"),
-                        Credit("1", "미분적분학", "3", "A0"),
-                        Credit("2", "일반물리", "3", "A0")
-                    ), emptyList(), emptyList(), emptyList(), emptyList(), emptyList()
-                )
-                getCredit()
+                _userInfo.value = User("권동현", "컴퓨터공학과", "2학년 1학기", 5, 12, 50, 45, 50, 30, 6)
+                calculateCredit()
+            } catch (e: Exception) {
+                println(e)
+            }
+        }
+    }
+
+    private fun getCredits() {
+        viewModelScope.launch {
+            try {
+                val response = apiService.getCredits().courses ?: emptyList()
+                _credits.value = listOf(
+                    response.filter { it.courseCategory == 0 },
+                    response.filter { it.courseCategory == 1 },
+                    response.filter { it.courseCategory == 2 },
+                    response.filter { it.courseCategory == 3 },
+                    response.filter { it.courseCategory == 4 },
+                    response.filter { it.courseCategory == 5 })
+                calculateCredit()
             } catch (e: Exception) {
                 println(e)
             }
@@ -134,12 +130,12 @@ class CollegeViewModel(private val apiService: ApiService = ApiService()) : View
 
     private fun calculateCredit() {
         _earnedCredit.value =
-            _courses.value.flatten().sumOf { if (it.grade == "-") 0 else it.credit.toInt() }
+            _credits.value.flatten().sumOf { if (it.grade == "-") 0 else it.credit }
 
-        val sumOfCreditMultiGrade = _courses.value.flatten()
-            .sumOf { (if (it.credit == "-") 0 else it.credit.toInt()) * getGradeToDouble(it.grade) }
-        val sumOfGrade = _courses.value.flatten()
-            .sumOf { if (it.credit == "-") 0 else it.credit.toInt() }
+        val sumOfCreditMultiGrade = _credits.value.flatten()
+            .sumOf { it.credit * getGradeToDouble(it.grade) }
+        val sumOfGrade = _credits.value.flatten()
+            .sumOf { if (it.grade == "-") 0 else it.credit }
         _averageCredit.value = floor(sumOfCreditMultiGrade / sumOfGrade * 1000) / 1000
     }
 
@@ -264,10 +260,21 @@ class CollegeViewModel(private val apiService: ApiService = ApiService()) : View
     fun addCredit(creditList: Int, credit: Credit) {
         viewModelScope.launch {
             try {
-                _courses.value = _courses.value
-                    .toMutableList()
-                    .apply { this[creditList] = this[creditList] + credit }
-                getCredit()
+                val response = apiService.addCredit(
+                    AddCourseRequest(
+                        creditList,
+                        credit.course,
+                        credit.credit,
+                        credit.grade
+                    )
+                )
+                if (response.message == "과목이 정상적으로 추가되었습니다.") {
+                    _credits.value = _credits.value
+                        .toMutableList()
+                        .apply { this[creditList] = this[creditList] + credit }
+                    getCredits()
+                    calculateCredit()
+                }
             } catch (e: Exception) {
                 println(e)
             }
@@ -277,21 +284,38 @@ class CollegeViewModel(private val apiService: ApiService = ApiService()) : View
     fun modifyCredit(creditList: Int, credit: Credit) {
         viewModelScope.launch {
             try {
-                _courses.value =
-                    _courses.value.map { list -> list.map { if (it.id == credit.id) credit else it } }
-                getCredit()
+                val response = apiService.modifyCredit(
+                    ModifyCourseRequest(
+                        credit.creditId,
+                        creditList,
+                        credit.course,
+                        credit.credit,
+                        credit.grade
+                    )
+                )
+                if (response.message == "성공적으로 업데이트되었습니다.") {
+                    _credits.value =
+                        _credits.value.map { list -> list.map { if (it.creditId == credit.creditId) credit else it } }
+                    getCredits()
+                    calculateCredit()
+                }
             } catch (e: Exception) {
                 println(e)
             }
         }
     }
 
-    fun deleteCredit(creditList: Int, credit: Credit) {
+    fun deleteCredit(credit: Credit) {
         viewModelScope.launch {
             try {
-                _courses.value =
-                    _courses.value.map { list -> list.filterNot { it.id == credit.id } }
-                getCredit()
+                val response = apiService.deleteCredit(credit)
+                println(response)
+                if (response.message == "과목 삭제 완료") {
+                    _credits.value =
+                        _credits.value.map { list -> list.filterNot { it.creditId == credit.creditId } }
+                    getCredits()
+                    calculateCredit()
+                }
             } catch (e: Exception) {
                 println(e)
             }
