@@ -1,12 +1,11 @@
-package org.collcal.collcal.presentation.user.model
+package org.collcal.collcal.network.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Credit(
-    @SerialName("_id") val creditId: String,
-    @SerialName("userId") val userId: String,
+data class ModifyCourseRequest(
+    @SerialName("subjectId") val id: String,
     @SerialName("category") val courseCategory: Int,
     @SerialName("subject") val course: String,
     @SerialName("credit") val credit: Int,

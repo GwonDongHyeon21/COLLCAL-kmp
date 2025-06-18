@@ -6,6 +6,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import org.collcal.collcal.network.ApiService
+import org.collcal.collcal.network.model.AddCourseRequest
+import org.collcal.collcal.network.model.ModifyCourseRequest
 import org.collcal.collcal.presentation.college.model.User
 import org.collcal.collcal.presentation.tasks.model.AddTaskRequest
 import org.collcal.collcal.presentation.tasks.model.ModifyTaskRequest
@@ -18,7 +20,7 @@ class CollegeViewModel(private val apiService: ApiService = ApiService()) : View
     val isLoading: StateFlow<Boolean> = _isLoading
 
     private val _userInfo =
-        MutableStateFlow(User("", "", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
+        MutableStateFlow(User("", "", "", 0, 0, 0, 0, 0, 0, 0))
     val userInfo: StateFlow<User> = _userInfo
 
     private val _earnedCredit = MutableStateFlow(0)
@@ -27,8 +29,8 @@ class CollegeViewModel(private val apiService: ApiService = ApiService()) : View
     private val _averageCredit = MutableStateFlow(0.0)
     val averageCredit: StateFlow<Double> = _averageCredit
 
-    private val _courses = MutableStateFlow(emptyList<List<Credit>>())
-    val courses: StateFlow<List<List<Credit>>> = _courses
+    private val _credits = MutableStateFlow(emptyList<List<Credit>>())
+    val credits: StateFlow<List<List<Credit>>> = _credits
 
     private val _colleges =
         MutableStateFlow(emptyList<Pair<String, List<Pair<Pair<String, Int>, List<Task>>>>>())
@@ -41,6 +43,7 @@ class CollegeViewModel(private val apiService: ApiService = ApiService()) : View
     init {
         getTasks()
         getUser()
+        getCredits()
     }
 
     private fun getTasks() {
@@ -54,37 +57,37 @@ class CollegeViewModel(private val apiService: ApiService = ApiService()) : View
                     Pair(
                         "1",
                         listOf(
-                            Pair("1학년 1학기" to 1, tasks.filter { it.status == 1 }.ifEmpty { emptyList() }),
-                            Pair("1학년 하계 방학" to 2, tasks.filter { it.status == 2 }.ifEmpty { emptyList() }),
-                            Pair("1학년 2학기" to 3, tasks.filter { it.status == 3 }.ifEmpty { emptyList() }),
-                            Pair("1학년 동계 방학" to 4, tasks.filter { it.status == 4 }.ifEmpty { emptyList() }),
+                            Pair("1학년 1학기" to 1, tasks.filter { it.status == 1 }),
+                            Pair("1학년 하계 방학" to 2, tasks.filter { it.status == 2 }),
+                            Pair("1학년 2학기" to 3, tasks.filter { it.status == 3 }),
+                            Pair("1학년 동계 방학" to 4, tasks.filter { it.status == 4 }),
                         )
                     ),
                     Pair(
                         "2",
                         listOf(
-                            Pair("2학년 1학기" to 5, tasks.filter { it.status == 5 }.ifEmpty { emptyList() }),
-                            Pair("2학년 하계 방학" to 6, tasks.filter { it.status == 6 }.ifEmpty { emptyList() }),
-                            Pair("2학년 2학기" to 7, tasks.filter { it.status == 7 }.ifEmpty { emptyList() }),
-                            Pair("2학년 동계 방학" to 8, tasks.filter { it.status == 8 }.ifEmpty { emptyList() }),
+                            Pair("2학년 1학기" to 5, tasks.filter { it.status == 5 }),
+                            Pair("2학년 하계 방학" to 6, tasks.filter { it.status == 6 }),
+                            Pair("2학년 2학기" to 7, tasks.filter { it.status == 7 }),
+                            Pair("2학년 동계 방학" to 8, tasks.filter { it.status == 8 }),
                         )
                     ),
                     Pair(
                         "3",
                         listOf(
-                            Pair("3학년 1학기" to 9, tasks.filter { it.status == 9 }.ifEmpty { emptyList() }),
-                            Pair("3학년 하계 방학" to 10, tasks.filter { it.status == 10 }.ifEmpty { emptyList() }),
-                            Pair("3학년 2학기" to 11, tasks.filter { it.status == 11 }.ifEmpty { emptyList() }),
-                            Pair("3학년 동계 방학" to 12, tasks.filter { it.status == 12 }.ifEmpty { emptyList() }),
+                            Pair("3학년 1학기" to 9, tasks.filter { it.status == 9 }),
+                            Pair("3학년 하계 방학" to 10, tasks.filter { it.status == 10 }),
+                            Pair("3학년 2학기" to 11, tasks.filter { it.status == 11 }),
+                            Pair("3학년 동계 방학" to 12, tasks.filter { it.status == 12 }),
                         )
                     ),
                     Pair(
                         "4",
                         listOf(
-                            Pair("4학년 1학기" to 13, tasks.filter { it.status == 13 }.ifEmpty { emptyList() }),
-                            Pair("4학년 하계 방학" to 14, tasks.filter { it.status == 14 }.ifEmpty { emptyList() }),
-                            Pair("4학년 2학기" to 15, tasks.filter { it.status == 15 }.ifEmpty { emptyList() }),
-                            Pair("4학년 동계 방학" to 16, tasks.filter { it.status == 16 }.ifEmpty { emptyList() }),
+                            Pair("4학년 1학기" to 13, tasks.filter { it.status == 13 }),
+                            Pair("4학년 하계 방학" to 14, tasks.filter { it.status == 14 }),
+                            Pair("4학년 2학기" to 15, tasks.filter { it.status == 15 }),
+                            Pair("4학년 동계 방학" to 16, tasks.filter { it.status == 16 }),
                         )
                     )
                     // @formatter:on
@@ -99,47 +102,40 @@ class CollegeViewModel(private val apiService: ApiService = ApiService()) : View
     private fun getUser() {
         viewModelScope.launch {
             try {
-                _userInfo.value =
-                    User(
-                        "권동현",
-                        "컴퓨터공학과",
-                        "2학년 1학기",
-                        5,
-                        12,
-                        12,
-                        45,
-                        50,
-                        39,
-                        45,
-                        34,
-                        50,
-                        32,
-                        30,
-                        6,
-                        6
-                    )
-                _courses.value = listOf(
-                    listOf(
-                        Credit("0", "실험통계학", "3", "A0"),
-                        Credit("1", "미분적분학", "3", "A0"),
-                        Credit("2", "일반물리", "3", "A0")
-                    ), emptyList(), emptyList(), emptyList(), emptyList(), emptyList()
-                )
-                getCredit()
+                _userInfo.value = User("권동현", "컴퓨터공학과", "2학년 1학기", 5, 12, 50, 45, 50, 30, 6)
+                calculateCredit()
             } catch (e: Exception) {
                 println(e)
             }
         }
     }
 
-    private fun getCredit() {
-        _earnedCredit.value =
-            _courses.value.flatten().sumOf { if (it.grade == "-") 0 else it.credit.toInt() }
+    private fun getCredits() {
+        viewModelScope.launch {
+            try {
+                val response = apiService.getCredits().courses ?: emptyList()
+                _credits.value = listOf(
+                    response.filter { it.courseCategory == 0 },
+                    response.filter { it.courseCategory == 1 },
+                    response.filter { it.courseCategory == 2 },
+                    response.filter { it.courseCategory == 3 },
+                    response.filter { it.courseCategory == 4 },
+                    response.filter { it.courseCategory == 5 })
+                calculateCredit()
+            } catch (e: Exception) {
+                println(e)
+            }
+        }
+    }
 
-        val sumOfCreditMultiGrade = _courses.value.flatten()
-            .sumOf { (if (it.credit == "-") 0 else it.credit.toInt()) * getGradeToDouble(it.grade) }
-        val sumOfGrade = _courses.value.flatten()
-            .sumOf { if (it.credit == "-") 0 else it.credit.toInt() }
+    private fun calculateCredit() {
+        _earnedCredit.value =
+            _credits.value.flatten().sumOf { if (it.grade == "-") 0 else it.credit }
+
+        val sumOfCreditMultiGrade = _credits.value.flatten()
+            .sumOf { it.credit * getGradeToDouble(it.grade) }
+        val sumOfGrade = _credits.value.flatten()
+            .sumOf { if (it.grade == "-") 0 else it.credit }
         _averageCredit.value = floor(sumOfCreditMultiGrade / sumOfGrade * 1000) / 1000
     }
 
@@ -264,10 +260,21 @@ class CollegeViewModel(private val apiService: ApiService = ApiService()) : View
     fun addCredit(creditList: Int, credit: Credit) {
         viewModelScope.launch {
             try {
-                _courses.value = _courses.value
-                    .toMutableList()
-                    .apply { this[creditList] = this[creditList] + credit }
-                getCredit()
+                val response = apiService.addCredit(
+                    AddCourseRequest(
+                        creditList,
+                        credit.course,
+                        credit.credit,
+                        credit.grade
+                    )
+                )
+                if (response.message == "과목이 정상적으로 추가되었습니다.") {
+                    _credits.value = _credits.value
+                        .toMutableList()
+                        .apply { this[creditList] = this[creditList] + credit }
+                    getCredits()
+                    calculateCredit()
+                }
             } catch (e: Exception) {
                 println(e)
             }
@@ -277,21 +284,38 @@ class CollegeViewModel(private val apiService: ApiService = ApiService()) : View
     fun modifyCredit(creditList: Int, credit: Credit) {
         viewModelScope.launch {
             try {
-                _courses.value =
-                    _courses.value.map { list -> list.map { if (it.id == credit.id) credit else it } }
-                getCredit()
+                val response = apiService.modifyCredit(
+                    ModifyCourseRequest(
+                        credit.creditId,
+                        creditList,
+                        credit.course,
+                        credit.credit,
+                        credit.grade
+                    )
+                )
+                if (response.message == "성공적으로 업데이트되었습니다.") {
+                    _credits.value =
+                        _credits.value.map { list -> list.map { if (it.creditId == credit.creditId) credit else it } }
+                    getCredits()
+                    calculateCredit()
+                }
             } catch (e: Exception) {
                 println(e)
             }
         }
     }
 
-    fun deleteCredit(creditList: Int, credit: Credit) {
+    fun deleteCredit(credit: Credit) {
         viewModelScope.launch {
             try {
-                _courses.value =
-                    _courses.value.map { list -> list.filterNot { it.id == credit.id } }
-                getCredit()
+                val response = apiService.deleteCredit(credit)
+                println(response)
+                if (response.message == "과목 삭제 완료") {
+                    _credits.value =
+                        _credits.value.map { list -> list.filterNot { it.creditId == credit.creditId } }
+                    getCredits()
+                    calculateCredit()
+                }
             } catch (e: Exception) {
                 println(e)
             }

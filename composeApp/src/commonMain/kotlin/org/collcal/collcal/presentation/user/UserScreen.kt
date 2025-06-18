@@ -45,7 +45,7 @@ fun UserScreen(
     val userInfo by viewModel.userInfo.collectAsState()
     val earnedCredit by viewModel.earnedCredit.collectAsState()
     val averageCredit by viewModel.averageCredit.collectAsState()
-    val courses = viewModel.courses.collectAsState()
+    val credits = viewModel.credits.collectAsState()
 
     val majorBasicExpanded = remember { mutableStateOf(false) }
     val majorRequiredExpanded = remember { mutableStateOf(false) }
@@ -130,63 +130,63 @@ fun UserScreen(
                     Triple(
                         "전공 기초",
                         Triple(
-                            courses.value[0].sumOf { it.credit.toInt() },
+                            credits.value[0].sumOf { it.credit },
                             userInfo.majorRequiredCredits,
                             majorBasicExpanded
                         ),
-                        courses.value[0]
+                        credits.value[0]
                     ),
                     Triple(
                         "전공 필수",
                         Triple(
-                            courses.value[1].sumOf { it.credit.toInt() },
+                            credits.value[1].sumOf { it.credit },
                             userInfo.majorRequiredCredits,
                             majorRequiredExpanded
                         ),
-                        courses.value[1]
+                        credits.value[1]
                     ),
                     Triple(
                         "전공 선택",
                         Triple(
-                            courses.value[2].sumOf { it.credit.toInt() },
+                            credits.value[2].sumOf { it.credit },
                             userInfo.majorElectiveCredits,
                             majorElectiveExpanded
                         ),
-                        courses.value[2]
+                        credits.value[2]
                     ),
                     Triple(
                         "필수 교과",
                         Triple(
-                            courses.value[3].sumOf { it.credit.toInt() },
+                            credits.value[3].sumOf { it.credit },
                             userInfo.requiredLiberalArtsCredits,
                             requiredLiberalArtsExpanded
                         ),
-                        courses.value[3]
+                        credits.value[3]
                     ),
                     Triple(
                         "배분 이수",
                         Triple(
-                            courses.value[4].sumOf { it.credit.toInt() },
+                            credits.value[4].sumOf { it.credit },
                             userInfo.distributedCredits,
                             distributedExpanded
                         ),
-                        courses.value[4]
+                        credits.value[4]
                     ),
                     Triple(
                         "자유 이수",
                         Triple(
-                            courses.value[5].sumOf { it.credit.toInt() },
+                            credits.value[5].sumOf { it.credit },
                             userInfo.distributedCredits,
                             freeComplementExpanded
                         ),
-                        courses.value[5]
+                        credits.value[5]
                     )
                 ).forEachIndexed { index, creditInfo ->
                     UserItem(
                         creditInfo = creditInfo,
                         onAddCredit = { viewModel.addCredit(index, it) },
                         onModifyCredit = { viewModel.modifyCredit(index, it) },
-                        onDeleteTask = { viewModel.deleteCredit(index, it) }
+                        onDeleteCredit= { viewModel.deleteCredit(it) }
                     )
                 }
             }

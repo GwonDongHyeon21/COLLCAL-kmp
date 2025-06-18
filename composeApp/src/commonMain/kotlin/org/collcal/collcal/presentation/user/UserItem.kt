@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -33,11 +32,9 @@ import org.collcal.collcal.presentation.component.MoreDotsIconButton
 import org.collcal.collcal.presentation.component.UpArrowIcon
 import org.collcal.collcal.presentation.ui.theme.Strings
 import org.collcal.collcal.presentation.ui.theme.black
-import org.collcal.collcal.presentation.ui.theme.gray1
 import org.collcal.collcal.presentation.ui.theme.gray3
 import org.collcal.collcal.presentation.ui.theme.gray4
 import org.collcal.collcal.presentation.ui.theme.mainColor
-import org.collcal.collcal.presentation.ui.theme.white
 import org.collcal.collcal.presentation.user.component.CreditAddField
 import org.collcal.collcal.presentation.user.model.Credit
 
@@ -46,7 +43,7 @@ fun UserItem(
     creditInfo: Triple<String, Triple<Int, Int, MutableState<Boolean>>, List<Credit>>,
     onAddCredit: (Credit) -> Unit,
     onModifyCredit: (Credit) -> Unit,
-    onDeleteTask: (Credit) -> Unit,
+    onDeleteCredit: (Credit) -> Unit,
 ) {
     var creditsExpanded by remember { mutableStateOf(creditInfo.second.third.value) }
     var isAdd by remember { mutableStateOf(false) }
@@ -103,7 +100,7 @@ fun UserItem(
 
                     if (isModify) {
                         var nowCourse by remember { mutableStateOf(it.course) }
-                        var nowCredit by remember { mutableStateOf(it.credit) }
+                        var nowCredit by remember { mutableStateOf(it.credit.toString()) }
                         var nowGrade by remember { mutableStateOf(it.grade) }
                         CreditAddField(
                             course = nowCourse,
@@ -115,9 +112,11 @@ fun UserItem(
                             onClick = { newCourse, newCredit, newGrade ->
                                 onModifyCredit(
                                     Credit(
-                                        it.id,
+                                        it.creditId,
+                                        it.userId,
+                                        it.courseCategory,
                                         newCourse,
-                                        newCredit,
+                                        newCredit.toInt(),
                                         newGrade
                                     )
                                 )
@@ -134,7 +133,7 @@ fun UserItem(
                                     text = it.course,
                                     modifier = Modifier.align(Alignment.CenterStart)
                                 )
-                                Text(text = it.credit, modifier = Modifier.align(Alignment.Center))
+                                Text(text = it.credit.toString(), modifier = Modifier.align(Alignment.Center))
                                 Column(modifier = Modifier.align(Alignment.CenterEnd)) {
                                     Row(
                                         verticalAlignment = Alignment.CenterVertically,
@@ -154,7 +153,7 @@ fun UserItem(
                                         onClickOption = { option ->
                                             when (option) {
                                                 Strings.modify -> isModify = !isModify
-                                                Strings.delete -> onDeleteTask(it)
+                                                Strings.delete -> onDeleteCredit(it)
                                             }
                                         }
                                     )
@@ -174,9 +173,11 @@ fun UserItem(
                         onClick = { newCourse, newCredit, newGrade ->
                             onAddCredit(
                                 Credit(
-                                    creditInfo.third.size.toString(),
+                                    "",
+                                    "",
+                                    0,
                                     newCourse,
-                                    newCredit,
+                                    newCredit.toInt(),
                                     newGrade
                                 )
                             )
