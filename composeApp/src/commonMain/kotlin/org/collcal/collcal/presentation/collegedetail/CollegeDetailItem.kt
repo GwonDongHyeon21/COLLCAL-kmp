@@ -131,8 +131,14 @@ fun CollegeDetailItem(
                 }
 
                 Spacer(Modifier.height(5.dp))
-                Button(onClick = { viewModel.saveTaskContent(taskContent) }) {
-                    Text(text = Strings.save)
+                Button(
+                    onClick = {
+                        viewModel.modifyTask(task, "", "", taskContent)
+                        taskContentExpanded = !taskContentExpanded
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = mainColor)
+                ) {
+                    Text(text = Strings.save, color = white)
                 }
             }
         }

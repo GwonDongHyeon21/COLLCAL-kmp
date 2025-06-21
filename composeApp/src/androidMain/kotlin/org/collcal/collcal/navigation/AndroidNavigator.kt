@@ -12,8 +12,7 @@ class AndroidNavigator : Navigator {
     val currentScreenSize: State<Int> get() = derivedStateOf { _navigationStack.size }
 
     init {
-        val userTakenState = getToken().isEmpty()
-        replaceTo(if (userTakenState) Screen.SignIn else Screen.College)
+        replaceTo(if (getToken().isEmpty()) Screen.SignIn else Screen.College)
     }
 
     override fun navigateTo(screen: Screen) {

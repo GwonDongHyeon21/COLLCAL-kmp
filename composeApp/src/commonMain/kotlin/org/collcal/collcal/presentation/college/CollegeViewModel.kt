@@ -42,13 +42,12 @@ class CollegeViewModel(private val apiService: ApiService = ApiService()) : View
 
     init {
         getTasks()
-        getUser()
+        getUser {}
         getCredits()
     }
 
     private fun getTasks() {
         viewModelScope.launch {
-            _isLoading.value = true
             try {
                 val tasks = apiService.getTasks().tasks ?: emptyList()
                 _todos.value = tasks.filter { it.status == 0 }
@@ -92,16 +91,17 @@ class CollegeViewModel(private val apiService: ApiService = ApiService()) : View
                     )
                     // @formatter:on
                 )
+                _isLoading.value = false
             } catch (e: Exception) {
                 println(e)
             }
-            _isLoading.value = false
         }
     }
 
-    private fun getUser() {
+    fun getUser(onResult: () -> Unit) {
         viewModelScope.launch {
             try {
+                onResult()
                 _userInfo.value = User("권동현", "컴퓨터공학과", "2학년 1학기", 5, 12, 50, 45, 50, 30, 6)
                 calculateCredit()
             } catch (e: Exception) {
@@ -164,16 +164,28 @@ class CollegeViewModel(private val apiService: ApiService = ApiService()) : View
     fun changeTaskSemester(task: Task, semesterInt: Int) {
         viewModelScope.launch {
             try {
-                _todos.value = _todos.value.filterNot { it.taskId == task.taskId }
-                _colleges.value = _colleges.value.map { (key, semesters) ->
-                    key to semesters.map { (semesterPair, tasks) ->
-                        val hasTask = tasks.any { it.taskId == task.taskId }
-                        val isSameSemester = semesterPair.second == semesterInt
-                        semesterPair to when {
-                            hasTask && isSameSemester -> tasks
-                            hasTask -> tasks.filterNot { it.taskId == task.taskId }
-                            isSameSemester -> tasks + task
-                            else -> tasks
+                val response =
+                    apiService.modifyTask(
+                        ModifyTaskRequest(
+                            task.taskId,
+                            task.title,
+                            task.info,
+                            task.content,
+                            semesterInt
+                        )
+                    )
+                if (response.message == "성공적으로 업데이트되었습니다.") {
+                    _todos.value = _todos.value.filterNot { it.taskId == task.taskId }
+                    _colleges.value = _colleges.value.map { (key, semesters) ->
+                        key to semesters.map { (semesterPair, tasks) ->
+                            val hasTask = tasks.any { it.taskId == task.taskId }
+                            val isSameSemester = semesterPair.second == semesterInt
+                            semesterPair to when {
+                                hasTask && isSameSemester -> tasks
+                                hasTask -> tasks.filterNot { it.taskId == task.taskId }
+                                isSameSemester -> tasks + task
+                                else -> tasks
+                            }
                         }
                     }
                 }
@@ -198,11 +210,19 @@ class CollegeViewModel(private val apiService: ApiService = ApiService()) : View
         }
     }
 
-    fun modifyTask(task: Task, title: String, info: String) {
+    fun modifyTask(task: Task, title: String, info: String, content: String) {
         viewModelScope.launch {
             try {
                 val response =
-                    apiService.modifyTask(ModifyTaskRequest(task.taskId, title, info, ""))
+                    apiService.modifyTask(
+                        ModifyTaskRequest(
+                            task.taskId,
+                            title,
+                            info,
+                            content,
+                            task.status
+                        )
+                    )
                 if (response.message == "성공적으로 업데이트되었습니다.") {
                     if (_todos.value.find { it.taskId == task.taskId } != null)
                         _todos.value = _todos.value.map {
@@ -223,16 +243,6 @@ class CollegeViewModel(private val apiService: ApiService = ApiService()) : View
                         }
                     getTasks()
                 }
-            } catch (e: Exception) {
-                println(e)
-            }
-        }
-    }
-
-    fun moveToTodoTask(task: Task) {
-        viewModelScope.launch {
-            try {
-                deleteTask(task) { _todos.value += task }
             } catch (e: Exception) {
                 println(e)
             }

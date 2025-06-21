@@ -49,6 +49,9 @@ fun CollCalApp() {
     )
     var tabScreen by remember { mutableStateOf(items.first().third.route) }
 
+    LaunchedEffect(Unit) {
+        viewModel.getUser { navigator.resetTo(Screen.SignIn) }
+    }
     LaunchedEffect(currentScreen) {
         if (items.any { it.third.route == currentScreen })
             tabScreen = currentScreen
@@ -57,14 +60,8 @@ fun CollCalApp() {
     if (currentScreenSize > 1) BackHandler { navigator.goBack() }
 
     Scaffold(
-        topBar = {
-            if (isTopBar)
-                TopBar()
-        },
-        bottomBar = {
-            if (isBottomBar)
-                BottomBar(items, navigator, tabScreen)
-        }
+        topBar = { if (isTopBar) TopBar() },
+        bottomBar = { if (isBottomBar) BottomBar(items, navigator, tabScreen) }
     ) { innerPadding ->
         when (currentScreen) {
             Screen.SignIn.route -> SignInScreen(navigator, innerPadding) {
