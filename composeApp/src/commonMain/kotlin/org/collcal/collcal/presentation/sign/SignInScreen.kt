@@ -1,9 +1,11 @@
 package org.collcal.collcal.presentation.sign
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,6 +16,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,13 +34,15 @@ import org.collcal.collcal.presentation.sign.component.CustomOutlinedTextField
 import org.collcal.collcal.presentation.sign.component.CustomPasswordTextField
 import org.collcal.collcal.presentation.ui.theme.Strings
 import org.collcal.collcal.presentation.ui.theme.mainColor
+import org.collcal.collcal.presentation.ui.theme.red
+import org.collcal.collcal.presentation.ui.theme.transparent
 import org.collcal.collcal.presentation.ui.theme.white
 
 @Composable
 fun SignInScreen(
     navigator: Navigator,
+    viewModel: SignViewModel,
     innerPadding: PaddingValues = PaddingValues(0.dp),
-    viewModel: SignViewModel = SignViewModel(),
     onClick: (String) -> Unit,
 ) {
     var idText by remember { mutableStateOf("") }
@@ -54,6 +59,8 @@ fun SignInScreen(
         PlatformType.ANDROID -> 10
         PlatformType.IOS -> 10
     }
+
+    val isSignIn by viewModel.isSignIn.collectAsState()
 
     Box(
         modifier = Modifier.fillMaxSize().padding(innerPadding),
@@ -110,7 +117,8 @@ fun SignInScreen(
                 colors = ButtonDefaults.buttonColors(
                     containerColor = mainColor,
                     contentColor = mainColor
-                )
+                ),
+                enabled = listOf(idText, passwordText).all { it.isNotBlank() }
             ) {
                 Text(text = Strings.signIn, color = white)
             }
@@ -124,6 +132,17 @@ fun SignInScreen(
                     indication = null
                 )
             )
+
+            Spacer(Modifier.height(20.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = isSignIn,
+                    color = red
+                )
+            }
         }
     }
 }

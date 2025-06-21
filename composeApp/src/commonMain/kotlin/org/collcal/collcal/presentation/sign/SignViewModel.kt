@@ -41,11 +41,17 @@ class SignViewModel(private val apiService: ApiService = ApiService()) : ViewMod
     private val _checkRedundancy = MutableStateFlow(Pair("", false))
     val checkRedundancy: StateFlow<Pair<String, Boolean>> = _checkRedundancy
 
+    private val _isSignUp = MutableStateFlow("")
+    val isSignUp: StateFlow<String> = _isSignUp
+
+    private val _isSignIn = MutableStateFlow("")
+    val isSignIn: StateFlow<String> = _isSignIn
+
     fun checkRedundancy(id: String) {
         viewModelScope.launch {
             try {
                 // 아이디 중복 확인
-                val response = id != "asdf"
+                val response = true
                 if (response) _checkRedundancy.value = Pair("사용 가능합니다", true)
                 else _checkRedundancy.value = Pair("사용할 수 없습니다", false)
             } catch (e: Exception) {
@@ -88,6 +94,10 @@ class SignViewModel(private val apiService: ApiService = ApiService()) : ViewMod
                     )
                 )
                 if (response.message == "회원가입 성공") onSignUp()
+                else {
+                    println(response.message)
+                    _isSignUp.value = response.message
+                }
             } catch (e: Exception) {
                 println(e)
             }
@@ -98,7 +108,8 @@ class SignViewModel(private val apiService: ApiService = ApiService()) : ViewMod
         viewModelScope.launch {
             try {
                 val response = apiService.signIn(SignIn(id, password))
-                if (response.message == "로그인 성공") onSignIn(response.token)
+                if (response.message == "로그인 성공") onSignIn(response.token ?: "")
+                else _isSignIn.value = response.message
             } catch (e: Exception) {
                 println(e)
             }
