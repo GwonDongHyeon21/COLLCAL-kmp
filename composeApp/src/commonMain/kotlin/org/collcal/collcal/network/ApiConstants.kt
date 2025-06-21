@@ -1,12 +1,13 @@
 package org.collcal.collcal.network
+import org.collcal.collcal.presentation.ui.theme.BaseUrl
 
 object ApiConstants {
     // base url
-    const val BASE_URL = "http://www.collcal.kro.kr"
+    const val BASE_URL = BaseUrl.BASE_URL
 
     // auth
-    const val SIGN_UP_PATH = "/auth/register"
-    const val SIGN_IN_PATH = "/auth/login"
+    const val AUTH_REGISTER_PATH = "/auth/register"
+    const val AUTH_LOGIN_PATH = "/auth/login"
 
     // task
     const val TASK_DETAIL_PATH = "/task/detail"

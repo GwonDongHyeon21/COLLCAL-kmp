@@ -10,9 +10,9 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.contentType
+import org.collcal.collcal.network.ApiConstants.AUTH_LOGIN_PATH
+import org.collcal.collcal.network.ApiConstants.AUTH_REGISTER_PATH
 import org.collcal.collcal.network.ApiConstants.BASE_URL
-import org.collcal.collcal.network.ApiConstants.SIGN_IN_PATH
-import org.collcal.collcal.network.ApiConstants.SIGN_UP_PATH
 import org.collcal.collcal.network.ApiConstants.SUBJECT_DELETE_PATH
 import org.collcal.collcal.network.ApiConstants.SUBJECT_DETAIL_PATH
 import org.collcal.collcal.network.ApiConstants.SUBJECT_REGISTER_PATH
@@ -38,14 +38,14 @@ class ApiService {
     private val token = getToken()
 
     suspend fun signUp(request: SignUp): ResponseMessage {
-        return ApiClient.httpClient.post("$BASE_URL$SIGN_UP_PATH") {
+        return ApiClient.httpClient.post("$BASE_URL$AUTH_REGISTER_PATH") {
             contentType(ContentType.Application.Json)
             setBody(request)
         }.body()
     }
 
     suspend fun signIn(request: SignIn): SignInResponse {
-        return ApiClient.httpClient.post("$BASE_URL$SIGN_IN_PATH") {
+        return ApiClient.httpClient.post("$BASE_URL$AUTH_LOGIN_PATH") {
             contentType(ContentType.Application.Json)
             setBody(request)
         }.body()
