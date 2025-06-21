@@ -74,7 +74,7 @@ fun CollegeDetailScreen(
                         brush = Brush.verticalGradient(
                             colors = listOf(
                                 white,
-                                if (userSemesterInt == semesterInt) mainColor.copy(0.4f) else white
+                                if (userSemesterInt == semesterInt) blue2 else white
                             )
                         ),
                         shape = RoundedCornerShape(21.dp)
