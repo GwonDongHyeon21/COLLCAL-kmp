@@ -12,11 +12,13 @@ import io.ktor.http.HttpHeaders
 import io.ktor.http.contentType
 import org.collcal.collcal.network.ApiConstants.AUTH_LOGIN_PATH
 import org.collcal.collcal.network.ApiConstants.AUTH_REGISTER_PATH
+import org.collcal.collcal.network.ApiConstants.AUTH_USER_DETAIL_PATH
 import org.collcal.collcal.network.ApiConstants.BASE_URL
 import org.collcal.collcal.network.ApiConstants.SUBJECT_DELETE_PATH
 import org.collcal.collcal.network.ApiConstants.SUBJECT_DETAIL_PATH
 import org.collcal.collcal.network.ApiConstants.SUBJECT_REGISTER_PATH
 import org.collcal.collcal.network.ApiConstants.SUBJECT_UPDATE_PATH
+import org.collcal.collcal.network.ApiConstants.TASK_DELETE_PATH
 import org.collcal.collcal.network.ApiConstants.TASK_DETAIL_PATH
 import org.collcal.collcal.network.ApiConstants.TASK_REGISTER_PATH
 import org.collcal.collcal.network.ApiConstants.TASK_UPDATE_PATH
@@ -27,10 +29,12 @@ import org.collcal.collcal.network.model.ModifyCourseRequest
 import org.collcal.collcal.network.model.ResponseMessage
 import org.collcal.collcal.network.model.SignInResponse
 import org.collcal.collcal.platform.getToken
+import org.collcal.collcal.presentation.college.model.User
 import org.collcal.collcal.presentation.sign.model.SignIn
 import org.collcal.collcal.presentation.sign.model.SignUp
 import org.collcal.collcal.presentation.tasks.model.AddTaskRequest
 import org.collcal.collcal.presentation.tasks.model.ModifyTaskRequest
+import org.collcal.collcal.presentation.tasks.model.Task
 import org.collcal.collcal.presentation.user.model.Credit
 
 class ApiService {
@@ -48,6 +52,13 @@ class ApiService {
         return ApiClient.httpClient.post("$BASE_URL$AUTH_LOGIN_PATH") {
             contentType(ContentType.Application.Json)
             setBody(request)
+        }.body()
+    }
+
+    suspend fun getUser(): User {
+        return ApiClient.httpClient.get("$BASE_URL$AUTH_USER_DETAIL_PATH") {
+            contentType(ContentType.Application.Json)
+            header(HttpHeaders.Authorization, "Bearer $token")
         }.body()
     }
 
@@ -71,6 +82,13 @@ class ApiService {
             contentType(ContentType.Application.Json)
             header(HttpHeaders.Authorization, "Bearer $token")
             setBody(task)
+        }.body()
+    }
+
+    suspend fun deleteTask(task: Task): ResponseMessage {
+        return ApiClient.httpClient.delete("$BASE_URL$TASK_DELETE_PATH") {
+            header(HttpHeaders.Authorization, "Bearer $token")
+            url { parameters.append("taskId", task.taskId) }
         }.body()
     }
 

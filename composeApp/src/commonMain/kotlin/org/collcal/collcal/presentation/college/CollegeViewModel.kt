@@ -20,7 +20,7 @@ class CollegeViewModel(private val apiService: ApiService = ApiService()) : View
     val isLoading: StateFlow<Boolean> = _isLoading
 
     private val _userInfo =
-        MutableStateFlow(User("", "", "", 0, 0, 0, 0, 0, 0, 0))
+        MutableStateFlow(User("", "", 0, "", "", 0, 0, 0, 0, 0, 0, 0))
     val userInfo: StateFlow<User> = _userInfo
 
     private val _earnedCredit = MutableStateFlow(0)
@@ -101,9 +101,11 @@ class CollegeViewModel(private val apiService: ApiService = ApiService()) : View
     fun getUser(onResult: () -> Unit) {
         viewModelScope.launch {
             try {
-                onResult()
-                _userInfo.value = User("권동현", "컴퓨터공학과", "2학년 1학기", 5, 12, 50, 45, 50, 30, 6)
-                calculateCredit()
+                val response = apiService.getUser()
+                if (response.message == "유저 정보 불러오기 성공.") {
+                    _userInfo.value = getUserCredit(response)
+                    calculateCredit()
+                } else onResult()
             } catch (e: Exception) {
                 println(e)
             }
@@ -252,14 +254,18 @@ class CollegeViewModel(private val apiService: ApiService = ApiService()) : View
     fun deleteTask(task: Task, onResult: () -> Unit) {
         viewModelScope.launch {
             try {
-                if (_todos.value.find { it.taskId == task.taskId } != null)
-                    _todos.value = _todos.value.filterNot { it.taskId == task.taskId }
-                else
-                    _colleges.value = _colleges.value.map { college ->
-                        college.copy(second = college.second.map { semester ->
-                            semester.copy(second = semester.second.filterNot { it.taskId == task.taskId })
-                        })
-                    }
+                val response = apiService.deleteTask(task)
+                if (response.message == "task 삭제 완료") {
+                    if (_todos.value.find { it.taskId == task.taskId } != null)
+                        _todos.value = _todos.value.filterNot { it.taskId == task.taskId }
+                    else
+                        _colleges.value = _colleges.value.map { college ->
+                            college.copy(second = college.second.map { semester ->
+                                semester.copy(second = semester.second.filterNot { it.taskId == task.taskId })
+                            })
+                        }
+                    getTasks()
+                }
             } catch (e: Exception) {
                 println(e)
             }
@@ -319,7 +325,6 @@ class CollegeViewModel(private val apiService: ApiService = ApiService()) : View
         viewModelScope.launch {
             try {
                 val response = apiService.deleteCredit(credit)
-                println(response)
                 if (response.message == "과목 삭제 완료") {
                     _credits.value =
                         _credits.value.map { list -> list.filterNot { it.creditId == credit.creditId } }
@@ -331,4 +336,38 @@ class CollegeViewModel(private val apiService: ApiService = ApiService()) : View
             }
         }
     }
+}
+
+fun getUserCredit(info: User): User {
+    if (info.department == "산업경영공학과") {
+        val semesterInt = when (info.semester) {
+            "1학년 1학기" -> 1
+            "1학년 하계 방학" -> 2
+            "1학년 2학기" -> 3
+            "학년 동계 방학" -> 4
+            "2학년 1학기" -> 5
+            "2학년 하계 방학" -> 6
+            "2학년 2학기" -> 7
+            "2학년 동계 방학" -> 8
+            "3학년 1학기" -> 9
+            "3학년 하계 방학" -> 10
+            "3학년 2학기" -> 11
+            "3학년 동계 방학" -> 12
+            "4학년 1학기" -> 13
+            "4학년 하계 방학" -> 14
+            "4학년 2학기" -> 15
+            "4학년 동계 방학" -> 16
+            else -> 0
+        }
+
+        // @formatter:off
+        return when (info.studentId) {
+        22 -> User("", info.university, info.studentId, info.department, info.semester, semesterInt,21,6,57,17,12,3)
+        23 -> User("", info.university, info.studentId, info.department, info.semester, semesterInt,21,6,57,17,12,3)
+        24 -> User("", info.university, info.studentId, info.department, info.semester, semesterInt,24,6,49,17,9,3)
+        25 -> User("", info.university, info.studentId, info.department, info.semester, semesterInt,24,6,49,17,9,3)
+        else -> User("", info.university, info.studentId, info.department, info.semester, 0,0,0,0,0,0,0)
+        }
+    } else return User("", info.university, info.studentId, info.department, info.semester, 0,0,0,0,0,0,0)
+        // @formatter:on
 }
