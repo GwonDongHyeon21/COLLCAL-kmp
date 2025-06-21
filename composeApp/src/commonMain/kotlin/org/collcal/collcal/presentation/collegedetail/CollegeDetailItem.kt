@@ -15,8 +15,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -33,19 +33,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import org.collcal.collcal.presentation.college.CollegeViewModel
 import org.collcal.collcal.presentation.component.DownArrowIcon
 import org.collcal.collcal.presentation.component.UpArrowIcon
 import org.collcal.collcal.presentation.tasks.model.Task
 import org.collcal.collcal.presentation.ui.theme.Strings
 import org.collcal.collcal.presentation.ui.theme.black
-import org.collcal.collcal.presentation.ui.theme.blue1
 import org.collcal.collcal.presentation.ui.theme.gray1
+import org.collcal.collcal.presentation.ui.theme.mainColor
 import org.collcal.collcal.presentation.ui.theme.transparent
+import org.collcal.collcal.presentation.ui.theme.white
 
 @Composable
 fun CollegeDetailItem(
     task: Task,
-    viewModel: CollegeDetailViewModel = CollegeDetailViewModel(),
+    viewModel: CollegeViewModel,
 ) {
     var taskContentExpanded by remember { mutableStateOf(false) }
     var taskContent by remember { mutableStateOf(task.content) }
@@ -56,12 +58,11 @@ fun CollegeDetailItem(
     )
 
     Card(
-        shape = RoundedCornerShape(10.03.dp),
-        border = BorderStroke(0.53.dp, gray1),
-        colors = CardDefaults.cardColors(containerColor = blue1)
+        shape = RoundedCornerShape(22.dp),
+        border = BorderStroke(2.dp, mainColor),
     ) {
         Column(
-            modifier = Modifier.padding(10.dp),
+            modifier = Modifier.padding(vertical = 10.dp, horizontal = 20.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Row(
@@ -74,27 +75,29 @@ fun CollegeDetailItem(
                 ) {
                     Text(
                         text = task.title,
-                        fontSize = 20.06.sp,
-                        fontWeight = FontWeight.W500,
+                        fontSize = 18.75.sp,
+                        fontWeight = FontWeight.W700,
                         textDecoration = TextDecoration.Underline,
+                        color = mainColor
                     )
                     Text(
                         text = task.info,
-                        fontSize = 12.sp,
+                        fontSize = 10.sp,
                         fontWeight = FontWeight.W500,
-                        color = gray1,
+                        color = mainColor,
                     )
                 }
 
                 Spacer(Modifier.weight(1f))
                 Icon(
+                    imageVector = if (taskContentExpanded) UpArrowIcon else DownArrowIcon,
+                    contentDescription = "DownArrowIcon",
+                    tint = mainColor,
                     modifier = Modifier.clickable(
                         onClick = { taskContentExpanded = !taskContentExpanded },
                         interactionSource = null,
                         indication = null
-                    ),
-                    imageVector = if (taskContentExpanded) UpArrowIcon else DownArrowIcon,
-                    contentDescription = "DownArrowIcon"
+                    )
                 )
             }
 
@@ -112,9 +115,6 @@ fun CollegeDetailItem(
                             .fillMaxSize()
                             .border(1.dp, black, RoundedCornerShape(3.dp)),
                         colors = TextFieldDefaults.colors(
-                            focusedContainerColor = gray1,
-                            unfocusedContainerColor = gray1,
-                            disabledContainerColor = gray1,
                             focusedIndicatorColor = transparent,
                             unfocusedIndicatorColor = transparent,
                             disabledIndicatorColor = transparent,
@@ -130,7 +130,7 @@ fun CollegeDetailItem(
                     )
                 }
 
-                Spacer(Modifier.height(5.dp))
+                Spacer(Modifier.height(10.dp))
                 Button(
                     onClick = {
                         viewModel.modifyTask(task, "", "", taskContent)
