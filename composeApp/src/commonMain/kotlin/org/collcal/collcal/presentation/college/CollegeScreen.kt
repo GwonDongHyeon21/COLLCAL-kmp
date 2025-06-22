@@ -76,66 +76,73 @@ fun CollegeScreen(
                             .padding(horizontal = 60.dp),
                         horizontalArrangement = Arrangement.spacedBy(20.dp)
                     ) {
-                        AnimatedContent(
-                            targetState = screen,
-                            transitionSpec = { fadeIn() togetherWith fadeOut() },
-                            label = "CollegeTransition"
-                        ) { currentScreen ->
-                            Column(
-                                modifier = Modifier
-                                    .fillMaxHeight()
-                                    .fillMaxWidth(0.75f)
-                                    .padding(vertical = 30.dp),
-                                verticalArrangement = Arrangement.spacedBy(20.dp)
-                            ) {
-                                when (currentScreen) {
-                                    is Screen.College ->
-                                        colleges.forEach { college ->
-                                            Box(modifier = Modifier.weight(1f).fillMaxWidth()) {
-                                                Box(
-                                                    modifier = Modifier
-                                                        .fillMaxSize()
-                                                        .padding(25.dp)
-                                                        .background(mainColor)
-                                                )
-                                                Row {
-                                                    CollegeItem(
-                                                        Modifier.weight(1f),
-                                                        viewModel,
-                                                        college.second,
-                                                        userInfo.semesterInt,
-                                                        isSelected,
-                                                        // @formatter:off
+                        if (isTaskDetail)
+                            TaskDetailScreen(selectedTask) { isTaskDetail = false }
+                        else
+                            AnimatedContent(
+                                targetState = screen,
+                                transitionSpec = { fadeIn() togetherWith fadeOut() },
+                                label = "CollegeTransition"
+                            ) { currentScreen ->
+                                Column(
+                                    modifier = Modifier
+                                        .fillMaxHeight()
+                                        .fillMaxWidth(0.75f)
+                                        .padding(vertical = 30.dp),
+                                    verticalArrangement = Arrangement.spacedBy(20.dp)
+                                ) {
+                                    when (currentScreen) {
+                                        is Screen.College ->
+                                            colleges.forEach { college ->
+                                                Box(modifier = Modifier.weight(1f).fillMaxWidth()) {
+                                                    Box(
+                                                        modifier = Modifier
+                                                            .fillMaxSize()
+                                                            .padding(25.dp)
+                                                            .background(mainColor)
+                                                    )
+                                                    Row {
+                                                        CollegeItem(
+                                                            Modifier.weight(1f),
+                                                            viewModel,
+                                                            college.second,
+                                                            userSemesterInt,
+                                                            isSelected,
+                                                            // @formatter:off
                                                         { selectedSemester = if (isSelected[it] == true) it else null },
                                                         { selectedSemester?.let { int -> viewModel.changeTaskSemester(it, int) } },
                                                         {
                                                             selectedSemesterForDetail = it
                                                             screen = Screen.CollegeDetail
                                                         },
+                                                        {
+                                                            selectedTask = it
+                                                            isTaskDetail = true
+                                                        },
                                                         this@SharedTransitionLayout,
                                                         this@AnimatedContent,
                                                         // @formatter:on
-                                                    )
+                                                        )
+                                                    }
                                                 }
                                             }
-                                        }
 
-                                    is Screen.CollegeDetail ->
-                                        CollegeDetailScreen(
-                                            viewModel,
-                                            colleges,
-                                            userInfo.semesterInt,
-                                            selectedSemesterForDetail,
-                                            this@SharedTransitionLayout,
-                                            this@AnimatedContent
-                                        ) {
-                                            screen = Screen.College
-                                        }
+                                        is Screen.CollegeDetail ->
+                                            CollegeDetailScreen(
+                                                viewModel,
+                                                colleges,
+                                                userSemesterInt,
+                                                selectedSemesterForDetail,
+                                                this@SharedTransitionLayout,
+                                                this@AnimatedContent
+                                            ) {
+                                                screen = Screen.College
+                                            }
 
-                                    else -> {}
+                                        else -> {}
+                                    }
                                 }
                             }
-                        }
 
                         VerticalDivider(
                             color = gray2,
@@ -148,12 +155,18 @@ fun CollegeScreen(
                                 .padding(vertical = 20.dp)
                                 .verticalScroll(rememberScrollState())
                         ) {
-                            UserScreen(navigator, viewModel)
-                            TasksScreen(navigator, viewModel) {
+                            UserScreen(navigator, viewModel) { onSignOut() }
+                            TasksScreen(
                                 // @formatter:off
-                                selectedSemester?.let { int -> viewModel.changeTaskSemester(it, int) }
+                                navigator,
+                                viewModel,
+                                { selectedSemester?.let { int -> viewModel.changeTaskSemester(it, int) } },
+                                {
+                                    selectedTask = it
+                                    isTaskDetail = true
+                                }
                                 // @formatter:on
-                            }
+                            )
                         }
                     }
                 }
@@ -162,7 +175,7 @@ fun CollegeScreen(
             PlatformType.ANDROID -> {
                 val pagerState = rememberPagerState(
                     pageCount = { colleges.size },
-                    initialPage = userInfo.semesterInt / colleges.size
+                    initialPage = userSemesterInt / colleges.size
                 )
                 SharedTransitionLayout {
                     AnimatedContent(
@@ -184,7 +197,7 @@ fun CollegeScreen(
                                             Modifier.weight(1f),
                                             viewModel,
                                             colleges[page].second,
-                                            userInfo.semesterInt,
+                                            userSemesterInt,
                                             isSelected,
                                             // @formatter:off
                                             { selectedSemester = if (isSelected[it] == true) it else null },
@@ -193,6 +206,7 @@ fun CollegeScreen(
                                                 selectedSemesterForDetail = it
                                                 screen = Screen.CollegeDetail
                                             },
+                                            { onClickTaskText(it) },
                                             this@SharedTransitionLayout,
                                             this@AnimatedContent
                                             // @formatter:on
@@ -206,7 +220,7 @@ fun CollegeScreen(
                                     CollegeDetailScreen(
                                         viewModel,
                                         colleges,
-                                        userInfo.semesterInt,
+                                        userSemesterInt,
                                         selectedSemesterForDetail,
                                         this@SharedTransitionLayout,
                                         this@AnimatedContent,

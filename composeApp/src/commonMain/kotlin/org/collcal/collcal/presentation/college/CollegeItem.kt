@@ -54,6 +54,7 @@ fun CollegeItem(
     onClick: (Int) -> Unit,
     onClickTask: (Task) -> Unit,
     onClickZoomIn: (Int) -> Unit,
+    onClickTaskText: (Task) -> Unit,
     sharedTransitionScope: SharedTransitionScope,
     animatedContentScope: AnimatedContentScope,
 ) {
@@ -143,7 +144,12 @@ fun CollegeItem(
                         Spacer(Modifier.height(10.dp))
                         LazyColumn(verticalArrangement = Arrangement.spacedBy(5.dp)) {
                             items(college.second) {
-                                TaskItem(it, viewModel) { onClickTask(it) }
+                                TaskItem(
+                                    it,
+                                    viewModel,
+                                    { onClickTask(it) },
+                                    { onClickTaskText(it) }
+                                )
                             }
                         }
                     }
