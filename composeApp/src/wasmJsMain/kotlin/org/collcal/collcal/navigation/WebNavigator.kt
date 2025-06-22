@@ -34,4 +34,8 @@ class WebNavigator : Navigator {
         _currentScreen.value =
             window.location.pathname.removePrefix("/").ifBlank { Screen.SignIn.route }
     }
+
+    fun refresh() {
+        window.location.reload()
+    }
 }

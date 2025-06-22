@@ -39,8 +39,6 @@ import org.collcal.collcal.presentation.user.model.Credit
 
 class ApiService {
 
-    private val token = getToken()
-
     suspend fun signUp(request: SignUp): ResponseMessage {
         return ApiClient.httpClient.post("$BASE_URL$AUTH_REGISTER_PATH") {
             contentType(ContentType.Application.Json)
@@ -56,6 +54,7 @@ class ApiService {
     }
 
     suspend fun getUser(): User {
+        val token = getToken()
         return ApiClient.httpClient.get("$BASE_URL$AUTH_USER_DETAIL_PATH") {
             contentType(ContentType.Application.Json)
             header(HttpHeaders.Authorization, "Bearer $token")
@@ -63,6 +62,7 @@ class ApiService {
     }
 
     suspend fun getTasks(): GetTaskResponse {
+        val token = getToken()
         return ApiClient.httpClient.get("$BASE_URL$TASK_DETAIL_PATH") {
             contentType(ContentType.Application.Json)
             header(HttpHeaders.Authorization, "Bearer $token")
@@ -70,6 +70,7 @@ class ApiService {
     }
 
     suspend fun addTask(task: AddTaskRequest): ResponseMessage {
+        val token = getToken()
         return ApiClient.httpClient.post("$BASE_URL$TASK_REGISTER_PATH") {
             contentType(ContentType.Application.Json)
             header(HttpHeaders.Authorization, "Bearer $token")
@@ -78,6 +79,7 @@ class ApiService {
     }
 
     suspend fun modifyTask(task: ModifyTaskRequest): ResponseMessage {
+        val token = getToken()
         return ApiClient.httpClient.patch("$BASE_URL$TASK_UPDATE_PATH") {
             contentType(ContentType.Application.Json)
             header(HttpHeaders.Authorization, "Bearer $token")
@@ -86,6 +88,7 @@ class ApiService {
     }
 
     suspend fun deleteTask(task: Task): ResponseMessage {
+        val token = getToken()
         return ApiClient.httpClient.delete("$BASE_URL$TASK_DELETE_PATH") {
             header(HttpHeaders.Authorization, "Bearer $token")
             url { parameters.append("taskId", task.taskId) }
@@ -93,6 +96,7 @@ class ApiService {
     }
 
     suspend fun getCredits(): GetCoursesResponse {
+        val token = getToken()
         return ApiClient.httpClient.get("$BASE_URL$SUBJECT_DETAIL_PATH") {
             contentType(ContentType.Application.Json)
             header(HttpHeaders.Authorization, "Bearer $token")
@@ -100,6 +104,7 @@ class ApiService {
     }
 
     suspend fun addCredit(course: AddCourseRequest): ResponseMessage {
+        val token = getToken()
         return ApiClient.httpClient.post("$BASE_URL$SUBJECT_REGISTER_PATH") {
             contentType(ContentType.Application.Json)
             header(HttpHeaders.Authorization, "Bearer $token")
@@ -107,7 +112,8 @@ class ApiService {
         }.body()
     }
 
-    suspend fun modifyCredit(course: ModifyCourseRequest): GetCoursesResponse {
+    suspend fun modifyCredit(course: ModifyCourseRequest): ResponseMessage {
+        val token = getToken()
         return ApiClient.httpClient.patch("$BASE_URL$SUBJECT_UPDATE_PATH") {
             contentType(ContentType.Application.Json)
             header(HttpHeaders.Authorization, "Bearer $token")
@@ -116,6 +122,7 @@ class ApiService {
     }
 
     suspend fun deleteCredit(credit: Credit): ResponseMessage {
+        val token = getToken()
         return ApiClient.httpClient.delete("$BASE_URL$SUBJECT_DELETE_PATH") {
             header(HttpHeaders.Authorization, "Bearer $token")
             url { parameters.append("subjectId", credit.creditId) }

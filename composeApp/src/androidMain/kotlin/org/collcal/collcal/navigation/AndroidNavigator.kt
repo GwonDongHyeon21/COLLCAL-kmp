@@ -3,7 +3,7 @@ package org.collcal.collcal.navigation
 import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateListOf
-import org.collcal.collcal.platform.getToken
+import org.collcal.collcal.MainActivity.Companion.token
 
 class AndroidNavigator : Navigator {
     override val currentScreen: State<String> get() = derivedStateOf { _navigationStack.last() }
@@ -12,7 +12,7 @@ class AndroidNavigator : Navigator {
     val currentScreenSize: State<Int> get() = derivedStateOf { _navigationStack.size }
 
     init {
-        replaceTo(if (getToken().isEmpty()) Screen.SignIn else Screen.College)
+        replaceTo(if (token.isEmpty()) Screen.SignIn else Screen.College)
     }
 
     override fun navigateTo(screen: Screen) {

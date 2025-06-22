@@ -20,16 +20,15 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.collcal.collcal.navigation.Navigator
@@ -37,7 +36,10 @@ import org.collcal.collcal.navigation.Screen
 import org.collcal.collcal.platform.PlatformType
 import org.collcal.collcal.platform.getPlatformType
 import org.collcal.collcal.presentation.collegedetail.CollegeDetailScreen
+import org.collcal.collcal.presentation.component.LoadingScreen
+import org.collcal.collcal.presentation.taskdetail.TaskDetailScreen
 import org.collcal.collcal.presentation.tasks.TasksScreen
+import org.collcal.collcal.presentation.tasks.model.Task
 import org.collcal.collcal.presentation.ui.theme.blue1
 import org.collcal.collcal.presentation.ui.theme.gray2
 import org.collcal.collcal.presentation.ui.theme.mainColor
@@ -48,24 +50,38 @@ import org.collcal.collcal.presentation.user.UserScreen
 fun CollegeScreen(
     navigator: Navigator,
     viewModel: CollegeViewModel,
+    onClickTaskText: (Task) -> Unit,
+    onSignOut: () -> Unit,
     innerPadding: PaddingValues = PaddingValues(0.dp),
 ) {
-    val isLoading by viewModel.isLoading.collectAsState()
     val userInfo by viewModel.userInfo.collectAsState()
     val colleges by viewModel.colleges.collectAsState()
+    val userSemesterInt = userInfo.semesterInt ?: 0
 
     var screen by remember { mutableStateOf<Screen>(Screen.College) }
     val isSelected = remember { mutableStateMapOf<Int, Boolean>() }
     var selectedSemester by remember { mutableStateOf<Int?>(null) }
     var selectedSemesterForDetail by remember { mutableStateOf<Int?>(null) }
+    var isTaskDetail by remember { mutableStateOf(false) }
+    var selectedTask by remember { mutableStateOf<Task?>(null) }
+
+    var isGetTasks by remember { mutableStateOf(false) }
+    var isGetUser by remember { mutableStateOf(false) }
+    var isGetCredits by remember { mutableStateOf(false) }
+    val isLoading by viewModel.isLoading.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.getTasks { isGetTasks = true }
+        viewModel.getUser { if (it) isGetUser = it else navigator.replaceTo(Screen.SignIn) }
+        viewModel.getCredits { isGetCredits = true }
+    }
+    LaunchedEffect(isGetTasks, isGetUser, isGetCredits) {
+        if (listOf(isGetTasks, isGetUser, isGetCredits).all { it })
+            viewModel.loadingState(false)
+    }
 
     if (isLoading)
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            CircularProgressIndicator(color = mainColor)
-        }
+        LoadingScreen()
     else
         when (getPlatformType()) {
             PlatformType.WEB -> {
