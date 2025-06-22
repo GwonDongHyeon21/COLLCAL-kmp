@@ -76,12 +76,12 @@ fun CollCalWeb() {
 
         when (currentScreen) {
             Screen.SignIn.route -> SignInScreen(navigator, signViewModel) {
-                navigator.replaceTo(Screen.College)
                 token = it
+                navigator.replaceTo(Screen.College)
             }
 
             Screen.SignUp.route -> SignUpScreen(navigator, signViewModel)
-            Screen.College.route -> CollegeScreen(navigator, viewModel)
+            Screen.College.route -> CollegeScreen(navigator, viewModel, {}, { navigator.refresh() })
         }
     }
 }

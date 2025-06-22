@@ -16,6 +16,7 @@ import org.collcal.collcal.presentation.user.model.Credit
 import kotlin.math.floor
 
 class CollegeViewModel(private val apiService: ApiService = ApiService()) : ViewModel() {
+
     private val _isLoading = MutableStateFlow(true)
     val isLoading: StateFlow<Boolean> = _isLoading
 
@@ -41,12 +42,16 @@ class CollegeViewModel(private val apiService: ApiService = ApiService()) : View
     val todos: StateFlow<List<Task>> = _todos
 
     init {
-        getTasks()
+        getTasks {}
         getUser {}
-        getCredits()
+        getCredits {}
     }
 
-    private fun getTasks() {
+    fun loadingState(boolean: Boolean) {
+        _isLoading.value = boolean
+    }
+
+    fun getTasks(onResult: () -> Unit) {
         viewModelScope.launch {
             try {
                 val tasks = apiService.getTasks().tasks ?: emptyList()
@@ -91,28 +96,30 @@ class CollegeViewModel(private val apiService: ApiService = ApiService()) : View
                     )
                     // @formatter:on
                 )
-                _isLoading.value = false
+                onResult()
             } catch (e: Exception) {
                 println(e)
             }
         }
     }
 
-    fun getUser(onResult: () -> Unit) {
+    fun getUser(onResult: (Boolean) -> Unit) {
         viewModelScope.launch {
             try {
                 val response = apiService.getUser()
                 if (response.message == "유저 정보 불러오기 성공.") {
                     _userInfo.value = getUserCredit(response)
                     calculateCredit()
-                } else onResult()
+                    onResult(true)
+                } else onResult(false)
             } catch (e: Exception) {
                 println(e)
+                onResult(false)
             }
         }
     }
 
-    private fun getCredits() {
+    fun getCredits(onResult: () -> Unit) {
         viewModelScope.launch {
             try {
                 val response = apiService.getCredits().courses ?: emptyList()
@@ -124,6 +131,7 @@ class CollegeViewModel(private val apiService: ApiService = ApiService()) : View
                     response.filter { it.courseCategory == 4 },
                     response.filter { it.courseCategory == 5 })
                 calculateCredit()
+                onResult()
             } catch (e: Exception) {
                 println(e)
             }
@@ -166,29 +174,29 @@ class CollegeViewModel(private val apiService: ApiService = ApiService()) : View
     fun changeTaskSemester(task: Task, semesterInt: Int) {
         viewModelScope.launch {
             try {
-                val response =
-                    apiService.modifyTask(
-                        ModifyTaskRequest(
-                            task.taskId,
-                            task.title,
-                            task.info,
-                            task.content,
-                            semesterInt
+                if (task.status != semesterInt) {
+                    val response =
+                        apiService.modifyTask(
+                            ModifyTaskRequest(
+                                task.taskId,
+                                task.title,
+                                task.info,
+                                task.content,
+                                semesterInt
+                            )
                         )
-                    )
-                if (response.message == "성공적으로 업데이트되었습니다.") {
-                    _todos.value = _todos.value.filterNot { it.taskId == task.taskId }
-                    _colleges.value = _colleges.value.map { (key, semesters) ->
-                        key to semesters.map { (semesterPair, tasks) ->
-                            val hasTask = tasks.any { it.taskId == task.taskId }
-                            val isSameSemester = semesterPair.second == semesterInt
-                            semesterPair to when {
-                                hasTask && isSameSemester -> tasks
-                                hasTask -> tasks.filterNot { it.taskId == task.taskId }
-                                isSameSemester -> tasks + task
-                                else -> tasks
+                    if (response.message == "성공적으로 업데이트되었습니다.") {
+                        _todos.value = _todos.value.filterNot { it.taskId == task.taskId }
+                        _colleges.value = _colleges.value.map { (key, semesters) ->
+                            key to semesters.map { (semesterPair, tasks) ->
+                                semesterPair to when {
+                                    tasks.any { it.taskId == task.taskId } -> tasks.filterNot { it.taskId == task.taskId }
+                                    semesterPair.second == semesterInt -> tasks + task
+                                    else -> tasks
+                                }
                             }
                         }
+                        getTasks {}
                     }
                 }
             } catch (e: Exception) {
@@ -243,7 +251,7 @@ class CollegeViewModel(private val apiService: ApiService = ApiService()) : View
                                 })
                             })
                         }
-                    getTasks()
+                    getTasks {}
                 }
             } catch (e: Exception) {
                 println(e)
@@ -264,7 +272,7 @@ class CollegeViewModel(private val apiService: ApiService = ApiService()) : View
                                 semester.copy(second = semester.second.filterNot { it.taskId == task.taskId })
                             })
                         }
-                    getTasks()
+                    getTasks {}
                 }
             } catch (e: Exception) {
                 println(e)
@@ -288,7 +296,7 @@ class CollegeViewModel(private val apiService: ApiService = ApiService()) : View
                     _credits.value = _credits.value
                         .toMutableList()
                         .apply { this[creditList] = this[creditList] + credit }
-                    getCredits()
+                    getCredits {}
                     calculateCredit()
                 }
             } catch (e: Exception) {
@@ -312,7 +320,7 @@ class CollegeViewModel(private val apiService: ApiService = ApiService()) : View
                 if (response.message == "성공적으로 업데이트되었습니다.") {
                     _credits.value =
                         _credits.value.map { list -> list.map { if (it.creditId == credit.creditId) credit else it } }
-                    getCredits()
+                    getCredits {}
                     calculateCredit()
                 }
             } catch (e: Exception) {
@@ -328,7 +336,7 @@ class CollegeViewModel(private val apiService: ApiService = ApiService()) : View
                 if (response.message == "과목 삭제 완료") {
                     _credits.value =
                         _credits.value.map { list -> list.filterNot { it.creditId == credit.creditId } }
-                    getCredits()
+                    getCredits {}
                     calculateCredit()
                 }
             } catch (e: Exception) {

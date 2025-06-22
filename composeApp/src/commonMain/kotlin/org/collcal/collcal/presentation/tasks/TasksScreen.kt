@@ -46,8 +46,9 @@ import org.collcal.collcal.presentation.ui.theme.white
 fun TasksScreen(
     navigator: Navigator,
     viewModel: CollegeViewModel,
-    innerPadding: PaddingValues = PaddingValues(0.dp),
     onClick: (Task) -> Unit,
+    onClickTaskText: (Task) -> Unit,
+    innerPadding: PaddingValues = PaddingValues(0.dp),
 ) {
     val todos by viewModel.todos.collectAsState()
     val colleges by viewModel.colleges.collectAsState()
@@ -141,7 +142,14 @@ fun TasksScreen(
                 }
                 if (todos.isNotEmpty())
                     LazyColumn(verticalArrangement = Arrangement.spacedBy(5.dp)) {
-                        items(todos) { TaskItem(it, viewModel) { onClick(it) } }
+                        items(todos) {
+                            TaskItem(
+                                it,
+                                viewModel,
+                                { onClick(it) },
+                                { onClickTaskText(it) }
+                            )
+                        }
                     }
             }
 
@@ -168,7 +176,14 @@ fun TasksScreen(
                 ) {
                     if (task.second.isNotEmpty())
                         LazyColumn(verticalArrangement = Arrangement.spacedBy(5.dp)) {
-                            items(task.second) { TaskItem(it, viewModel) { onClick(it) } }
+                            items(task.second) {
+                                TaskItem(
+                                    it,
+                                    viewModel,
+                                    { onClick(it) },
+                                    { onClickTaskText(it) }
+                                )
+                            }
                         }
                 }
             }

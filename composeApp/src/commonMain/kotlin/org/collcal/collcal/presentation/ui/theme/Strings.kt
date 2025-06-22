@@ -22,6 +22,9 @@ object Strings {
     const val departmentPlaceholder = "확과 이름을 선택하세요"
     const val semester = "현재 학년/학기"
     const val semesterPlaceholder = "현재 상태를 선택하세요"
+    const val home = "홈"
+    const val todos = "할 일"
+    const val user = "마이페이지"
     const val earnedCredits = "취득학점"
     const val averageCredit = "평점 평군"
     const val tasks = "Tasks"
@@ -41,4 +44,6 @@ object Strings {
     const val course = "과목명"
     const val credit = "학점"
     const val grade = "성적"
+    const val signOut = "로그아웃"
+    const val cancel = "취소"
 }

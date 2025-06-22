@@ -34,6 +34,7 @@ fun TaskItem(
     task: Task,
     viewModel: CollegeViewModel,
     onClick: () -> Unit,
+    onClickTaskText: () -> Unit,
 ) {
     var moreActionExpanded by remember { mutableStateOf(false) }
     var isModify by remember { mutableStateOf(false) }
@@ -64,6 +65,7 @@ fun TaskItem(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Row(
+                modifier = Modifier.clickable { onClickTaskText() },
                 verticalAlignment = Alignment.Bottom,
                 horizontalArrangement = Arrangement.spacedBy(5.dp)
             ) {
