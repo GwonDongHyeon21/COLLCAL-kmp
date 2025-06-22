@@ -23,6 +23,7 @@ import org.collcal.collcal.presentation.college.CollegeScreen
 import org.collcal.collcal.presentation.college.CollegeViewModel
 import org.collcal.collcal.presentation.sign.SignInScreen
 import org.collcal.collcal.presentation.sign.SignUpScreen
+import org.collcal.collcal.presentation.sign.SignViewModel
 import org.collcal.collcal.presentation.tasks.TasksScreen
 import org.collcal.collcal.presentation.user.UserScreen
 
@@ -31,6 +32,7 @@ fun CollCalApp() {
     val context = LocalContext.current
     val navigator = remember { AndroidNavigator() }
     val viewModel = remember { CollegeViewModel() }
+    val signViewModel = remember { SignViewModel() }
     val currentScreen by navigator.currentScreen
     val currentScreenSize by navigator.currentScreenSize
 
@@ -49,6 +51,9 @@ fun CollCalApp() {
     )
     var tabScreen by remember { mutableStateOf(items.first().third.route) }
 
+    LaunchedEffect(Unit) {
+        viewModel.getUser { navigator.resetTo(Screen.SignIn) }
+    }
     LaunchedEffect(currentScreen) {
         if (items.any { it.third.route == currentScreen })
             tabScreen = currentScreen
@@ -57,22 +62,16 @@ fun CollCalApp() {
     if (currentScreenSize > 1) BackHandler { navigator.goBack() }
 
     Scaffold(
-        topBar = {
-            if (isTopBar)
-                TopBar()
-        },
-        bottomBar = {
-            if (isBottomBar)
-                BottomBar(items, navigator, tabScreen)
-        }
+        topBar = { if (isTopBar) TopBar() },
+        bottomBar = { if (isBottomBar) BottomBar(items, navigator, tabScreen) }
     ) { innerPadding ->
         when (currentScreen) {
-            Screen.SignIn.route -> SignInScreen(navigator, innerPadding) {
+            Screen.SignIn.route -> SignInScreen(navigator, signViewModel, innerPadding) {
                 navigator.resetTo(Screen.College)
                 saveUserToken(context, it)
             }
 
-            Screen.SignUp.route -> SignUpScreen(navigator, innerPadding)
+            Screen.SignUp.route -> SignUpScreen(navigator, signViewModel, innerPadding)
             Screen.College.route -> CollegeScreen(navigator, viewModel, innerPadding)
             Screen.Tasks.route -> TasksScreen(navigator, viewModel, innerPadding) {}
             Screen.User.route -> UserScreen(navigator, viewModel, innerPadding)

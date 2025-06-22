@@ -12,8 +12,17 @@ import org.collcal.collcal.presentation.sign.model.SignUp
 class SignViewModel(private val apiService: ApiService = ApiService()) : ViewModel() {
     val years = (2000..2025).reversed().map { it.toString() }
     val schools = listOf("경희대학교")
-    val departments =
-        listOf("기계공학과", "화학공학과", "산업공학과", "신소재공학과", "건축학과", "사회기반시스템공학과", "원자력공학과", "환경학및환경공학과")
+    val departments = listOf(
+        "기계공학과",
+        "산업경영공학과",
+        "원자력공학과",
+        "화학공학과",
+        "신소재공학과",
+        "사회기반시스템공학과",
+        "건축공학과",
+        "환경학및환경공학과",
+        "건축학과"
+    )
     val semesters = listOf(
         "1학년 1학기",
         "1학년 하계 방학",
@@ -41,11 +50,17 @@ class SignViewModel(private val apiService: ApiService = ApiService()) : ViewMod
     private val _checkRedundancy = MutableStateFlow(Pair("", false))
     val checkRedundancy: StateFlow<Pair<String, Boolean>> = _checkRedundancy
 
+    private val _isSignUp = MutableStateFlow("")
+    val isSignUp: StateFlow<String> = _isSignUp
+
+    private val _isSignIn = MutableStateFlow("")
+    val isSignIn: StateFlow<String> = _isSignIn
+
     fun checkRedundancy(id: String) {
         viewModelScope.launch {
             try {
                 // 아이디 중복 확인
-                val response = id != "asdf"
+                val response = true
                 if (response) _checkRedundancy.value = Pair("사용 가능합니다", true)
                 else _checkRedundancy.value = Pair("사용할 수 없습니다", false)
             } catch (e: Exception) {
@@ -88,6 +103,7 @@ class SignViewModel(private val apiService: ApiService = ApiService()) : ViewMod
                     )
                 )
                 if (response.message == "회원가입 성공") onSignUp()
+                else _isSignUp.value = response.message
             } catch (e: Exception) {
                 println(e)
             }
@@ -98,7 +114,8 @@ class SignViewModel(private val apiService: ApiService = ApiService()) : ViewMod
         viewModelScope.launch {
             try {
                 val response = apiService.signIn(SignIn(id, password))
-                if (response.message == "로그인 성공") onSignIn(response.token)
+                if (response.message == "로그인 성공") onSignIn(response.token ?: "")
+                else _isSignIn.value = response.message
             } catch (e: Exception) {
                 println(e)
             }

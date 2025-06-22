@@ -25,6 +25,7 @@ import org.collcal.collcal.presentation.college.CollegeScreen
 import org.collcal.collcal.presentation.college.CollegeViewModel
 import org.collcal.collcal.presentation.sign.SignInScreen
 import org.collcal.collcal.presentation.sign.SignUpScreen
+import org.collcal.collcal.presentation.sign.SignViewModel
 import org.collcal.collcal.presentation.ui.theme.Strings
 import org.collcal.collcal.presentation.ui.theme.mainColor
 
@@ -32,6 +33,7 @@ import org.collcal.collcal.presentation.ui.theme.mainColor
 fun CollCalWeb() {
     val navigator = remember { WebNavigator() }
     val viewModel = remember { CollegeViewModel() }
+    val signViewModel = remember { SignViewModel() }
     val currentScreen by navigator.currentScreen
 
     DisposableEffect(Unit) {
@@ -73,12 +75,12 @@ fun CollCalWeb() {
         }
 
         when (currentScreen) {
-            Screen.SignIn.route -> SignInScreen(navigator) {
+            Screen.SignIn.route -> SignInScreen(navigator, signViewModel) {
                 navigator.replaceTo(Screen.College)
                 token = it
             }
 
-            Screen.SignUp.route -> SignUpScreen(navigator)
+            Screen.SignUp.route -> SignUpScreen(navigator, signViewModel)
             Screen.College.route -> CollegeScreen(navigator, viewModel)
         }
     }

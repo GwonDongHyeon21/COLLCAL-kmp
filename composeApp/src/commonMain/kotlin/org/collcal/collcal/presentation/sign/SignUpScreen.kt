@@ -32,8 +32,8 @@ import org.collcal.collcal.presentation.ui.theme.mainColor
 @Composable
 fun SignUpScreen(
     navigator: Navigator,
+    viewModel: SignViewModel,
     innerPadding: PaddingValues = PaddingValues(0.dp),
-    viewModel: SignViewModel = SignViewModel(),
 ) {
     var selectedTabIndex by remember { mutableIntStateOf(0) }
 

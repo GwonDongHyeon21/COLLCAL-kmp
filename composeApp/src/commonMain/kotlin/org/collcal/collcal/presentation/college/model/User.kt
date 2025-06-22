@@ -1,14 +1,20 @@
 package org.collcal.collcal.presentation.college.model
 
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class User(
-    val name: String,
-    val department: String,
-    val semester: String,
-    val semesterInt: Int,
-    val majorBasicCredits: Int,
-    val majorRequiredCredits: Int,
-    val majorElectiveCredits: Int,
-    val requiredLiberalArtsCredits: Int,
-    val distributedCredits: Int,
-    val freeComplementCredits: Int
+    @SerialName("message") val message: String,
+    @SerialName("university") val university: String,
+    @SerialName("studentId") val studentId: Int,
+    @SerialName("major") val department: String,
+    @SerialName("status") val semester: String,
+    val semesterInt: Int? = 0,
+    val majorBasicCredits: Int? = 0,
+    val majorRequiredCredits: Int? = 0,
+    val majorElectiveCredits: Int? = 0,
+    val requiredLiberalArtsCredits: Int? = 0,
+    val distributedCredits: Int? = 0,
+    val freeComplementCredits: Int? = 0,
 )

@@ -47,7 +47,7 @@ fun TaskItem(
             onTaskTitleChanged = { taskTitle = it },
             onTaskInfoChanged = { taskInfo = it },
         ) {
-            viewModel.modifyTask(task, taskTitle, taskInfo)
+            viewModel.modifyTask(task, taskTitle, taskInfo, "")
             isModify = !isModify
         }
     else
@@ -91,7 +91,7 @@ fun TaskItem(
                     onClickExpanded = { moreActionExpanded = !moreActionExpanded },
                     onClickOption = {
                         when (it) {
-                            Strings.moveToTodo -> viewModel.moveToTodoTask(task)
+                            Strings.moveToTodo -> viewModel.changeTaskSemester(task, 0)
                             Strings.modify -> isModify = !isModify
                             Strings.delete -> viewModel.deleteTask(task) {}
                         }

@@ -35,9 +35,10 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.collcal.collcal.presentation.tasks.model.Task
 import org.collcal.collcal.presentation.component.RightArrowIcon
 import org.collcal.collcal.presentation.tasks.TaskItem
+import org.collcal.collcal.presentation.tasks.model.Task
+import org.collcal.collcal.presentation.ui.theme.blue2
 import org.collcal.collcal.presentation.ui.theme.gray1
 import org.collcal.collcal.presentation.ui.theme.mainColor
 import org.collcal.collcal.presentation.ui.theme.white
@@ -67,7 +68,7 @@ fun CollegeItem(
                         modifier = modifier
                             .fillMaxSize()
                             .clip(RoundedCornerShape(21.dp))
-                            .background(mainColor.copy(0.5f))
+                            .background(blue2)
                     )
                 Card(
                     modifier = modifier
@@ -102,7 +103,7 @@ fun CollegeItem(
                                 brush = Brush.verticalGradient(
                                     colors = listOf(
                                         white,
-                                        if (userSemesterInt == semesterInt) mainColor.copy(0.4f) else white
+                                        if (userSemesterInt == semesterInt) blue2 else white
                                     )
                                 ),
                                 shape = RoundedCornerShape(21.dp)

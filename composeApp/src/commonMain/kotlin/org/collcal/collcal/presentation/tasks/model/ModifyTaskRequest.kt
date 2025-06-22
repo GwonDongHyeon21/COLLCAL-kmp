@@ -9,4 +9,5 @@ data class ModifyTaskRequest(
     @SerialName("taskCategory") val title: String,
     @SerialName("title") val info: String,
     @SerialName("note") val content: String,
+    @SerialName("status") val status: Int,
 )

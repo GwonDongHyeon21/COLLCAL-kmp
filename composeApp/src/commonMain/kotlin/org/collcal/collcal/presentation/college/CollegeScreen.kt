@@ -122,6 +122,7 @@ fun CollegeScreen(
 
                                     is Screen.CollegeDetail ->
                                         CollegeDetailScreen(
+                                            viewModel,
                                             colleges,
                                             userInfo.semesterInt,
                                             selectedSemesterForDetail,
@@ -203,6 +204,7 @@ fun CollegeScreen(
                             is Screen.CollegeDetail ->
                                 Box(modifier = Modifier.padding(20.dp)) {
                                     CollegeDetailScreen(
+                                        viewModel,
                                         colleges,
                                         userInfo.semesterInt,
                                         selectedSemesterForDetail,

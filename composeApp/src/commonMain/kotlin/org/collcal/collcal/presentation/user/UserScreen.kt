@@ -131,7 +131,7 @@ fun UserScreen(
                         "전공 기초",
                         Triple(
                             credits.value[0].sumOf { it.credit },
-                            userInfo.majorRequiredCredits,
+                            userInfo.majorRequiredCredits ?: 0,
                             majorBasicExpanded
                         ),
                         credits.value[0]
@@ -140,7 +140,7 @@ fun UserScreen(
                         "전공 필수",
                         Triple(
                             credits.value[1].sumOf { it.credit },
-                            userInfo.majorRequiredCredits,
+                            userInfo.majorRequiredCredits ?: 0,
                             majorRequiredExpanded
                         ),
                         credits.value[1]
@@ -149,7 +149,7 @@ fun UserScreen(
                         "전공 선택",
                         Triple(
                             credits.value[2].sumOf { it.credit },
-                            userInfo.majorElectiveCredits,
+                            userInfo.majorElectiveCredits ?: 0,
                             majorElectiveExpanded
                         ),
                         credits.value[2]
@@ -158,7 +158,7 @@ fun UserScreen(
                         "필수 교과",
                         Triple(
                             credits.value[3].sumOf { it.credit },
-                            userInfo.requiredLiberalArtsCredits,
+                            userInfo.requiredLiberalArtsCredits ?: 0,
                             requiredLiberalArtsExpanded
                         ),
                         credits.value[3]
@@ -167,7 +167,7 @@ fun UserScreen(
                         "배분 이수",
                         Triple(
                             credits.value[4].sumOf { it.credit },
-                            userInfo.distributedCredits,
+                            userInfo.distributedCredits ?: 0,
                             distributedExpanded
                         ),
                         credits.value[4]
@@ -176,7 +176,7 @@ fun UserScreen(
                         "자유 이수",
                         Triple(
                             credits.value[5].sumOf { it.credit },
-                            userInfo.distributedCredits,
+                            userInfo.distributedCredits ?: 0,
                             freeComplementExpanded
                         ),
                         credits.value[5]
@@ -186,7 +186,7 @@ fun UserScreen(
                         creditInfo = creditInfo,
                         onAddCredit = { viewModel.addCredit(index, it) },
                         onModifyCredit = { viewModel.modifyCredit(index, it) },
-                        onDeleteCredit= { viewModel.deleteCredit(it) }
+                        onDeleteCredit = { viewModel.deleteCredit(it) }
                     )
                 }
             }

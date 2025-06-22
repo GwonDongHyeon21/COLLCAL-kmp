@@ -53,6 +53,7 @@ val red = Color.Red
 val mainColor = Color(0xFF2D81FE)
 
 val blue1 = Color(0xFFF8FAFF)
+val blue2 = Color(0xFFAEDBFF)
 
 val gray1 = Color(0xFFACACAC)
 val gray2 = Color(0xFFB5B5B5)

@@ -211,3 +211,5 @@ package-lock.json
 .env
 .env.*
 *.local
+
+/composeApp/src/commonMain/kotlin/org/collcal/collcal/presentation/ui/theme/BaseUrl.kt

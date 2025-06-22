@@ -13,6 +13,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -66,7 +67,7 @@ fun SignUpCollegeInfo(
         Info(Strings.semester, Strings.semesterPlaceholder, semesters, semester, semesterExpended)
     )
 
-    var isEmpty by remember { mutableStateOf(false) }
+    val isSignUp by viewModel.isSignUp.collectAsState()
 
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -114,7 +115,6 @@ fun SignUpCollegeInfo(
                             department.value,
                             semester.value
                         ) { navigator.replaceTo(Screen.SignIn) }
-                    else isEmpty = true
                 },
                 modifier = Modifier.fillMaxWidth().height(50.dp),
                 shape = RoundedCornerShape(10.dp),
@@ -128,8 +128,8 @@ fun SignUpCollegeInfo(
                 horizontalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = if (isEmpty) "빈칸을 모두 선택해주세요" else "",
-                    color = if (isEmpty) red else transparent
+                    text = isSignUp,
+                    color = red
                 )
             }
         }
