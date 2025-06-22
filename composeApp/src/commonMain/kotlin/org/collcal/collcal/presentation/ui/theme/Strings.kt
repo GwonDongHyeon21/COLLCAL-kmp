@@ -44,4 +44,6 @@ object Strings {
     const val course = "과목명"
     const val credit = "학점"
     const val grade = "성적"
+    const val signOut = "로그아웃"
+    const val cancel = "취소"
 }

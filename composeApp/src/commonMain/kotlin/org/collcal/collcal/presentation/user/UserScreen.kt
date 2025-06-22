@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
@@ -20,6 +22,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -30,17 +33,20 @@ import org.collcal.collcal.navigation.Navigator
 import org.collcal.collcal.platform.PlatformType
 import org.collcal.collcal.platform.getPlatformType
 import org.collcal.collcal.presentation.college.CollegeViewModel
+import org.collcal.collcal.presentation.component.ConfirmDialog
 import org.collcal.collcal.presentation.ui.theme.Strings
 import org.collcal.collcal.presentation.ui.theme.blue1
 import org.collcal.collcal.presentation.ui.theme.gray1
 import org.collcal.collcal.presentation.ui.theme.gray3
 import org.collcal.collcal.presentation.ui.theme.mainColor
+import org.collcal.collcal.presentation.ui.theme.white
 
 @Composable
 fun UserScreen(
     navigator: Navigator,
     viewModel: CollegeViewModel,
     innerPadding: PaddingValues = PaddingValues(0.dp),
+    onSignOut: () -> Unit,
 ) {
     val userInfo by viewModel.userInfo.collectAsState()
     val earnedCredit by viewModel.earnedCredit.collectAsState()
@@ -53,6 +59,7 @@ fun UserScreen(
     val requiredLiberalArtsExpanded = remember { mutableStateOf(false) }
     val distributedExpanded = remember { mutableStateOf(false) }
     val freeComplementExpanded = remember { mutableStateOf(false) }
+    var isSignOut by remember { mutableStateOf(false) }
 
     val modifier = when (getPlatformType()) {
         PlatformType.WEB -> Modifier.fillMaxWidth()
@@ -79,17 +86,31 @@ fun UserScreen(
             modifier = Modifier.padding(15.dp),
             verticalArrangement = Arrangement.spacedBy(5.dp),
         ) {
-            Text(
-                text = userInfo.department,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.W800,
-                color = mainColor
-            )
-            Text(
-                text = userInfo.semester,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.W500
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Column {
+                    Text(
+                        text = userInfo.department,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.W800,
+                        color = mainColor
+                    )
+                    Text(
+                        text = userInfo.semester,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.W500
+                    )
+                }
+
+                Button(
+                    onClick = { isSignOut = !isSignOut },
+                    colors = ButtonDefaults.buttonColors(containerColor = mainColor)
+                ) {
+                    Text(text = Strings.signOut, color = white)
+                }
+            }
 
             HorizontalDivider(color = gray1, modifier = Modifier.padding(vertical = 5.dp))
 
@@ -131,7 +152,7 @@ fun UserScreen(
                         "전공 기초",
                         Triple(
                             credits.value[0].sumOf { it.credit },
-                            userInfo.majorRequiredCredits ?: 0,
+                            userInfo.majorBasicCredits ?: 0,
                             majorBasicExpanded
                         ),
                         credits.value[0]
@@ -176,7 +197,7 @@ fun UserScreen(
                         "자유 이수",
                         Triple(
                             credits.value[5].sumOf { it.credit },
-                            userInfo.distributedCredits ?: 0,
+                            userInfo.freeComplementCredits ?: 0,
                             freeComplementExpanded
                         ),
                         credits.value[5]
@@ -192,4 +213,10 @@ fun UserScreen(
             }
         }
     }
+
+    if (isSignOut) ConfirmDialog(
+        "정말 로그아웃 하시겠습니까?",
+        Strings.signOut,
+        { isSignOut = !isSignOut },
+        { onSignOut() })
 }
