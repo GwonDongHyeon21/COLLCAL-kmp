@@ -2,9 +2,12 @@ package org.collcal.collcal.presentation.taskdetail
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,12 +18,18 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.selection.LocalTextSelectionColors
+import androidx.compose.foundation.text.selection.SelectionContainer
+import androidx.compose.foundation.text.selection.TextSelectionColors
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -35,6 +44,7 @@ import org.collcal.collcal.platform.PlatformType
 import org.collcal.collcal.platform.getPlatformType
 import org.collcal.collcal.presentation.component.LeftArrowIcon
 import org.collcal.collcal.presentation.tasks.model.Task
+import org.collcal.collcal.presentation.ui.theme.blue2
 import org.collcal.collcal.presentation.ui.theme.mainColor
 import org.collcal.collcal.presentation.ui.theme.white
 
@@ -52,14 +62,18 @@ fun TaskDetailScreen(
         PlatformType.ANDROID -> Modifier.fillMaxSize().padding(20.dp)
         PlatformType.IOS -> Modifier.fillMaxSize().padding(20.dp)
     }
-
     val size = when (getPlatformType()) {
         PlatformType.WEB -> 40.dp
         PlatformType.ANDROID -> 20.dp
         PlatformType.IOS -> 20.dp
     }
+    val fontSize = when (getPlatformType()) {
+        PlatformType.WEB -> 20.sp
+        PlatformType.ANDROID -> 15.sp
+        PlatformType.IOS -> 15.sp
+    }
 
-    LaunchedEffect(Unit) { viewModel.getTaskInfo(task) }
+    LaunchedEffect(task) { viewModel.getTaskInfo(task) }
 
     Card(
         modifier = modifier
@@ -107,23 +121,92 @@ fun TaskDetailScreen(
             }
 
             taskInfo?.let { info ->
-                Spacer(Modifier.height(size * 2))
-                Row {
-                    Text(text = "- ", fontSize = 15.sp)
-                    Text(text = info.task, fontSize = 15.sp)
-                }
-                Spacer(Modifier.height(10.dp))
-                Row {
-                    Text(text = "- ", fontSize = 15.sp)
-                    Text(text = info.year, fontSize = 15.sp)
-                }
-                Spacer(Modifier.height(10.dp))
-                Row {
-                    Text(text = "- ", fontSize = 15.sp)
-                    Column {
-                        info.link.forEach {
-                            Text(text = it, fontSize = 15.sp)
-                            Spacer(Modifier.height(5.dp))
+                Column(
+                    modifier = Modifier
+                        .padding(horizontal = size)
+                        .verticalScroll(rememberScrollState())
+                ) {
+                    Spacer(Modifier.height(size))
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(mainColor, RoundedCornerShape(24.dp))
+                            .padding(20.dp),
+                        verticalArrangement = Arrangement.spacedBy(10.dp)
+                    ) {
+                        info.task.forEach {
+                            Row {
+                                Text(text = "- ", fontSize = fontSize, color = white)
+                                Text(text = it, fontSize = fontSize, color = white)
+                            }
+                        }
+                    }
+
+                    Spacer(Modifier.height(size * 3 / 4))
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(IntrinsicSize.Max)
+                            .background(mainColor, RoundedCornerShape(24.dp))
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxHeight()
+                                .background(white, RoundedCornerShape(24.dp))
+                                .border(2.dp, mainColor, RoundedCornerShape(24.dp))
+                                .padding(horizontal = 20.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(text = "적정시기", fontSize = fontSize)
+                        }
+                        Text(
+                            text = info.year,
+                            fontSize = fontSize,
+                            color = white,
+                            modifier = Modifier.padding(vertical = 10.dp, horizontal = 20.dp)
+                        )
+                    }
+
+                    Spacer(Modifier.height(size * 3 / 4))
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(IntrinsicSize.Max)
+                            .background(mainColor, RoundedCornerShape(24.dp)),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxHeight()
+                                .background(white, RoundedCornerShape(24.dp))
+                                .border(2.dp, mainColor, RoundedCornerShape(24.dp))
+                                .padding(horizontal = 20.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(text = "관련 링크 ", fontSize = fontSize)
+                        }
+                        Column {
+                            info.link.forEach {
+                                CompositionLocalProvider(
+                                    value = LocalTextSelectionColors provides TextSelectionColors(
+                                        handleColor = mainColor,
+                                        backgroundColor = blue2
+                                    )
+                                ) {
+                                    SelectionContainer {
+                                        Text(
+                                            text = it,
+                                            fontSize = fontSize,
+                                            color = white,
+                                            modifier = Modifier.padding(
+                                                vertical = 10.dp,
+                                                horizontal = 20.dp
+                                            )
+                                        )
+                                    }
+                                }
+                                Spacer(Modifier.height(5.dp))
+                            }
                         }
                     }
                 }
