@@ -53,7 +53,7 @@ fun CollCalApp() {
     val items = listOf(
         Triple(Strings.home, Icons.Default.Home, Screen.College),
         Triple(Strings.todos, Icons.AutoMirrored.Filled.List, Screen.Tasks),
-        Triple(Strings.todos, Icons.Default.AccountCircle, Screen.User)
+        Triple(Strings.user, Icons.Default.AccountCircle, Screen.User)
     )
     var tabScreen by remember { mutableStateOf(items.first().third.route) }
     var selectedTask by remember { mutableStateOf<Task?>(null) }
