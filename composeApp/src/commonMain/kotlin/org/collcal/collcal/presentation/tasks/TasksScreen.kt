@@ -52,9 +52,10 @@ fun TasksScreen(
 ) {
     val todos by viewModel.todos.collectAsState()
     val colleges by viewModel.colleges.collectAsState()
+    val userInfo by viewModel.userInfo.collectAsState()
     val tasks = colleges.flatMap { it.second.flatMap { task -> task.second } }
-    val scheduledTasks = tasks.filter { it.status == 1 }
-    val completedTasks = tasks.filter { it.status == 2 }
+    val scheduledTasks = tasks.filter { it.status >= (userInfo.semesterInt ?: 0) }
+    val completedTasks = tasks.filter { it.status < (userInfo.semesterInt ?: 0) }
 
     var isAdd by remember { mutableStateOf(false) }
     var taskTitle by remember { mutableStateOf("") }
